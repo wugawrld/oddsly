@@ -1,9 +1,7 @@
-module com.example.sportsbettrackergui {
+module mvh.app {
     requires javafx.controls;
     requires javafx.fxml;
-    requires org.junit.jupiter.api;
-
-
-    opens com.example.sportsbettrackergui to javafx.fxml;
-    exports com.example.sportsbettrackergui;
+    requires java.desktop;
+    opens rw.app to javafx.fxml;
+    exports rw.app;
 }
