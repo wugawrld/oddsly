@@ -21,17 +21,14 @@
       <menus>
         <Menu mnemonicParsing="false" text="File">
           <items>
-            <MenuItem mnemonicParsing="false" text="add" />
-            <MenuItem mnemonicParsing="false" text="Open…" />
-            <Menu mnemonicParsing="false" text="Open Recent" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Close" />
+            <Menu mnemonicParsing="false" text="Add">
+                     <items>
+                  <MenuItem mnemonicParsing="false" onAction="#addBet" text="Bet" />
+                        <MenuItem mnemonicParsing="false" onAction="#addPlayer" text="Player" />
+                        <MenuItem mnemonicParsing="false" onAction="#addTeam" text="Team" />
+                     </items></Menu>
             <MenuItem mnemonicParsing="false" text="Save" />
-            <MenuItem mnemonicParsing="false" text="Save As…" />
-            <MenuItem mnemonicParsing="false" text="Revert" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Preferences…" />
-            <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" text="Load" />
             <MenuItem mnemonicParsing="false" text="Quit" />
           </items>
         </Menu>
