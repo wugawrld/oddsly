@@ -4,7 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
-public class MainController implements SceneController {
+public class AddTeamController implements SceneController {
 
     @FXML
     private Font x1;

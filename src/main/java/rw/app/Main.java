@@ -2,7 +2,6 @@ package rw.app;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -18,11 +17,16 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Main.fxml"));
+
+        SceneManager sceneManager = new SceneManager();
+        sceneManager.setMainStage(stage);
+        sceneManager.addScene("Main", "/rw/app/Main.fxml");
+        sceneManager.addScene("AddBet", "/rw/app/AddBet.fxml");
+        sceneManager.addScene("AddPlayer", "/rw/app/AddPlayer.fxml");
+        sceneManager.addScene("AddTeam", "/rw/app/AddTeam.fxml");
         // scene parameters are set to 1200 x 750 and scene is given title "Sports Betting Tracker v1.0".
-        Scene scene = new Scene(fxmlLoader.load(), 1200, 750);
         stage.setTitle("Sports Betting Tracker v1.0");
-        stage.setScene(scene);
+        sceneManager.switchToScene("Main");
         stage.show();
     }
 }
