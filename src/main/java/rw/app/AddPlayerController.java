@@ -1,10 +1,14 @@
 package rw.app;
 
 import javafx.fxml.FXML;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 public class AddPlayerController implements SceneController {
+
+    @FXML
+    private GridPane statsField;
 
     @FXML
     private Font x1;
