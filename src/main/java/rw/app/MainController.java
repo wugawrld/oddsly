@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import rw.data.Bet;
+import rw.data.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,9 +13,15 @@ import java.util.List;
 public class MainController implements SceneController {
 
     private static List<Bet> bets = new ArrayList<>();
+    private static List<Player> players = new ArrayList<>();
 
-    public static void addBet(Bet bet) {
+
+    public static void addNewBet(Bet bet) {
         bets.add(bet);
+    }
+
+    public static void addNewPlayer(Player player) {
+        players.add(player);
     }
 
     private SceneManager sceneManager;

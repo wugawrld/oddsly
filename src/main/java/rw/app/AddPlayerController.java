@@ -2,19 +2,38 @@ package rw.app;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import rw.data.BasketballPlayer;
+import rw.data.HockeyPlayer;
+import rw.data.Player;
+import rw.shell.Main;
 
 public class AddPlayerController implements SceneController {
+    private static Player player;
 
     @FXML
     private GridPane statsField;
 
+    @FXML
+    private TextField playerName;
+
+    @FXML
+    private TextField position;
+
+    @FXML
+    private TextField teamName;
+
+    @FXML
+    private TextField pointsField;
+
+    @FXML
+    private TextField reboundsField;
+
+    @FXML
+    private TextField assistsField;
 
     @FXML
     private RadioButton basketballButton;
@@ -29,6 +48,9 @@ public class AddPlayerController implements SceneController {
     private Label statusLabelR;
 
     @FXML
+    private Button newPlayerButton;
+
+    @FXML
     private Font x1;
 
     @FXML
@@ -41,6 +63,11 @@ public class AddPlayerController implements SceneController {
     private Color x4;
 
     private SceneManager sceneManager;
+
+    @FXML
+    void close(ActionEvent event) {
+        sceneManager.switchToScene("Main");
+    }
 
     @FXML
     void addBasketballStats(ActionEvent event) {
@@ -64,9 +91,9 @@ public class AddPlayerController implements SceneController {
         statsField.add(reboundsLabel, 1, 0);
         statsField.add(assistsLabel, 2, 0);
 
-        TextField pointsField = new TextField();
-        TextField reboundsField = new TextField();
-        TextField assistsField = new TextField();
+        pointsField = new TextField();
+        reboundsField = new TextField();
+        assistsField = new TextField();
 
         pointsField.setPrefHeight(30);
         pointsField.setPrefWidth(120);
@@ -101,8 +128,8 @@ public class AddPlayerController implements SceneController {
         statsField.add(pointsLabel, 0, 0);
         statsField.add(assistsLabel, 1, 0);
 
-        TextField pointsField = new TextField();
-        TextField assistsField = new TextField();
+        pointsField = new TextField();
+        assistsField = new TextField();
 
         pointsField.setPrefHeight(30);
         pointsField.setPrefWidth(120);
@@ -116,6 +143,82 @@ public class AddPlayerController implements SceneController {
         statsField.setVgap(15);
     }
 
+    private Boolean checkTeam(String input, String league) {
+        // Checks if league to check is NBA.
+        if (league.equalsIgnoreCase("NBA")) {
+            // Checks if any team in NBA matches input.
+            for (String team : rw.shell.Main.nbaTeams) {
+                if (team.equalsIgnoreCase(input)) {
+                    return true;
+                }
+            }
+        }
+        // Checks if league to check is NHL.
+        else if (league.equalsIgnoreCase("NHL")) {
+            // Checks if any team in NHL matches input.
+            for (String team : Main.nhlTeams) {
+                if (team.equalsIgnoreCase(input)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    @FXML
+    void addNewPlayer(ActionEvent event) {
+        statusLabelL.setTextFill(Color.BLACK);
+        statusLabelL.setText("");
+        try {
+            String playerN = playerName.getText();
+            String teamN = teamName.getText();
+            String p = position.getText();
+            double ppg = Double.parseDouble(pointsField.getText());
+            double apg = Double.parseDouble(assistsField.getText());
+            String league;
+
+            if (basketballButton.isSelected()) {
+                try {
+                    league = "NBA";
+                    double rbg = Double.parseDouble(reboundsField.getText());
+                    if (checkTeam(teamN, league)) {
+                        player = new BasketballPlayer(playerN, teamN, p, ppg, rbg, apg);
+                        MainController.addNewPlayer(player);
+                        statusLabelL.setTextFill(Color.GREEN);
+                        statusLabelL.setText(String.format("%s added successfully!", playerName.getText()));
+
+                    } else {
+                        statusLabelL.setTextFill(Color.RED);
+                        statusLabelL.setText(String.format("Invalid Team: %s, for league %s", teamName.getText(), league));
+                    }
+                } catch (NumberFormatException e3) {
+                    statusLabelL.setTextFill(Color.RED);
+                    statusLabelL.setText(String.format("Failed to parse double Rebounds Per Game from %s", reboundsField.getText()));
+                }
+            } else if (hockeyButton.isSelected()) {
+                league = "NHL";
+                if (checkTeam(teamN, league)) {
+                    player = new HockeyPlayer(playerN, teamN, p, ppg, apg);
+                    MainController.addNewPlayer(player);
+                    statusLabelL.setTextFill(Color.GREEN);
+                    statusLabelL.setText(String.format("%s added successfully!", playerName.getText()));
+
+                } else {
+                    statusLabelL.setTextFill(Color.RED);
+                    statusLabelL.setText(String.format("Invalid Team: %s, for league %s", teamName.getText(), league));
+                }
+            } else {
+                statusLabelL.setTextFill(Color.RED);
+                statusLabelL.setText("You must select Basketball or Hockey Player");
+            }
+        } catch (NumberFormatException e1) {
+            statusLabelL.setTextFill(Color.RED);
+            statusLabelL.setText(String.format("Failed to parse double Points Per Game from %s%n or Assists Per Game from %s", pointsField.getText(), assistsField.getText()));
+        } catch (NullPointerException e2) {
+            statusLabelL.setTextFill(Color.RED);
+            statusLabelL.setText("You must complete all fields before adding a new player");
+        }
+    }
 
     @Override
     public void setSceneManager(SceneManager manager) {

@@ -67,7 +67,7 @@ public class AddBetController implements SceneController {
         sceneManager.switchToScene("Main");
     }
 
-    public Boolean checkLeague(String input) {
+    private Boolean checkLeague(String input) {
         // Checks if input is a part of leagueList.
         for (String league : Main.leagueList) {
             if (league.equalsIgnoreCase(input)) {
@@ -77,7 +77,7 @@ public class AddBetController implements SceneController {
         return false;
     }
 
-    public Boolean checkTeam(String input) {
+    private Boolean checkTeam(String input) {
         String leagueCheck = league.getText();
         // Checks if league to check is NBA.
         if (leagueCheck.equalsIgnoreCase("NBA")) {
@@ -126,7 +126,7 @@ public class AddBetController implements SceneController {
                 if (checkTeam(homeTeam)) {
                     if (checkTeam(awayTeam)) {
                         bet = new Bet(betID, date, homeTeam, awayTeam, betType, betAmount, multiplier, null, leagueBet);
-                        MainController.addBet(bet);
+                        MainController.addNewBet(bet);
                         betCounter++;
                         statusLabelL.setTextFill(Color.GREEN);
                         statusLabelL.setText("Bet added successfully!");
