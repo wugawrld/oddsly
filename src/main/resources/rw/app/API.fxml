@@ -1,10 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.web.WebView?>
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="rw.app.ApiController">
     <children>
-        <TextArea fx:id="textArea" layoutX="20" layoutY="20" prefWidth="630" prefHeight="200" wrapText="true"/>
+        <TextArea fx:id="textArea" layoutX="20" layoutY="20" prefWidth="400" prefHeight="150" wrapText="true"/>
+        <TabPane layoutX="20" layoutY="190" prefWidth="800" prefHeight="400" fx:id="standingsTabPane">
+            <tabs>
+                <Tab text="NBA Standings">
+                    <content>
+                        <WebView fx:id="nbaWebView"/>
+                    </content>
+                </Tab>
+                <Tab text="NHL Standings">
+                    <content>
+                        <WebView fx:id="nhlWebView"/>
+                    </content>
+                </Tab>
+            </tabs>
+        </TabPane>
     </children>
 </AnchorPane>

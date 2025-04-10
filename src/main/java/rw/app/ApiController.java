@@ -16,11 +16,19 @@ import java.net.URL;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 
 public class ApiController implements Initializable{
 
     @FXML
     private TextArea textArea;
+
+    @FXML
+    private WebView nbaWebView;
+
+    @FXML
+    private WebView nhlWebView;
 
     // synchronous updating object
     private ScheduledExecutorService scheduledExecutorService;
@@ -60,7 +68,13 @@ public class ApiController implements Initializable{
 
             // update ui
             Platform.runLater(() -> textArea.setText(combinedData));
-    } catch (URISyntaxException uriSyntaxException) {
+            // load into webview
+            WebEngine webEngine = nbaWebView.getEngine();
+            webEngine.load("https://www.espn.com/nba/standings");
+            WebEngine nhlEngine = nhlWebView.getEngine();
+            nhlEngine.load("https://www.espn.com/nhl/standings");
+
+        } catch (URISyntaxException uriSyntaxException) {
             Platform.runLater(() -> textArea.setText("Invalid URI: " + uriSyntaxException.getMessage()));
 
         } catch (Exception exception) {

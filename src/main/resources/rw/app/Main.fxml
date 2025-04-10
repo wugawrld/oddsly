@@ -18,6 +18,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.web.WebView?>
+
 
 <VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rw.app.MainController">
   <children>
@@ -78,7 +80,7 @@
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                         </GridPane>
-                <fx:include source="API.fxml"/>
+                <WebView fx:id="standingsWebView" layoutX="10" layoutY="10" prefWidth="800" prefHeight="600"/>
               </children>
             </AnchorPane>
           </content>
