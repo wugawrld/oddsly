@@ -72,7 +72,9 @@ public class AddBetController implements SceneController {
     public Boolean checkLeague(String input) {
         // Checks if input is a part of leagueList.
         for (String league : Main.leagueList) {
-            return league.equalsIgnoreCase(input);
+            if (league.equalsIgnoreCase(input)) {
+                return true;
+            }
         }
         return false;
     }
@@ -107,9 +109,8 @@ public class AddBetController implements SceneController {
         try {
             double betAmount = Double.parseDouble(amountWagered.getText());
             double multiplier = Double.parseDouble(odds.getText());
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            String date = dateFormat.format(gameDate);
-            BetType betType = BetType.MONEYLINE;
+            String date = gameDate.getValue().toString();
+            BetType betType;
 
             if (moneyLineButton.isSelected()) {
                 betType = BetType.MONEYLINE;
@@ -171,13 +172,14 @@ public class AddBetController implements SceneController {
         overUnderButton.setToggleGroup(toggleGroup);
         pointSpreadButton.setToggleGroup(toggleGroup);
 
-        // Set up the date picker to only allow future dates
+        moneyLineButton.setSelected(true);
+
         gameDate.setDayCellFactory(dp -> new DateCell() {
             @Override
             public void updateItem(LocalDate date, boolean empty) {
                 super.updateItem(date, empty);
                 LocalDate today = LocalDate.now();
-                setDisable(empty || date.compareTo(today) < 0);
+                setDisable(empty || date.isBefore(today));
             }
         });
 
