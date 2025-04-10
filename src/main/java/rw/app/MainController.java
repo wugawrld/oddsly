@@ -4,8 +4,18 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import rw.data.Bet;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainController implements SceneController {
+
+    private static List<Bet> bets = new ArrayList<>();
+
+    public static void addBet(Bet bet) {
+        bets.add(bet);
+    }
 
     private SceneManager sceneManager;
 

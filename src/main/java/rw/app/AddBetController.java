@@ -5,17 +5,25 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import rw.data.Bet;
+import rw.enums.BetType;
+import rw.shell.Main;
+
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 
-import java.util.Date;
-
 public class AddBetController implements SceneController {
+    private static Bet bet;
+    private static int betCounter = 1;
 
     @FXML
     private TextField amountWagered;
 
     @FXML
     private DatePicker gameDate;
+
+    @FXML
+    private TextField league;
 
     @FXML
     private RadioButton moneyLineButton;
@@ -61,6 +69,37 @@ public class AddBetController implements SceneController {
         sceneManager.switchToScene("Main");
     }
 
+    public Boolean checkLeague(String input) {
+        // Checks if input is a part of leagueList.
+        for (String league : Main.leagueList) {
+            return league.equalsIgnoreCase(input);
+        }
+        return false;
+    }
+
+    public Boolean checkTeam(String input) {
+        String leagueCheck = league.getText();
+        // Checks if league to check is NBA.
+        if (leagueCheck.equalsIgnoreCase("NBA")) {
+            // Checks if any team in NBA matches input.
+            for (String team : Main.nbaTeams) {
+                if (team.equalsIgnoreCase(input)) {
+                    return true;
+                }
+            }
+        }
+        // Checks if league to check is NHL.
+        else if (leagueCheck.equalsIgnoreCase("NHL")) {
+            // Checks if any team in NHL matches input.
+            for (String team : Main.nhlTeams) {
+                if (team.equalsIgnoreCase(input)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     @FXML
     void createNewBet(ActionEvent event) {
         statusLabelL.setTextFill(Color.BLACK);
@@ -68,6 +107,43 @@ public class AddBetController implements SceneController {
         try {
             double betAmount = Double.parseDouble(amountWagered.getText());
             double multiplier = Double.parseDouble(odds.getText());
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String date = dateFormat.format(gameDate);
+            BetType betType = BetType.MONEYLINE;
+
+            if (moneyLineButton.isSelected()) {
+                betType = BetType.MONEYLINE;
+            } else if (overUnderButton.isSelected()) {
+                betType = BetType.OVER_UNDER;
+            }
+            else {
+                betType = BetType.POINT_SPREAD;
+            }
+            String betID = "bet"+betCounter;
+            String leagueBet = league.getText();
+            String homeTeam = team1.getText();
+            String awayTeam = team2.getText();
+            if (checkLeague(leagueBet)) {
+                if (checkTeam(homeTeam)) {
+                    if (checkTeam(awayTeam)) {
+                        bet = new Bet(betID, date, homeTeam, awayTeam, betType, betAmount, multiplier, null, leagueBet);
+                        MainController.addBet(bet);
+                        betCounter++;
+                        statusLabelL.setTextFill(Color.GREEN);
+                        statusLabelL.setText("Bet added successfully!");
+                    } else {
+                        statusLabelL.setTextFill(Color.RED);
+                        statusLabelL.setText(String.format("Invalid Away Team: %s, for league %s", team2.getText(), league.getText()));
+                    }
+                } else {
+                    statusLabelL.setTextFill(Color.RED);
+                    statusLabelL.setText(String.format("Invalid Home Team: %s, for league %s", team1.getText(), league.getText()));
+                }
+            } else {
+                statusLabelL.setTextFill(Color.RED);
+                statusLabelL.setText(String.format("Invalid league: %s", league.getText()));
+            }
+            checkTeam(team1.getText());
 
         } catch (NumberFormatException e) {
             statusLabelL.setTextFill(Color.RED);

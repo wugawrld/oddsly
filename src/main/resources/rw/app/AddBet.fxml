@@ -33,7 +33,7 @@
       </MenuBar>
       <AnchorPane prefHeight="400.0" prefWidth="600.0">
          <children>
-            <TextField fx:id="odds" layoutX="179.0" layoutY="310.0" />
+            <TextField fx:id="odds" layoutX="179.0" layoutY="360.0" />
             <RadioButton fx:id="moneyLineButton" layoutX="137.0" layoutY="47.0" mnemonicParsing="false" text="Money Line" />
             <RadioButton fx:id="pointSpreadButton" layoutX="256.0" layoutY="47.0" mnemonicParsing="false" text="Point Spread" />
             <RadioButton fx:id="overUnderButton" layoutX="376.0" layoutY="47.0" mnemonicParsing="false" text="Over / Under" />
@@ -47,31 +47,37 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label layoutX="46.0" layoutY="161.0" text="Home Team">
+            <Label layoutX="46.0" layoutY="229.0" text="Home Team">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label layoutX="46.0" layoutY="219.0" text="Away Team">
+            <Label layoutX="48.0" layoutY="273.0" text="Away Team">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label layoutX="46.0" layoutY="266.0" text="Wager">
+            <Label layoutX="52.0" layoutY="318.0" text="Wager">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label layoutX="46.0" layoutY="313.0" text="Odds Multiplier">
+            <Label layoutX="51.0" layoutY="363.0" text="Odds Multiplier">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <TextField fx:id="amountWagered" layoutX="179.0" layoutY="263.0" />
-            <TextField fx:id="team2" layoutX="179.0" layoutY="216.0" />
-            <TextField fx:id="team1" layoutX="179.0" layoutY="158.0" />
+            <TextField fx:id="amountWagered" layoutX="179.0" layoutY="315.0" />
+            <TextField fx:id="team2" layoutX="179.0" layoutY="270.0" />
+            <TextField fx:id="team1" layoutX="179.0" layoutY="226.0" />
             <DatePicker fx:id="gameDate" layoutX="179.0" layoutY="104.0" />
-            <Button fx:id="newBet" layoutX="422.0" layoutY="216.0" mnemonicParsing="false" onAction="#createNewBet" text="Create New Bet" />
+            <Button fx:id="newBet" layoutX="418.0" layoutY="226.0" mnemonicParsing="false" onAction="#createNewBet" text="Create New Bet" />
+            <Label layoutX="43.0" layoutY="172.0" text="League">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <TextField fx:id="league" layoutX="179.0" layoutY="169.0" />
          </children>
       </AnchorPane>
       <HBox prefHeight="26.0" prefWidth="600.0">
