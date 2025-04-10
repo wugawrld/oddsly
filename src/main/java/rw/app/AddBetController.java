@@ -8,8 +8,6 @@ import javafx.scene.text.Font;
 import rw.data.Bet;
 import rw.enums.BetType;
 import rw.shell.Main;
-
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 
 public class AddBetController implements SceneController {
@@ -148,7 +146,7 @@ public class AddBetController implements SceneController {
 
         } catch (NumberFormatException e) {
             statusLabelL.setTextFill(Color.RED);
-            statusLabelL.setText(String.format("Failed to parse double wager from %s%n or multiplier from %s%n", amountWagered.getText(), odds.getText()));
+            statusLabelL.setText(String.format("Failed to parse double wager from %s or multiplier from %s", amountWagered.getText(), odds.getText()));
         }
     }
 
@@ -189,6 +187,7 @@ public class AddBetController implements SceneController {
 
     @Override
     public void onSceneDisplayed() {
+
 
     }
 }

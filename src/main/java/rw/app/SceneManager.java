@@ -24,7 +24,7 @@ public class SceneManager {
         // Similar to a normal scene setup, create a loader with a fxmlPath
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxmlPath));
         // Create a scene using the fxmlPath
-        Scene scene = new Scene(fxmlLoader.load(), 1200, 750);
+        Scene scene = new Scene(fxmlLoader.load());
         // Add new scene to scenes HashMap
         scenes.put(name, scene);
 
