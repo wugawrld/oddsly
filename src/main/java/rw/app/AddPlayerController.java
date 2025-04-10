@@ -53,6 +53,13 @@ public class AddPlayerController implements SceneController {
         Label reboundsLabel = new Label("Rebounds Per Game");
         Label assistsLabel = new Label("Assists Per Game");
 
+        pointsLabel.setMinHeight(30);
+        pointsLabel.setMinWidth(120);
+        reboundsLabel.setMinHeight(30);
+        reboundsLabel.setMinWidth(120);
+        assistsLabel.setMinHeight(30);
+        assistsLabel.setMinWidth(120);
+
         statsField.add(pointsLabel, 0, 0);
         statsField.add(reboundsLabel, 1, 0);
         statsField.add(assistsLabel, 2, 0);
@@ -61,19 +68,19 @@ public class AddPlayerController implements SceneController {
         TextField reboundsField = new TextField();
         TextField assistsField = new TextField();
 
-        pointsField.prefHeight(30);
-        pointsField.prefWidth(100);
-        reboundsField.prefHeight(30);
-        reboundsField.prefWidth(100);
-        assistsField.prefHeight(30);
-        assistsField.prefWidth(100);
+        pointsField.setPrefHeight(30);
+        pointsField.setPrefWidth(120);
+        reboundsField.setPrefHeight(30);
+        reboundsField.setPrefWidth(120);
+        assistsField.setPrefHeight(30);
+        assistsField.setPrefWidth(120);
 
         statsField.add(pointsField, 0,1);
         statsField.add(reboundsField, 1,1);
         statsField.add(assistsField, 2,1);
 
-        statsField.setHgap(10);
-        statsField.setVgap(5);
+        statsField.setHgap(20);
+        statsField.setVgap(15);
     }
 
     @FXML
@@ -86,22 +93,27 @@ public class AddPlayerController implements SceneController {
         Label pointsLabel = new Label("Points Per Game");
         Label assistsLabel = new Label("Assists Per Game");
 
+        pointsLabel.setMinHeight(30);
+        pointsLabel.setMinWidth(120);
+        assistsLabel.setMinHeight(30);
+        assistsLabel.setMinWidth(120);
+
         statsField.add(pointsLabel, 0, 0);
         statsField.add(assistsLabel, 1, 0);
 
         TextField pointsField = new TextField();
         TextField assistsField = new TextField();
 
-        pointsField.prefHeight(30);
-        pointsField.prefWidth(100);
-        assistsField.prefHeight(30);
-        assistsField.prefWidth(100);
+        pointsField.setPrefHeight(30);
+        pointsField.setPrefWidth(120);
+        assistsField.setPrefHeight(30);
+        assistsField.setPrefWidth(120);
 
         statsField.add(pointsField, 0,1);
         statsField.add(assistsField, 1,1);
 
-        statsField.setHgap(10);
-        statsField.setVgap(5);
+        statsField.setHgap(20);
+        statsField.setVgap(15);
     }
 
 
