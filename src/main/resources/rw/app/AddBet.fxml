@@ -9,53 +9,19 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rw.app.AddBetController">
+
+<VBox xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rw.app.AddBetController">
    <children>
-      <TextField layoutX="179.0" layoutY="310.0" />
-      <RadioButton layoutX="137.0" layoutY="47.0" mnemonicParsing="false" text="Money Line" />
-      <RadioButton layoutX="256.0" layoutY="47.0" mnemonicParsing="false" text="Point Spread" />
-      <RadioButton layoutX="376.0" layoutY="47.0" mnemonicParsing="false" text="Over / Under" />
-      <Label layoutX="46.0" layoutY="46.0" text="Bet Type">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-      <Label layoutX="46.0" layoutY="107.0" text="Game Date">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-      <Label layoutX="46.0" layoutY="161.0" text="Home Team">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-      <Label layoutX="46.0" layoutY="219.0" text="Away Team">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-      <Label layoutX="46.0" layoutY="266.0" text="Wager">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-      <Label layoutX="46.0" layoutY="313.0" text="Odds Multiplier">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-      <TextField layoutX="179.0" layoutY="263.0" />
-      <TextField layoutX="179.0" layoutY="216.0" />
-      <TextField layoutX="179.0" layoutY="158.0" />
-      <DatePicker layoutX="179.0" layoutY="104.0" />
-      <MenuBar layoutY="1.0" prefHeight="26.0" prefWidth="600.0">
+      <MenuBar prefHeight="26.0" prefWidth="600.0">
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
+              <MenuItem mnemonicParsing="false" onAction="#close" text="Close" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
@@ -65,6 +31,55 @@
           </Menu>
         </menus>
       </MenuBar>
-      <Button layoutX="422.0" layoutY="216.0" mnemonicParsing="false" text="Create New Bet" />
+      <AnchorPane prefHeight="400.0" prefWidth="600.0">
+         <children>
+            <TextField fx:id="odds" layoutX="179.0" layoutY="310.0" />
+            <RadioButton fx:id="moneyLineButton" layoutX="137.0" layoutY="47.0" mnemonicParsing="false" text="Money Line" />
+            <RadioButton fx:id="pointSpreadButton" layoutX="256.0" layoutY="47.0" mnemonicParsing="false" text="Point Spread" />
+            <RadioButton fx:id="overUnderButton" layoutX="376.0" layoutY="47.0" mnemonicParsing="false" text="Over / Under" />
+            <Label layoutX="46.0" layoutY="46.0" text="Bet Type">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="46.0" layoutY="107.0" text="Game Date">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="46.0" layoutY="161.0" text="Home Team">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="46.0" layoutY="219.0" text="Away Team">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="46.0" layoutY="266.0" text="Wager">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="46.0" layoutY="313.0" text="Odds Multiplier">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <TextField fx:id="amountWagered" layoutX="179.0" layoutY="263.0" />
+            <TextField fx:id="team2" layoutX="179.0" layoutY="216.0" />
+            <TextField fx:id="team1" layoutX="179.0" layoutY="158.0" />
+            <DatePicker fx:id="gameDate" layoutX="179.0" layoutY="104.0" />
+            <Button fx:id="newBet" layoutX="422.0" layoutY="216.0" mnemonicParsing="false" onAction="#createNewBet" text="Create New Bet" />
+         </children>
+      </AnchorPane>
+      <HBox prefHeight="26.0" prefWidth="600.0">
+         <children>
+            <Label fx:id="statusLabelL" text="Left status" />
+            <Pane prefHeight="26.0" prefWidth="469.0" HBox.hgrow="ALWAYS" />
+            <Label fx:id="statusLabelR" text="Right status" />
+         </children>
+      </HBox>
    </children>
-</AnchorPane>
+</VBox>
