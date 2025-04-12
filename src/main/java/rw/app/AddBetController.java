@@ -100,10 +100,23 @@ public class AddBetController implements SceneController {
         return false;
     }
 
+    private Boolean fieldsEmpty() {
+        return amountWagered.getText().isEmpty() || odds.getText().isEmpty()
+                || team1.getText().isEmpty() || team2.getText().isEmpty()
+                || league.getText().isEmpty();
+    }
+
     @FXML
     void createNewBet(ActionEvent event) {
         statusLabelL.setTextFill(Color.BLACK);
         statusLabelL.setText("");
+
+        if (fieldsEmpty()) {
+            statusLabelL.setTextFill(Color.RED);
+            statusLabelL.setText("You must complete all fields before adding a new bet");
+            return;
+        }
+
         try {
             double betAmount = Double.parseDouble(amountWagered.getText());
             double multiplier = Double.parseDouble(odds.getText());
@@ -141,9 +154,6 @@ public class AddBetController implements SceneController {
                 statusLabelL.setTextFill(Color.RED);
                 statusLabelL.setText(String.format("Invalid league: %s", league.getText()));
             }
-        } catch (NullPointerException e1) {
-            statusLabelL.setTextFill(Color.RED);
-            statusLabelL.setText("You must complete all fields before adding a new bet");
         } catch (NumberFormatException e) {
             statusLabelL.setTextFill(Color.RED);
             statusLabelL.setText(String.format("Failed to parse double wager from %s or multiplier from %s", amountWagered.getText(), odds.getText()));

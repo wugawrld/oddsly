@@ -165,10 +165,23 @@ public class AddPlayerController implements SceneController {
         return false;
     }
 
+    private Boolean fieldsEmpty() {
+        return playerName.getText().isEmpty() || teamName.getText().isEmpty()
+                || position.getText().isEmpty() || pointsField.getText().isEmpty()
+                || assistsField.getText().isEmpty();
+    }
+
     @FXML
     void addNewPlayer(ActionEvent event) {
         statusLabelL.setTextFill(Color.BLACK);
         statusLabelL.setText("");
+
+        if (fieldsEmpty()) {
+            statusLabelL.setTextFill(Color.RED);
+            statusLabelL.setText("You must complete all fields before adding a new player");
+            return;
+        }
+
         try {
             String playerN = playerName.getText();
             String teamN = teamName.getText();
@@ -214,9 +227,6 @@ public class AddPlayerController implements SceneController {
         } catch (NumberFormatException e1) {
             statusLabelL.setTextFill(Color.RED);
             statusLabelL.setText(String.format("Failed to parse double Points Per Game from %s%n or Assists Per Game from %s", pointsField.getText(), assistsField.getText()));
-        } catch (NullPointerException e2) {
-            statusLabelL.setTextFill(Color.RED);
-            statusLabelL.setText("You must complete all fields before adding a new player");
         }
     }
 

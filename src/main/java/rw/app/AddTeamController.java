@@ -62,9 +62,15 @@ public class AddTeamController implements SceneController {
 
     @FXML
     void addTeam(ActionEvent event) {
-
         statusLabelL.setTextFill(Color.BLACK);
         statusLabelL.setText("");
+
+        if (fieldsEmpty()) {
+            statusLabelL.setTextFill(Color.RED);
+            statusLabelL.setText("You must complete all fields before adding a new team");
+            return;
+        }
+
         try {
             int win = Integer.parseInt(wins.getText());
             int loss = Integer.parseInt(losses.getText());
@@ -93,13 +99,17 @@ public class AddTeamController implements SceneController {
                 statusLabelL.setTextFill(Color.RED);
                 statusLabelL.setText(String.format("Invalid league: %s", league.getText()));
             }
-        } catch (NullPointerException e) {
-            statusLabelL.setTextFill(Color.RED);
-            statusLabelL.setText("You must complete all fields before adding a new team");
         } catch (NumberFormatException e) {
             statusLabelL.setTextFill(Color.RED);
             statusLabelL.setText(String.format("Failed to parse integer wins from %s, losses from %s, points scored from %s, or points allowed from %s", wins.getText(), losses.getText(), pointsScored.getText(), pointsAllowed.getText()));
         }
+    }
+
+    private Boolean fieldsEmpty() {
+        return wins.getText().isEmpty() || losses.getText().isEmpty()
+                || pointsScored.getText().isEmpty() || pointsAllowed.getText().isEmpty()
+                || teamName.getText().isEmpty() || conference.getText().isEmpty()
+                || league.getText().isEmpty();
     }
 
     private Boolean checkLeague(String input) {
