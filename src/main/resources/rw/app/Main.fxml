@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
@@ -20,7 +19,6 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.web.WebView?>
 
-
 <VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rw.app.MainController">
   <children>
     <MenuBar VBox.vgrow="NEVER">
@@ -35,7 +33,7 @@
                      </items></Menu>
             <MenuItem mnemonicParsing="false" text="Save" />
                   <MenuItem mnemonicParsing="false" text="Load" />
-            <MenuItem mnemonicParsing="false" text="Quit" />
+            <MenuItem mnemonicParsing="false" onAction="#quit" text="Quit" />
           </items>
         </Menu>
         <Menu mnemonicParsing="false" text="Help">
@@ -57,22 +55,21 @@
                 <Color red="0.624" green="0.624" blue="0.624" fx:id="x2" />
               </textFill>
             </Label>
-                  <RadioButton layoutX="14.0" layoutY="67.0" mnemonicParsing="false" text="View Bets" />
-                  <RadioButton layoutX="16.0" layoutY="113.0" mnemonicParsing="false" text="View Teams" />
-                  <RadioButton layoutX="14.0" layoutY="167.0" mnemonicParsing="false" text="View Players" />
-                  <CheckBox layoutX="14.0" layoutY="490.0" mnemonicParsing="false" text="Edit Data" />
-                  <CheckBox layoutX="13.0" layoutY="451.0" mnemonicParsing="false" text="Delete Date" />
+                  <RadioButton fx:id="viewBetButton" layoutX="22.0" layoutY="67.0" mnemonicParsing="false" text="View Bets" />
+                  <RadioButton fx:id="viewTeamsButton" layoutX="22.0" layoutY="113.0" mnemonicParsing="false" text="View Teams" />
+                  <RadioButton fx:id="viewPlayersButton" layoutX="20.0" layoutY="159.0" mnemonicParsing="false" text="View Players" />
+                  <RadioButton fx:id="deleteDataToggle" layoutX="22.0" layoutY="458.0" mnemonicParsing="false" text="Delete Data" />
+                  <RadioButton fx:id="editDataToggle" layoutX="23.0" layoutY="500.0" mnemonicParsing="false" text="Edit Data" />
           </children>
         </AnchorPane>
         <ScrollPane prefHeight="-1.0" prefWidth="-1.0">
           <content>
             <AnchorPane id="Content" minHeight="-1.0" minWidth="-1.0" prefHeight="546.0" prefWidth="670.0">
               <children>
-                <Label alignment="CENTER" font="$x1" layoutX="14.0" layoutY="14.0" style="&#10;" text="Data Viewer" textAlignment="CENTER" textFill="$x2" wrapText="false" />
                         <GridPane layoutX="14.0" layoutY="57.0">
                           <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="102.4000244140625" minWidth="10.0" prefWidth="96.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="106.39996337890625" minWidth="10.0" prefWidth="104.0" />
                           </columnConstraints>
                           <rowConstraints>
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -80,7 +77,15 @@
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                         </GridPane>
-                <WebView fx:id="standingsWebView" layoutX="10" layoutY="10" prefWidth="800" prefHeight="600"/>
+                <WebView fx:id="standingsWebView" layoutX="10" layoutY="10" prefHeight="600" prefWidth="800" />
+                        <Label alignment="CENTER" layoutX="14.0" layoutY="14.0" minWidth="60.0" prefWidth="-1.0" style="&#10;" text="Data Viewer" textAlignment="CENTER" wrapText="false">
+                           <font>
+                              <Font size="18.0" fx:id="x11" />
+                           </font>
+                           <textFill>
+                              <Color red="0.624" green="0.624" blue="0.624" fx:id="x21" />
+                           </textFill>
+                        </Label>
               </children>
             </AnchorPane>
           </content>
