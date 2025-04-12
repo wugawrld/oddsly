@@ -2,9 +2,7 @@ package rw.app;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import rw.data.Team;
@@ -61,6 +59,31 @@ public class AddTeamController implements SceneController {
     private SceneManager sceneManager;
 
     @FXML
+    void about(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("About");
+        alert.setHeaderText("Add Team");
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append("Instructions for Add Team: \n");
+        stringBuffer.append("Fill out all fields with accurate information to add a new tracked team.\n");
+        stringBuffer.append("\nExample:\n");
+        stringBuffer.append("Team Name: Calgary Flames\n");
+        stringBuffer.append("League: NHL\n");
+        stringBuffer.append("Conference: Western\n");
+        stringBuffer.append("Wins: 38\n");
+        stringBuffer.append("Losses: 41\n");
+        stringBuffer.append("Points Scored: 210\n");
+        stringBuffer.append("Points Allowed: 231");
+
+        alert.setContentText(stringBuffer.toString());
+
+        ButtonType button = ButtonType.OK;
+        alert.getButtonTypes().setAll(button);
+
+        alert.showAndWait();
+    }
+
+    @FXML
     void addTeam(ActionEvent event) {
         statusLabelL.setTextFill(Color.BLACK);
         statusLabelL.setText("");
@@ -86,7 +109,9 @@ public class AddTeamController implements SceneController {
                         team = new Team(tName, c, win, loss, ps, pa);
                         MainController.addNewTeam(team);
                         statusLabelL.setTextFill(Color.GREEN);
-                        statusLabelL.setText("Bet added successfully!");
+                        statusLabelL.setText(String.format("%s added successfully!", teamName.getText()));
+                        statusLabelR.setTextFill(Color.BLACK);
+                        statusLabelR.setText("Don't forget to save your data");
                     } else {
                         statusLabelL.setTextFill(Color.RED);
                         statusLabelL.setText(String.format("Invalid Team: %s, for league %s conference %s", teamName.getText(), league.getText(), conference.getText()));
@@ -159,10 +184,13 @@ public class AddTeamController implements SceneController {
     public void initialize() {
         statusLabelL.setTextFill(Color.BLACK);
         statusLabelL.setText("");
+
+        statusLabelR.setTextFill(Color.BLACK);
+        statusLabelR.setText("Enter info to add new team");
     }
 
     @Override
     public void onSceneDisplayed() {
-
+        about(null);
     }
 }

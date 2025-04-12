@@ -172,6 +172,36 @@ public class AddPlayerController implements SceneController {
     }
 
     @FXML
+    void about(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("About");
+        alert.setHeaderText("Add Player");
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append("Instructions for Add Player: \n");
+        stringBuffer.append("Enter Player's name, team, and position. Then select the appropriate button for the player" +
+                "and fill out the corresponding statistics.\n");
+        stringBuffer.append("\nExample:\n");
+        stringBuffer.append("Player Name: LeBron James\n");
+        stringBuffer.append("Team Name: Los Angeles Lakers\n");
+        stringBuffer.append("Position: Forward\n");
+        stringBuffer.append("*With Basketball Player Selected*\n");
+        stringBuffer.append("Points Per Game: 27\n");
+        stringBuffer.append("Rebounds Per Game: 7.5\n");
+        stringBuffer.append("Assists Per Game: 7.4");
+
+        DialogPane dialogPane = alert.getDialogPane();
+        dialogPane.setMinHeight(400);
+        dialogPane.setMinWidth(300);
+
+        alert.setContentText(stringBuffer.toString());
+
+        ButtonType button = ButtonType.OK;
+        alert.getButtonTypes().setAll(button);
+
+        alert.showAndWait();
+    }
+
+    @FXML
     void addNewPlayer(ActionEvent event) {
         statusLabelL.setTextFill(Color.BLACK);
         statusLabelL.setText("");
@@ -250,6 +280,6 @@ public class AddPlayerController implements SceneController {
 
     @Override
     public void onSceneDisplayed() {
-
+        about(null);
     }
 }

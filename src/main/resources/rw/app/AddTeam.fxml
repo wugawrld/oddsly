@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 
 
-<VBox xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rw.app.AddTeamController">
+<VBox prefHeight="450.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rw.app.AddTeamController">
    <children>
       <MenuBar prefHeight="26.0" prefWidth="600.0">
         <menus>
@@ -24,22 +24,22 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
             <items>
-              <MenuItem mnemonicParsing="false" text="About" />
+              <MenuItem mnemonicParsing="false" onAction="#about" text="About" />
             </items>
           </Menu>
         </menus>
       </MenuBar>
       <AnchorPane prefHeight="400.0" prefWidth="600.0">
          <children>
-            <TextField fx:id="conference" layoutX="138.0" layoutY="124.0" />
-            <TextField fx:id="teamName" layoutX="138.0" layoutY="171.0" />
+            <TextField fx:id="conference" layoutX="138.0" layoutY="171.0" />
+            <TextField fx:id="teamName" layoutX="138.0" layoutY="79.0" />
             <TextField fx:id="wins" layoutX="138.0" layoutY="213.0" />
-            <Label layoutX="10.0" layoutY="174.0" text="Team Name">
+            <Label layoutX="10.0" layoutY="82.0" text="Team Name">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label layoutX="13.0" layoutY="127.0" text="Conference">
+            <Label layoutX="13.0" layoutY="174.0" text="Conference">
                <font>
                   <Font size="14.0" />
                </font>
@@ -68,8 +68,8 @@
             <TextField fx:id="pointsScored" layoutX="138.0" layoutY="294.0" />
             <TextField fx:id="pointsAllowed" layoutX="138.0" layoutY="332.0" />
             <Button fx:id="addTeam" layoutX="403.0" layoutY="171.0" mnemonicParsing="false" onAction="#addTeam" text="Add New Team" />
-            <TextField fx:id="league" layoutX="138.0" layoutY="78.0" />
-            <Label layoutX="16.0" layoutY="81.0" text="League">
+            <TextField fx:id="league" layoutX="138.0" layoutY="124.0" />
+            <Label layoutX="16.0" layoutY="127.0" text="League">
                <font>
                   <Font size="14.0" />
                </font>

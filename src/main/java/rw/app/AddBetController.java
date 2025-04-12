@@ -63,6 +63,39 @@ public class AddBetController implements SceneController {
     private Color x4;
 
     @FXML
+    void about(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("About");
+        alert.setHeaderText("Add Bet");
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append("Instructions for Add Bet: \n");
+        stringBuffer.append("Select the Bet Type and date of the game you are betting on. Then fill out the" +
+                "information for league, home / away teams, wager, and multiplier.\n");
+        stringBuffer.append("\nExample:\n");
+        stringBuffer.append("*MoneyLine Selected*\n");
+        stringBuffer.append("Game Date: 2025-04-13\n");
+        stringBuffer.append("League: NHL\n");
+        stringBuffer.append("Home Team: Calgary Flames\n");
+        stringBuffer.append("Away Team: San Jose Sharks\n");
+        stringBuffer.append("Wager: 27.33\n");
+        stringBuffer.append("Odds Multiplier: 1.37\n");
+        stringBuffer.append("\nPlease use the following information before entering your odds multiplier:" +
+                "\nFor Positive Odds: (|Odds| / 100) + 1" +
+                "\nFor Negative Odds: (100 / |Odds|) + 1");
+
+        DialogPane dialogPane = alert.getDialogPane();
+        dialogPane.setMinHeight(500);
+        dialogPane.setMinWidth(350);
+
+        alert.setContentText(stringBuffer.toString());
+
+        ButtonType button = ButtonType.OK;
+        alert.getButtonTypes().setAll(button);
+
+        alert.showAndWait();
+    }
+
+    @FXML
     void close(ActionEvent event) {
         sceneManager.switchToScene("Main");
     }
@@ -198,7 +231,6 @@ public class AddBetController implements SceneController {
 
     @Override
     public void onSceneDisplayed() {
-
-
+        about(null);
     }
 }
