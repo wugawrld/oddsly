@@ -114,11 +114,10 @@ public class AddBetController implements SceneController {
                 betType = BetType.MONEYLINE;
             } else if (overUnderButton.isSelected()) {
                 betType = BetType.OVER_UNDER;
-            }
-            else {
+            } else {
                 betType = BetType.POINT_SPREAD;
             }
-            String betID = "bet"+betCounter;
+            String betID = "bet" + betCounter;
             String leagueBet = league.getText();
             String homeTeam = team1.getText();
             String awayTeam = team2.getText();
@@ -142,13 +141,15 @@ public class AddBetController implements SceneController {
                 statusLabelL.setTextFill(Color.RED);
                 statusLabelL.setText(String.format("Invalid league: %s", league.getText()));
             }
-            checkTeam(team1.getText());
-
+        } catch (NullPointerException e1) {
+            statusLabelL.setTextFill(Color.RED);
+            statusLabelL.setText("You must complete all fields before adding a new bet");
         } catch (NumberFormatException e) {
             statusLabelL.setTextFill(Color.RED);
             statusLabelL.setText(String.format("Failed to parse double wager from %s or multiplier from %s", amountWagered.getText(), odds.getText()));
         }
     }
+
 
     private SceneManager sceneManager;
 

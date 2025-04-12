@@ -6,6 +6,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import rw.data.Bet;
 import rw.data.Player;
+import rw.data.Team;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,7 @@ public class MainController implements SceneController {
 
     private static List<Bet> bets = new ArrayList<>();
     private static List<Player> players = new ArrayList<>();
+    private static List<Team> teams = new ArrayList<>();
 
 
     public static void addNewBet(Bet bet) {
@@ -22,6 +24,10 @@ public class MainController implements SceneController {
 
     public static void addNewPlayer(Player player) {
         players.add(player);
+    }
+
+    public static void addNewTeam(Team team) {
+        teams.add(team);
     }
 
     private SceneManager sceneManager;

@@ -7,16 +7,19 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rw.app.AddTeamController">
+<VBox xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rw.app.AddTeamController">
    <children>
-      <MenuBar layoutY="1.0" prefHeight="26.0" prefWidth="600.0">
+      <MenuBar prefHeight="26.0" prefWidth="600.0">
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
+              <MenuItem mnemonicParsing="false" onAction="#close" text="Close" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
@@ -26,42 +29,59 @@
           </Menu>
         </menus>
       </MenuBar>
-      <TextField layoutX="138.0" layoutY="68.0" />
-      <TextField layoutX="138.0" layoutY="117.0" />
-      <TextField layoutX="138.0" layoutY="171.0" />
-      <Label layoutX="14.0" layoutY="71.0" text="Team Name">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-      <Label layoutX="14.0" layoutY="120.0" text="Conference">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-      <Label layoutX="14.0" layoutY="174.0" text="Wins">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-      <Label layoutX="14.0" layoutY="216.0" text="Losses">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-      <Label layoutX="14.0" layoutY="253.0" text="Points Scored">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-      <Label layoutX="14.0" layoutY="297.0" text="Points Allowed">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-      <TextField layoutX="138.0" layoutY="213.0" />
-      <TextField layoutX="138.0" layoutY="250.0" />
-      <TextField layoutX="138.0" layoutY="294.0" />
-      <Button layoutX="428.0" layoutY="171.0" mnemonicParsing="false" text="Add New Team" />
+      <AnchorPane prefHeight="400.0" prefWidth="600.0">
+         <children>
+            <TextField fx:id="conference" layoutX="138.0" layoutY="124.0" />
+            <TextField fx:id="teamName" layoutX="138.0" layoutY="171.0" />
+            <TextField fx:id="wins" layoutX="138.0" layoutY="213.0" />
+            <Label layoutX="10.0" layoutY="174.0" text="Team Name">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="13.0" layoutY="127.0" text="Conference">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="18.0" layoutY="216.0" text="Wins">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="18.0" layoutY="258.0" text="Losses">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="18.0" layoutY="297.0" text="Points Scored">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="18.0" layoutY="335.0" text="Points Allowed">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <TextField fx:id="losses" layoutX="138.0" layoutY="255.0" />
+            <TextField fx:id="pointsScored" layoutX="138.0" layoutY="294.0" />
+            <TextField fx:id="pointsAllowed" layoutX="138.0" layoutY="332.0" />
+            <Button fx:id="addTeam" layoutX="403.0" layoutY="171.0" mnemonicParsing="false" onAction="#addTeam" text="Add New Team" />
+            <TextField fx:id="league" layoutX="138.0" layoutY="78.0" />
+            <Label layoutX="16.0" layoutY="81.0" text="League">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <HBox prefHeight="30.0" prefWidth="600.0">
+         <children>
+            <Label fx:id="statusLabelL" text="Left status" />
+            <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+            <Label fx:id="statusLabelR" text="Right status" />
+         </children>
+      </HBox>
    </children>
-</AnchorPane>
+</VBox>
