@@ -122,43 +122,42 @@ public class ApiController implements Initializable{
             };
         }
     }
-// safety method to clean up scheduler when app shuts down
-public void shutDown() {
-    if (scheduledExecutorService != null) {
-    scheduledExecutorService.shutdown();}
-}
-// model for FullLinkView in json
-public static class FullViewLink {
-    private String text;
-    private String href;
-
-    public String getText() {
-        return text;
+    // safety method to clean up the service on app shut down
+    public void shutDown() {
+        if (apiFetchService != null) {
+            apiFetchService.cancel();
+        }
     }
 
-    public void setText(String text) {
-        this.text = text;
+    // model class for the "fullViewLink"
+    public static class FullViewLink {
+        private String text;
+        private String href;
+
+        public String getText() {
+            return text;
+        }
+        public void setText(String text) {
+            this.text = text;
+        }
+
+        public String getHref() {
+            return href;
+        }
+        public void setHref(String href) {
+            this.href = href;
+        }
     }
 
-    public String getHref() {
-        return href;
-    }
-
-    public void setHref(String href) {
-        this.href = href;
-    }
-}
-    // model class for JSON structure for standings
+    // model class for JSON structure for standings data
     public static class StandingsData {
         private FullViewLink fullViewLink;
 
         public FullViewLink getFullViewLink() {
             return fullViewLink;
         }
-
         public void setFullViewLink(FullViewLink fullViewLink) {
             this.fullViewLink = fullViewLink;
         }
     }
 }
-
