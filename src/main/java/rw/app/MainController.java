@@ -246,13 +246,134 @@ public class MainController implements SceneController {
 
     @FXML
     void viewBets() {
+        // Clear any existing content
+        clearDataView();
+
+        System.out.println("viewBets method called, total bets: " + bets.size());
+
+        if (bets.isEmpty()) {
+            displayMessage("No bets to display");
+            return;
+        }
+
+        StringBuilder htmlContent = new StringBuilder();
+        htmlContent.append("<html><body>");
+        htmlContent.append("<h2>All Bets</h2>");
+        htmlContent.append("<table border='1'>");
+        htmlContent.append("<tr><th>ID</th><th>Date</th><th>Teams</th><th>Type</th><th>Amount</th><th>Odds</th><th>Outcome</th><th>Payout</th></tr>");
+
+        for (Bet bet : bets) {
+            htmlContent.append("<tr>");
+            htmlContent.append("<td>").append(bet.getId()).append("</td>");
+            htmlContent.append("<td>").append(bet.getFormattedGameDate()).append("</td>");
+            htmlContent.append("<td>").append(bet.getTeam1()).append(" vs ").append(bet.getTeam2()).append("</td>");
+            htmlContent.append("<td>").append(bet.getBetType().getDisplayName()).append("</td>");
+            htmlContent.append("<td>$").append(String.format("%.2f", bet.getAmountWagered())).append("</td>");
+            htmlContent.append("<td>").append(String.format("%.2f", bet.getOdds())).append("</td>");
+            htmlContent.append("<td>").append(bet.getOutcome().getDisplayName()).append("</td>");
+            htmlContent.append("<td>$").append(String.format("%.2f", bet.getPayout())).append("</td>");
+            htmlContent.append("</tr>");
+        }
+
+        htmlContent.append("</table>");
+        htmlContent.append("</body></html>");
+
+        standingsWebView.getEngine().loadContent(htmlContent.toString());
     }
 
     @FXML
     void viewPlayers() {
+        // Clear any existing content
+        clearDataView();
+
+        System.out.println("viewPlayers method called, total players: " + players.size());
+
+        if (players.isEmpty()) {
+            displayMessage("No players to display");
+            return;
         }
+
+        StringBuilder htmlContent = new StringBuilder();
+        htmlContent.append("<html><body>");
+        htmlContent.append("<h2>All Players</h2>");
+        htmlContent.append("<table border='1'>");
+        htmlContent.append("<tr><th>Name</th><th>Team</th><th>Position</th><th>Type</th><th>Stats</th></tr>");
+
+        for (Player player : players) {
+            htmlContent.append("<tr>");
+            htmlContent.append("<td>").append(player.getPlayerName()).append("</td>");
+            htmlContent.append("<td>").append(player.getTeamName()).append("</td>");
+            htmlContent.append("<td>").append(player.getPosition()).append("</td>");
+
+            if (player instanceof BasketballPlayer) {
+                BasketballPlayer bp = (BasketballPlayer) player;
+                htmlContent.append("<td>Basketball</td>");
+                htmlContent.append("<td>PPG: ").append(bp.getPointsPerGame())
+                        .append(", RPG: ").append(bp.getReboundsPerGame())
+                        .append(", APG: ").append(bp.getAssistsPerGame())
+                        .append("</td>");
+            } else if (player instanceof HockeyPlayer) {
+                HockeyPlayer hp = (HockeyPlayer) player;
+                htmlContent.append("<td>Hockey</td>");
+                htmlContent.append("<td>PPG: ").append(hp.getPointsPerGame())
+                        .append(", APG: ").append(hp.getAssistsPerGame())
+                        .append("</td>");
+            } else {
+                htmlContent.append("<td>Unknown</td>");
+                htmlContent.append("<td>No stats available</td>");
+            }
+
+            htmlContent.append("</tr>");
+        }
+
+        htmlContent.append("</table>");
+        htmlContent.append("</body></html>");
+
+        standingsWebView.getEngine().loadContent(htmlContent.toString());
+
     }
 
     @FXML
     void viewTeams() {
+        // Clear any existing content
+        clearDataView();
+
+        System.out.println("viewTeams method called, total teams: " + teams.size());
+
+        if (teams.isEmpty()) {
+            displayMessage("No teams to display");
+            return;
+        }
+
+        StringBuilder htmlContent = new StringBuilder();
+        htmlContent.append("<html><body>");
+        htmlContent.append("<h2>All Teams</h2>");
+        htmlContent.append("<table border='1'>");
+        htmlContent.append("<tr><th>Name</th><th>Conference</th><th>Wins</th><th>Losses</th><th>Points Scored</th><th>Points Allowed</th><th>Differential</th></tr>");
+
+        for (Team team : teams) {
+            htmlContent.append("<tr>");
+            htmlContent.append("<td>").append(team.getTeamName()).append("</td>");
+            htmlContent.append("<td>").append(team.getConference()).append("</td>");
+            htmlContent.append("<td>").append(team.getWins()).append("</td>");
+            htmlContent.append("<td>").append(team.getLosses()).append("</td>");
+            htmlContent.append("<td>").append(team.getPointsScored()).append("</td>");
+            htmlContent.append("<td>").append(team.getPointsAllowed()).append("</td>");
+            htmlContent.append("<td>").append(team.getPointsDifferential()).append("</td>");
+            htmlContent.append("</tr>");
+        }
+
+        htmlContent.append("</table>");
+        htmlContent.append("</body></html>");
+
+        standingsWebView.getEngine().loadContent(htmlContent.toString());
     }
+
+    private void clearDataView() {
+        standingsWebView.getEngine().loadContent("");
+    }
+
+    private void displayMessage(String message) {
+        standingsWebView.getEngine().loadContent("<html><body><h3>" + message + "</h3></body></html>");
+    }
+}
