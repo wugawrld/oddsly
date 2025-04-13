@@ -489,6 +489,7 @@ public class MainController implements SceneController {
 
     private void displayMessage(String message) {
         Label label = new Label(message);
+        label.setMinWidth(400);
         gridPane.add(label,0,0);
     }
 
