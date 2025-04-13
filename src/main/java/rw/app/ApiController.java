@@ -64,13 +64,6 @@ public class ApiController implements Initializable{
         apiFetchService.start();
     }
 
-    private static class ApiFetchService extends ScheduledService<String> {
-        @Override
-        protected Task<String> createTsk() {
-
-        }
-    }
-
     // method to fetch api, parse json, and update ui periodically (when fetch api is clicked)
     private static class ApiFetchService extends ScheduledService<String> {
         @Override
