@@ -42,18 +42,6 @@ public class ApiController implements Initializable{
         // start scheduler to call and update method every 5 seconds
         scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
         scheduledExecutorService.scheduleAtFixedRate(this::updateData, 0, 5, TimeUnit.SECONDS);
-
-        // for testing
-        Platform.runLater(() -> {
-            String simpleHTML = "<html><body><h1>Test Page</h1>"
-                    + "<p>This is a simple test page for WebView.</p></body></html>";
-
-            WebEngine nbaEngine = nbaWebView.getEngine();
-            nbaEngine.loadContent(simpleHTML);
-
-            WebEngine nhlEngine = nhlWebView.getEngine();
-            nhlEngine.loadContent(simpleHTML);
-        });
     }
 
     // method to fetch api (when fetch api is clicked)
@@ -85,10 +73,10 @@ public class ApiController implements Initializable{
             // update ui
             Platform.runLater(() -> textArea.setText(combinedData));
             // load into webview
-            //WebEngine webEngine = nbaWebView.getEngine();
-            //webEngine.load("https://www.espn.com/nba/standings");
-            //WebEngine nhlEngine = nhlWebView.getEngine();
-            //nhlEngine.load("https://www.espn.com/nhl/standings");
+            WebEngine webEngine = nbaWebView.getEngine();
+            webEngine.load("https://www.espn.com/nba/standings");
+            WebEngine nhlEngine = nhlWebView.getEngine();
+            nhlEngine.load("https://www.espn.com/nhl/standings");
 
         } catch (URISyntaxException uriSyntaxException) {
             Platform.runLater(() -> textArea.setText("Invalid URI: " + uriSyntaxException.getMessage()));

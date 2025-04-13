@@ -3,6 +3,9 @@ package rw.app;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
@@ -375,5 +378,22 @@ public class MainController implements SceneController {
 
     private void displayMessage(String message) {
         standingsWebView.getEngine().loadContent("<html><body><h3>" + message + "</h3></body></html>");
+    }
+
+    @FXML
+    private void openAPIWindow(ActionEvent event) {
+        try {
+            // load API FXML file
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/rw/app/API.fxml"));
+            Parent apiRoot = loader.load();
+
+            // create new Stage (window) for the API
+            Stage apiStage = new Stage();
+            apiStage.setTitle("API Window");
+            apiStage.setScene(new Scene(apiRoot));
+            apiStage.show();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 }

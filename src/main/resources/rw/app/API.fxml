@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextArea?>
@@ -8,17 +7,38 @@
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="rw.app.ApiController">
     <children>
-        <TextArea fx:id="textArea" layoutX="20" layoutY="20" prefWidth="400" prefHeight="150" wrapText="true"/>
-        <TabPane layoutX="20" layoutY="190" prefWidth="800" prefHeight="400" fx:id="standingsTabPane">
+        <TextArea fx:id="textArea"
+                  AnchorPane.topAnchor="10"
+                  AnchorPane.leftAnchor="10"
+                  AnchorPane.rightAnchor="10"
+                  prefHeight="100"
+                  wrapText="true"/>
+        <TabPane layoutY="120"
+                 AnchorPane.bottomAnchor="10"
+                 AnchorPane.leftAnchor="10"
+                 AnchorPane.rightAnchor="10"
+                 prefHeight="400">
             <tabs>
                 <Tab text="NBA Standings">
                     <content>
-                        <WebView fx:id="nbaWebView"/>
+                        <AnchorPane>
+                            <WebView fx:id="nbaWebView"
+                                     AnchorPane.topAnchor="0"
+                                     AnchorPane.bottomAnchor="0"
+                                     AnchorPane.leftAnchor="0"
+                                     AnchorPane.rightAnchor="0"/>
+                        </AnchorPane>
                     </content>
                 </Tab>
                 <Tab text="NHL Standings">
                     <content>
-                        <WebView fx:id="nhlWebView"/>
+                        <AnchorPane>
+                            <WebView fx:id="nhlWebView"
+                                     AnchorPane.topAnchor="0"
+                                     AnchorPane.bottomAnchor="0"
+                                     AnchorPane.leftAnchor="0"
+                                     AnchorPane.rightAnchor="0"/>
+                        </AnchorPane>
                     </content>
                 </Tab>
             </tabs>
