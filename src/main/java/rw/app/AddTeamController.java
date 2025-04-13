@@ -7,8 +7,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import rw.data.Team;
 import rw.shell.Main;
-
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import java.util.Objects;
+import java.util.Optional;
 
 public class AddTeamController implements SceneController {
 
@@ -109,7 +111,7 @@ public class AddTeamController implements SceneController {
                         team = new Team(tName, c, win, loss, ps, pa);
                         MainController.addNewTeam(team);
                         statusLabelL.setTextFill(Color.GREEN);
-                        statusLabelL.setText(String.format("%s added successfully!", teamName.getText()));
+                        statusLabelL.setText(String.format("%s added successfully! Click Save to Continue!", teamName.getText()));
                         statusLabelR.setTextFill(Color.BLACK);
                         statusLabelR.setText("Don't forget to save your data");
                     } else {
@@ -192,5 +194,41 @@ public class AddTeamController implements SceneController {
     @Override
     public void onSceneDisplayed() {
         about(null);
+    }
+    @FXML
+    void saveTeam(ActionEvent event) {
+        // First check if there's a team to save
+        if (team == null) {
+            statusLabelL.setTextFill(Color.RED);
+            statusLabelL.setText("No team data to save. Please add a team first.");
+            return;
+        }
+
+        Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmDialog.setTitle("Save Team");
+        confirmDialog.setHeaderText("Team saved successfully");
+        confirmDialog.setContentText("What would you like to do next?");
+
+        ButtonType addAnotherButton = new ButtonType("Add Another Team");
+        ButtonType returnToMainButton = new ButtonType("Return to Main Page");
+
+        confirmDialog.getButtonTypes().setAll(addAnotherButton, returnToMainButton);
+
+        Optional<ButtonType> result = confirmDialog.showAndWait();
+        if (result.get() == addAnotherButton) {
+            // Clear the form for a new team
+            teamName.clear();
+            conference.clear();
+            league.clear();
+            wins.clear();
+            losses.clear();
+            pointsScored.clear();
+            pointsAllowed.clear();
+            team = null;
+            statusLabelL.setText("Enter information for a new team");
+        } else {
+            // Return to main page
+            sceneManager.switchToScene("Main");
+        }
     }
 }
