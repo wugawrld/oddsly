@@ -2,30 +2,29 @@ package rw.app;
 
 import com.google.gson.Gson;
 import javafx.application.Platform;
+import javafx.concurrent.ScheduledService;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
+import javafx.util.Duration;
 
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
-import java.net.URISyntaxException;
 import java.util.ResourceBundle;
-import java.net.URL;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
 
 public class ApiController implements Initializable{
 
     @FXML
     private TextArea textArea;
-
 
     @FXML
     private WebView nbaWebView;
@@ -51,24 +50,48 @@ public class ApiController implements Initializable{
         apiFetchService = new ApiFetchService();
         apiFetchService.setDelay(Duration.ZERO);
         apiFetchService.setPeriod(Duration.seconds(5));
+
+        // when service succeeds, update ui (this handler runs on the FX thread)
+        apiFetchService.setOnSucceeded(event -> {
+            String finalData = apiFetchService.getValue();
+            textArea.setText(finalData);
+        });
+        // when service fails, update ui with error message
+        apiFetchService.setOnFailed(event -> {
+            Throwable apiFetchServiceException = apiFetchService.getException();
+            textArea.setText("Failed to fetch data: " + (apiFetchServiceException != null ? apiFetchServiceException.getMessage() : "unknown error"));
+        });
+        apiFetchService.start();
     }
 
-    // method to fetch api, parse json, and update ui (when fetch api is clicked)
-    private void updateData() {
-        try {
-            HttpClient httpClient = HttpClient.newHttpClient();
+    private static class ApiFetchService extends ScheduledService<String> {
+        @Override
+        protected Task<String> createTsk() {
 
-            // endpoints
-            String endpointStandingsNBA = "https://site.web.api.espn.com/apis/site/v2/sports/basketball/nba/standings?season=2025";
-            String endpointStandingsNHL = "https://site.web.api.espn.com/apis/site/v2/sports/hockey/nhl/standings?season=2025";
-            HttpRequest standingsNBA = HttpRequest.newBuilder()
-                    .uri(new URI(endpointStandingsNBA))
-                    .GET()
-                    .build();
-            HttpRequest standingsNHL = HttpRequest.newBuilder()
-                    .uri(new URI(endpointStandingsNHL))
-                    .GET()
-                    .build();
+        }
+    }
+
+    // method to fetch api, parse json, and update ui periodically (when fetch api is clicked)
+    private static class ApiFetchService extends ScheduledService<String> {
+        @Override
+        protected Task<String> createTask() {
+            return new Task<>() {
+                @Override
+                protected String call() throws Exception {
+                    HttpClient httpClient = HttpClient.newHttpClient();
+
+                    // define endpoints for NBA and NHL standings
+                    String endpointStandingsNBA = "https://site.web.api.espn.com/apis/site/v2/sports/basketball/nba/standings?season=2025";
+                    String endpointStandingsNHL = "https://site.web.api.espn.com/apis/site/v2/sports/hockey/nhl/standings?season=2025";
+
+                    HttpRequest standingsNBA = HttpRequest.newBuilder()
+                            .uri(new URI(endpointStandingsNBA))
+                            .GET()
+                            .build();
+                    HttpRequest standingsNHL = HttpRequest.newBuilder()
+                            .uri(new URI(endpointStandingsNHL))
+                            .GET()
+                            .build();
 
             // send requests synchronously
             HttpResponse<String> responseNBAStandings = httpClient.send(standingsNBA, BodyHandlers.ofString());
