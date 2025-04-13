@@ -7,12 +7,14 @@ package rw.data;
  * @version 3.0
  */
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  *  This class represents a sports team with its relevant statistics.
  */
-public class Team implements Comparable<Team> {
+public class Team implements Comparable<Team>, Serializable {
+    private static final long serialVersionUID = 1L;
     private String teamName;
     private String conference;
     private int wins;

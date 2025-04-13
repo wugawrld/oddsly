@@ -236,6 +236,7 @@ public class AddBetController implements SceneController {
     public void onSceneDisplayed() {
         about(null);
     }
+
     @FXML
     void saveBet(ActionEvent event) {
         // First check if there's a bet to save

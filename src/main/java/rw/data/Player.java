@@ -1,5 +1,6 @@
 package rw.data;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -10,7 +11,8 @@ import java.util.Objects;
  * Abstract class representing a sports player.
  */
 
-public abstract class Player implements Comparable<Player> {
+public abstract class Player implements Comparable<Player>, Serializable {
+    private static final long serialVersionUID = 1L;
     private String playerName;
     private String teamName;
     private String position;

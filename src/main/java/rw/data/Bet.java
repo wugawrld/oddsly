@@ -9,6 +9,7 @@ package rw.data; /**
 import rw.enums.BetOutcome;
 import rw.enums.BetType;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -18,7 +19,9 @@ import java.util.Objects;
  * This class represents a sports bet with all relevant information.
   */
 
-public class Bet implements Comparable<Bet> {
+public class Bet implements Comparable<Bet>, Serializable {
+    private static final long serialVersionUID = 1L;
+
     private String id;
     private Date gameDate;
     private String team1;
