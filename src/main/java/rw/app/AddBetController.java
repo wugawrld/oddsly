@@ -179,11 +179,12 @@ public class AddBetController implements SceneController {
             String leagueBet = league.getText();
             String homeTeam = team1.getText();
             String awayTeam = team2.getText();
+            BetOutcome betOutcome = BetOutcome.PENDING;
 
             if (checkLeague(leagueBet)) {
                 if (checkTeam(homeTeam)) {
                     if (checkTeam(awayTeam)) {
-                        bet = new Bet(betID, date, homeTeam, awayTeam, betType, betAmount, multiplier, null, leagueBet);
+                        bet = new Bet(betID, date, homeTeam, awayTeam, betType, betAmount, multiplier, betOutcome, leagueBet);
                         MainController.addNewBet(bet);
                         betCounter++;
 
@@ -277,32 +278,32 @@ public class AddBetController implements SceneController {
                 return;
             }
 
-        Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmDialog.setTitle("Save Bet");
-        confirmDialog.setHeaderText("Bet saved successfully");
-        confirmDialog.setContentText("What would you like to do next?");
+            Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmDialog.setTitle("Save Bet");
+            confirmDialog.setHeaderText("Bet saved successfully");
+            confirmDialog.setContentText("What would you like to do next?");
 
-        ButtonType addAnotherButton = new ButtonType("Add Another Bet");
-        ButtonType returnToMainButton = new ButtonType("Return to Main Page");
+            ButtonType addAnotherButton = new ButtonType("Add Another Bet");
+            ButtonType returnToMainButton = new ButtonType("Return to Main Page");
 
-        confirmDialog.getButtonTypes().setAll(addAnotherButton, returnToMainButton);
+            confirmDialog.getButtonTypes().setAll(addAnotherButton, returnToMainButton);
 
-        Optional<ButtonType> result = confirmDialog.showAndWait();
-        if (result.get() == addAnotherButton) {
-            // Clear the form for a new bet
-            team1.clear();
-            team2.clear();
-            amountWagered.clear();
-            odds.clear();
-            league.clear();
-            gameDate.setValue(LocalDate.now());
-            moneyLineButton.setSelected(true);
-            bet = null;
-            statusLabelL.setText("Enter information for a new bet");
-        } else {
-            // Return to main page
-            sceneManager.switchToScene("Main");
-        }
+            Optional<ButtonType> result = confirmDialog.showAndWait();
+            if (result.get() == addAnotherButton) {
+                // Clear the form for a new bet
+                team1.clear();
+                team2.clear();
+                amountWagered.clear();
+                odds.clear();
+                league.clear();
+                gameDate.setValue(LocalDate.now());
+                moneyLineButton.setSelected(true);
+                bet = null;
+                statusLabelL.setText("Enter information for a new bet");
+            } else {
+                // Return to main page
+                sceneManager.switchToScene("Main");
+            }
         } catch (Exception e) {
             statusLabelL.setTextFill(Color.RED);
             statusLabelL.setText("An error occurred while saving the bet");
