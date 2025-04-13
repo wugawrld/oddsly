@@ -3,6 +3,6 @@ module mvh.app {
     requires javafx.web;
     requires java.net.http;
     requires com.google.gson;
-    opens rw.app to javafx.fxml;
+    opens rw.app to javafx.fxml, com.google.gson;
     exports rw.app;
 }
