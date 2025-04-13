@@ -67,7 +67,8 @@
             <TextField fx:id="losses" layoutX="138.0" layoutY="255.0" />
             <TextField fx:id="pointsScored" layoutX="138.0" layoutY="294.0" />
             <TextField fx:id="pointsAllowed" layoutX="138.0" layoutY="332.0" />
-            <Button fx:id="addTeam" layoutX="403.0" layoutY="171.0" mnemonicParsing="false" onAction="#addTeam" text="Add New Team" />
+            <Button fx:id="addTeamButton" layoutX="403.0" layoutY="171.0" mnemonicParsing="false" onAction="#addTeam" text="Add Team" />
+            <Button fx:id="saveButton" layoutX="513.0" layoutY="171.0" mnemonicParsing="false" onAction="#saveTeam" text="Save" />
             <TextField fx:id="league" layoutX="138.0" layoutY="124.0" />
             <Label layoutX="16.0" layoutY="127.0" text="League">
                <font>

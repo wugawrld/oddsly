@@ -70,7 +70,8 @@
             </GridPane>
             <RadioButton fx:id="basketballButton" layoutX="34.0" layoutY="347.0" mnemonicParsing="false" onAction="#addBasketballStats" text="Basketball Player" />
             <RadioButton fx:id="hockeyButton" layoutX="208.0" layoutY="347.0" mnemonicParsing="false" onAction="#addHockeyStats" text="Hockey Player" />
-            <Button fx:id="newPlayerButton" layoutX="420.0" layoutY="60.0" mnemonicParsing="false" onAction="#addNewPlayer" text="Add New Player" />
+            <Button fx:id="addPlayerButton" layoutX="420.0" layoutY="60.0" mnemonicParsing="false" onAction="#addNewPlayer" text="Add Player" />
+             <Button fx:id="saveButton" layoutX="530.0" layoutY="60.0" mnemonicParsing="false" onAction="#savePlayer" text="Save" />
          </children>
       </AnchorPane>
       <HBox prefHeight="30.0" prefWidth="600.0">

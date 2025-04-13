@@ -70,7 +70,8 @@
             <TextField fx:id="team2" layoutX="179.0" layoutY="270.0" />
             <TextField fx:id="team1" layoutX="179.0" layoutY="226.0" />
             <DatePicker fx:id="gameDate" layoutX="179.0" layoutY="104.0" />
-            <Button fx:id="newBet" layoutX="418.0" layoutY="226.0" mnemonicParsing="false" onAction="#createNewBet" text="Create New Bet" />
+            <Button layoutX="418.0" layoutY="184.0" mnemonicParsing="false" onAction="#createNewBet" text="Create Bet" />
+            <Button fx:id="saveButton" layoutX="418.0" layoutY="226.0" mnemonicParsing="false" onAction="#saveBet" text="Save" />
             <Label layoutX="43.0" layoutY="172.0" text="League">
                <font>
                   <Font size="14.0" />
