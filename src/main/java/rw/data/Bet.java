@@ -143,6 +143,8 @@ public class Bet implements Comparable<Bet>, Serializable {
 
     public void setOdds(double newOdds) {odds = newOdds;}
 
+    public void setOutcome(BetOutcome betOutcome) {outcome = betOutcome;}
+
     public void setLeague(String newLeague) {league = newLeague;}
 
     //  Determines whether a bet is profitable (has positive return).

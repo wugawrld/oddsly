@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
@@ -9,12 +10,14 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.web.WebView?>
 
 <?import javafx.scene.control.Button?>
 <VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rw.app.MainController">
@@ -54,11 +57,11 @@
                                 <Color red="0.624" green="0.624" blue="0.624" fx:id="x2" />
                             </textFill>
                         </Label>
-                        <RadioButton fx:id="viewBetButton" layoutX="22.0" layoutY="67.0" mnemonicParsing="false" text="View Bets" />
-                        <RadioButton fx:id="viewTeamsButton" layoutX="22.0" layoutY="113.0" mnemonicParsing="false" text="View Teams" />
-                        <RadioButton fx:id="viewPlayersButton" layoutX="20.0" layoutY="159.0" mnemonicParsing="false" text="View Players" />
-                        <RadioButton fx:id="deleteDataToggle" layoutX="22.0" layoutY="458.0" mnemonicParsing="false" text="Delete Data" />
-                        <RadioButton fx:id="editDataToggle" layoutX="23.0" layoutY="500.0" mnemonicParsing="false" text="Edit Data" />
+                        <RadioButton fx:id="viewBetButton" layoutX="22.0" layoutY="67.0" mnemonicParsing="false" onAction="#viewBets" text="View Bets" />
+                        <RadioButton fx:id="viewTeamsButton" layoutX="22.0" layoutY="113.0" mnemonicParsing="false" onAction="#viewTeams" text="View Teams" />
+                        <RadioButton fx:id="viewPlayersButton" layoutX="20.0" layoutY="159.0" mnemonicParsing="false" onAction="#viewPlayers" text="View Players" />
+                  <Button fx:id="editDataButton" layoutX="18.0" layoutY="469.0" mnemonicParsing="false" onAction="#editData" text="Edit" />
+                  <Button fx:id="deleteDataButton" layoutX="18.0" layoutY="510.0" mnemonicParsing="false" onAction="#deleteData" text="Delete" />
                         <Button layoutX="20.0" layoutY="540.0" mnemonicParsing="false"
                                 onAction="#openAPIWindow" text="Open API Window" />
                     </children>
@@ -67,19 +70,25 @@
                     <content>
                         <AnchorPane id="Content" minHeight="-1.0" minWidth="-1.0" prefHeight="546.0" prefWidth="670.0">
                             <children>
-                                <VBox spacing="10" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
-                                    <children>
-                                        <Label alignment="CENTER" minWidth="60.0" prefWidth="-1.0" style="&#10;" text="Data Viewer" textAlignment="CENTER" wrapText="false">
-                                            <font>
-                                                <Font size="18.0" fx:id="x11" />
-                                            </font>
-                                            <textFill>
-                                                <Color red="0.624" green="0.624" blue="0.624" fx:id="x21" />
-                                            </textFill>
-                                        </Label>
-                                        <WebView fx:id="standingsWebView" prefHeight="490.0" prefWidth="650.0" VBox.vgrow="ALWAYS" />
-                                    </children>
-                                </VBox>
+                                  <Label alignment="CENTER" layoutX="14.0" minWidth="60.0" prefWidth="-1.0" style="&#10;" text="Data Viewer" textAlignment="CENTER" wrapText="false">
+                                      <font>
+                                          <Font size="18.0" fx:id="x11" />
+                                      </font>
+                                      <textFill>
+                                          <Color red="0.624" green="0.624" blue="0.624" fx:id="x21" />
+                                      </textFill>
+                                  </Label>
+                        <GridPane fx:id="gridPane" layoutX="14.0" layoutY="27.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="37.599996948242186" minHeight="10.0" prefHeight="32.799993896484374" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="28.80000915527343" minHeight="10.0" prefHeight="28.000006103515616" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                        </GridPane>
                             </children>
                         </AnchorPane>
                     </content>

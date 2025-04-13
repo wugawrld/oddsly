@@ -6,23 +6,18 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.web.WebView;
+import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import rw.data.Bet;
 import rw.data.Player;
 import rw.data.SavedData;
 import rw.data.Team;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
+
 import java.util.Optional;
-import rw.data.BasketballPlayer;
-import rw.data.HockeyPlayer;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -52,9 +47,6 @@ public class MainController implements SceneController {
     private SceneManager sceneManager;
 
     @FXML
-    private WebView standingsWebView;
-
-    @FXML
     private RadioButton viewBetButton;
 
     @FXML
@@ -64,10 +56,13 @@ public class MainController implements SceneController {
     private RadioButton viewTeamsButton;
 
     @FXML
-    private RadioButton deleteDataToggle;
+    private Button deleteDataButton;
 
     @FXML
-    private RadioButton editDataToggle;
+    private Button editDataButton;
+
+    @FXML
+    private GridPane gridPane;
 
     @FXML
     private Font x1;
@@ -92,10 +87,6 @@ public class MainController implements SceneController {
         viewBetButton.setToggleGroup(viewGroup);
         viewTeamsButton.setToggleGroup(viewGroup);
         viewPlayersButton.setToggleGroup(viewGroup);
-
-        ToggleGroup changeGroup = new ToggleGroup();
-        deleteDataToggle.setToggleGroup(changeGroup);
-        editDataToggle.setToggleGroup(changeGroup);
 
         // Add listeners for view radio buttons
         viewBetButton.setOnAction(event -> viewBets());
@@ -248,6 +239,16 @@ public class MainController implements SceneController {
     }
 
     @FXML
+    void editData(ActionEvent event) {
+        Platform.exit();
+    }
+
+    @FXML
+    void deleteData(ActionEvent event) {
+        Platform.exit();
+    }
+
+    @FXML
     void viewBets() {
         // Clear any existing content
         clearDataView();
@@ -259,29 +260,77 @@ public class MainController implements SceneController {
             return;
         }
 
-        StringBuilder htmlContent = new StringBuilder();
-        htmlContent.append("<html><body>");
-        htmlContent.append("<h2>All Bets</h2>");
-        htmlContent.append("<table border='1'>");
-        htmlContent.append("<tr><th>ID</th><th>Date</th><th>Teams</th><th>Type</th><th>Amount</th><th>Odds</th><th>Outcome</th><th>Payout</th></tr>");
+        TextField idHeader = new TextField("ID");
+        TextField dateHeader = new TextField("Date");
+        TextField homeHeader = new TextField("Home Team");
+        TextField awayHeader = new TextField("Away Team");
+        TextField typeHeader = new TextField("Bet Type");
+        TextField wagerHeader = new TextField("Wager");
+        TextField oddsHeader = new TextField("Odds");
+        TextField outComeHeader = new TextField("Outcome");
 
+        idHeader.getStyleClass().add("header-field");
+        dateHeader.getStyleClass().add("header-field");
+        homeHeader.getStyleClass().add("header-field");
+        awayHeader.getStyleClass().add("header-field");
+        typeHeader.getStyleClass().add("header-field");
+        wagerHeader.getStyleClass().add("header-field");
+        oddsHeader.getStyleClass().add("header-field");
+        outComeHeader.getStyleClass().add("header-field");
+
+        idHeader.setEditable(false);
+        dateHeader.setEditable(false);
+        homeHeader.setEditable(false);
+        awayHeader.setEditable(false);
+        typeHeader.setEditable(false);
+        wagerHeader.setEditable(false);
+        oddsHeader.setEditable(false);
+        outComeHeader.setEditable(false);
+
+        gridPane.add(idHeader,1,0);
+        gridPane.add(dateHeader,2,0);
+        gridPane.add(homeHeader,3,0);
+        gridPane.add(awayHeader,4,0);
+        gridPane.add(typeHeader,5,0);
+        gridPane.add(wagerHeader,6,0);
+        gridPane.add(oddsHeader,7,0);
+        gridPane.add(outComeHeader,8,0);
+
+        int rowIndex = 1;
         for (Bet bet : bets) {
-            htmlContent.append("<tr>");
-            htmlContent.append("<td>").append(bet.getId()).append("</td>");
-            htmlContent.append("<td>").append(bet.getFormattedGameDate()).append("</td>");
-            htmlContent.append("<td>").append(bet.getTeam1()).append(" vs ").append(bet.getTeam2()).append("</td>");
-            htmlContent.append("<td>").append(bet.getBetType().getDisplayName()).append("</td>");
-            htmlContent.append("<td>$").append(String.format("%.2f", bet.getAmountWagered())).append("</td>");
-            htmlContent.append("<td>").append(String.format("%.2f", bet.getOdds())).append("</td>");
-            htmlContent.append("<td>").append(bet.getOutcome().getDisplayName()).append("</td>");
-            htmlContent.append("<td>$").append(String.format("%.2f", bet.getPayout())).append("</td>");
-            htmlContent.append("</tr>");
+            TextField id = new TextField(bet.getId());
+            TextField date = new TextField(bet.getFormattedGameDate());
+            TextField home = new TextField(bet.getTeam1());
+            TextField away = new TextField(bet.getTeam2());
+            TextField type = new TextField(String.valueOf(bet.getBetType()));
+            TextField wager = new TextField(String.valueOf(bet.getAmountWagered()));
+            TextField odds = new TextField(String.valueOf(bet.getOdds()));
+            TextField outcome = new TextField(String.valueOf(bet.getOutcome()));
+            ToggleGroup toggleGroup = new ToggleGroup();
+            RadioButton button = new RadioButton();
+            button.setToggleGroup(toggleGroup);
+
+            id.setEditable(false);
+            date.setEditable(false);
+            home.setEditable(false);
+            away.setEditable(false);
+            type.setEditable(false);
+            wager.setEditable(false);
+            odds.setEditable(false);
+            outcome.setEditable(false);
+
+            gridPane.add(button,0,rowIndex);
+            gridPane.add(id, 1, rowIndex);
+            gridPane.add(date, 2, rowIndex);
+            gridPane.add(home, 3, rowIndex);
+            gridPane.add(away, 4, rowIndex);
+            gridPane.add(type, 5, rowIndex);
+            gridPane.add(wager, 6, rowIndex);
+            gridPane.add(odds, 7, rowIndex);
+            gridPane.add(outcome, 8, rowIndex);
+
+            rowIndex++;
         }
-
-        htmlContent.append("</table>");
-        htmlContent.append("</body></html>");
-
-        standingsWebView.getEngine().loadContent(htmlContent.toString());
     }
 
     @FXML
@@ -296,44 +345,70 @@ public class MainController implements SceneController {
             return;
         }
 
-        StringBuilder htmlContent = new StringBuilder();
-        htmlContent.append("<html><body>");
-        htmlContent.append("<h2>All Players</h2>");
-        htmlContent.append("<table border='1'>");
-        htmlContent.append("<tr><th>Name</th><th>Team</th><th>Position</th><th>Type</th><th>Stats</th></tr>");
+        TextField playerNameHeader = new TextField("Name");
+        TextField teamNameHeader = new TextField("Team");
+        TextField positionHeader = new TextField("Position");
+        TextField typeHeader = new TextField("Type");
+        TextField ppgHeader = new TextField("PPG");
+        TextField rpgHeader = new TextField("RPG");
+        TextField apgHeader = new TextField("APG");
 
+        playerNameHeader.getStyleClass().add("header-field");
+        teamNameHeader.getStyleClass().add("header-field");
+        positionHeader.getStyleClass().add("header-field");
+        typeHeader.getStyleClass().add("header-field");
+        ppgHeader.getStyleClass().add("header-field");
+        rpgHeader.getStyleClass().add("header-field");
+        apgHeader.getStyleClass().add("header-field");
+
+        playerNameHeader.setEditable(false);
+        teamNameHeader.setEditable(false);
+        positionHeader.setEditable(false);
+        typeHeader.setEditable(false);
+        ppgHeader.setEditable(false);
+        rpgHeader.setEditable(false);
+        apgHeader.setEditable(false);
+
+        gridPane.add(playerNameHeader,1,0);
+        gridPane.add(teamNameHeader,2,0);
+        gridPane.add(positionHeader,3,0);
+        gridPane.add(typeHeader,4,0);
+        gridPane.add(ppgHeader,5,0);
+        gridPane.add(rpgHeader,6,0);
+        gridPane.add(apgHeader,7,0);
+
+        int rowIndex = 1;
         for (Player player : players) {
-            htmlContent.append("<tr>");
-            htmlContent.append("<td>").append(player.getPlayerName()).append("</td>");
-            htmlContent.append("<td>").append(player.getTeamName()).append("</td>");
-            htmlContent.append("<td>").append(player.getPosition()).append("</td>");
+            TextField playerName = new TextField(player.getPlayerName());
+            TextField teamName = new TextField(player.getTeamName());
+            TextField position = new TextField(player.getPosition());
+            TextField type = new TextField(player.getPlayerType());
+            TextField ppg = new TextField(String.valueOf(player.getStat("pointsPerGame")));
+            TextField rpg = new TextField(String.valueOf(player.getStat("reboundsPerGame")));
+            TextField apg = new TextField(String.valueOf(player.getStat("assistsPerGame")));
+            ToggleGroup toggleGroup = new ToggleGroup();
+            RadioButton button = new RadioButton();
+            button.setToggleGroup(toggleGroup);
 
-            if (player instanceof BasketballPlayer) {
-                BasketballPlayer bp = (BasketballPlayer) player;
-                htmlContent.append("<td>Basketball</td>");
-                htmlContent.append("<td>PPG: ").append(bp.getPointsPerGame())
-                        .append(", RPG: ").append(bp.getReboundsPerGame())
-                        .append(", APG: ").append(bp.getAssistsPerGame())
-                        .append("</td>");
-            } else if (player instanceof HockeyPlayer) {
-                HockeyPlayer hp = (HockeyPlayer) player;
-                htmlContent.append("<td>Hockey</td>");
-                htmlContent.append("<td>PPG: ").append(hp.getPointsPerGame())
-                        .append(", APG: ").append(hp.getAssistsPerGame())
-                        .append("</td>");
-            } else {
-                htmlContent.append("<td>Unknown</td>");
-                htmlContent.append("<td>No stats available</td>");
-            }
+            playerName.setEditable(false);
+            teamName.setEditable(false);
+            position.setEditable(false);
+            type.setEditable(false);
+            ppg.setEditable(false);
+            rpg.setEditable(false);
+            apg.setEditable(false);
 
-            htmlContent.append("</tr>");
+            gridPane.add(button,0,rowIndex);
+            gridPane.add(playerName, 1, rowIndex);
+            gridPane.add(teamName, 2, rowIndex);
+            gridPane.add(position, 3, rowIndex);
+            gridPane.add(type, 4, rowIndex);
+            gridPane.add(ppg, 5, rowIndex);
+            gridPane.add(rpg, 6, rowIndex);
+            gridPane.add(apg, 7, rowIndex);
+
+            rowIndex++;
         }
-
-        htmlContent.append("</table>");
-        htmlContent.append("</body></html>");
-
-        standingsWebView.getEngine().loadContent(htmlContent.toString());
-
     }
 
     @FXML
@@ -348,36 +423,73 @@ public class MainController implements SceneController {
             return;
         }
 
-        StringBuilder htmlContent = new StringBuilder();
-        htmlContent.append("<html><body>");
-        htmlContent.append("<h2>All Teams</h2>");
-        htmlContent.append("<table border='1'>");
-        htmlContent.append("<tr><th>Name</th><th>Conference</th><th>Wins</th><th>Losses</th><th>Points Scored</th><th>Points Allowed</th><th>Differential</th></tr>");
+        TextField teamNameHeader = new TextField("Team");
+        TextField conferenceHeader = new TextField("Conference");
+        TextField winsHeader = new TextField("Wins");
+        TextField lossesHeader = new TextField("Losses");
+        TextField pointsScoredHeader = new TextField("Points Scored");
+        TextField pointsAllowedHeader = new TextField("Points Allowed");
 
+        teamNameHeader.getStyleClass().add("header-field");
+        conferenceHeader.getStyleClass().add("header-field");
+        winsHeader.getStyleClass().add("header-field");
+        lossesHeader.getStyleClass().add("header-field");
+        pointsScoredHeader.getStyleClass().add("header-field");
+        pointsAllowedHeader.getStyleClass().add("header-field");
+
+        teamNameHeader.setEditable(false);
+        conferenceHeader.setEditable(false);
+        winsHeader.setEditable(false);
+        lossesHeader.setEditable(false);
+        pointsScoredHeader.setEditable(false);
+        pointsAllowedHeader.setEditable(false);
+
+        gridPane.add(teamNameHeader,1,0);
+        gridPane.add(conferenceHeader,2,0);
+        gridPane.add(winsHeader,3,0);
+        gridPane.add(lossesHeader,4,0);
+        gridPane.add(pointsScoredHeader,5,0);
+        gridPane.add(pointsAllowedHeader,6,0);
+
+        int rowIndex = 1;
         for (Team team : teams) {
-            htmlContent.append("<tr>");
-            htmlContent.append("<td>").append(team.getTeamName()).append("</td>");
-            htmlContent.append("<td>").append(team.getConference()).append("</td>");
-            htmlContent.append("<td>").append(team.getWins()).append("</td>");
-            htmlContent.append("<td>").append(team.getLosses()).append("</td>");
-            htmlContent.append("<td>").append(team.getPointsScored()).append("</td>");
-            htmlContent.append("<td>").append(team.getPointsAllowed()).append("</td>");
-            htmlContent.append("<td>").append(team.getPointsDifferential()).append("</td>");
-            htmlContent.append("</tr>");
+            TextField teamName = new TextField(team.getTeamName());
+            TextField conference = new TextField(team.getConference());
+            TextField wins = new TextField(String.valueOf(team.getWins()));
+            TextField losses = new TextField(String.valueOf(team.getLosses()));
+            TextField pS = new TextField(String.valueOf(team.getPointsScored()));
+            TextField pA = new TextField(String.valueOf(team.getPointsAllowed()));
+            ToggleGroup toggleGroup = new ToggleGroup();
+            RadioButton button = new RadioButton();
+            button.setToggleGroup(toggleGroup);
+
+
+            teamName.setEditable(false);
+            conference.setEditable(false);
+            wins.setEditable(false);
+            losses.setEditable(false);
+            pS.setEditable(false);
+            pA.setEditable(false);
+
+            gridPane.add(button, 0, rowIndex);
+            gridPane.add(teamName, 1, rowIndex);
+            gridPane.add(conference, 2, rowIndex);
+            gridPane.add(wins, 3, rowIndex);
+            gridPane.add(losses, 4, rowIndex);
+            gridPane.add(pS, 5, rowIndex);
+            gridPane.add(pA, 6, rowIndex);
+
+            rowIndex++;
         }
-
-        htmlContent.append("</table>");
-        htmlContent.append("</body></html>");
-
-        standingsWebView.getEngine().loadContent(htmlContent.toString());
     }
 
     private void clearDataView() {
-        standingsWebView.getEngine().loadContent("");
+        gridPane.getChildren().clear();
     }
 
     private void displayMessage(String message) {
-        standingsWebView.getEngine().loadContent("<html><body><h3>" + message + "</h3></body></html>");
+        Label label = new Label(message);
+        gridPane.add(label,0,0);
     }
 
     @FXML
