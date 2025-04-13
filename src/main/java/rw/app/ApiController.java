@@ -106,7 +106,6 @@ public void shutDown() {
     if (scheduledExecutorService != null) {
     scheduledExecutorService.shutdown();}
 }
-
 // model for FullLinkView in json
 public static class FullViewLink {
     private String text;
@@ -128,5 +127,17 @@ public static class FullViewLink {
         this.href = href;
     }
 }
+    // model class for JSON structure for standings
+    public static class StandingsData {
+        private FullViewLink fullViewLink;
+
+        public FullViewLink getFullViewLink() {
+            return fullViewLink;
+        }
+
+        public void setFullViewLink(FullViewLink fullViewLink) {
+            this.fullViewLink = fullViewLink;
+        }
+    }
 }
 
