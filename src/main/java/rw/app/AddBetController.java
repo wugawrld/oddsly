@@ -9,6 +9,9 @@ import rw.data.Bet;
 import rw.enums.BetType;
 import rw.shell.Main;
 import java.time.LocalDate;
+import java.util.Optional;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 
 public class AddBetController implements SceneController {
     private static Bet bet;
@@ -174,7 +177,7 @@ public class AddBetController implements SceneController {
                         MainController.addNewBet(bet);
                         betCounter++;
                         statusLabelL.setTextFill(Color.GREEN);
-                        statusLabelL.setText("Bet added successfully!");
+                        statusLabelL.setText("Bet added successfully! Click Save to Continue.");
                     } else {
                         statusLabelL.setTextFill(Color.RED);
                         statusLabelL.setText(String.format("Invalid Away Team: %s, for league %s", team2.getText(), league.getText()));
@@ -232,5 +235,41 @@ public class AddBetController implements SceneController {
     @Override
     public void onSceneDisplayed() {
         about(null);
+    }
+    @FXML
+    void saveBet(ActionEvent event) {
+        // First check if there's a bet to save
+        if (bet == null) {
+            statusLabelL.setTextFill(Color.RED);
+            statusLabelL.setText("No bet data to save. Please create a bet first.");
+            return;
+        }
+
+        Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmDialog.setTitle("Save Bet");
+        confirmDialog.setHeaderText("Bet saved successfully");
+        confirmDialog.setContentText("What would you like to do next?");
+
+        ButtonType addAnotherButton = new ButtonType("Add Another Bet");
+        ButtonType returnToMainButton = new ButtonType("Return to Main Page");
+
+        confirmDialog.getButtonTypes().setAll(addAnotherButton, returnToMainButton);
+
+        Optional<ButtonType> result = confirmDialog.showAndWait();
+        if (result.get() == addAnotherButton) {
+            // Clear the form for a new bet
+            team1.clear();
+            team2.clear();
+            amountWagered.clear();
+            odds.clear();
+            league.clear();
+            gameDate.setValue(LocalDate.now());
+            moneyLineButton.setSelected(true);
+            bet = null;
+            statusLabelL.setText("Enter information for a new bet");
+        } else {
+            // Return to main page
+            sceneManager.switchToScene("Main");
+        }
     }
 }
