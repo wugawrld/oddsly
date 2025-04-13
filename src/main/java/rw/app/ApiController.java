@@ -25,8 +25,6 @@ public class ApiController implements Initializable{
     @FXML
     private TextArea textArea;
 
-    @FXML
-    private TabPane standingsTabPane;
 
     @FXML
     private WebView nbaWebView;
