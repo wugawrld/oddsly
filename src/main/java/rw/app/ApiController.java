@@ -1,5 +1,6 @@
 package rw.app;
 
+import com.google.gson.Gson;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -42,7 +43,7 @@ public class ApiController implements Initializable{
         scheduledExecutorService.scheduleAtFixedRate(this::updateData, 0, 5, TimeUnit.SECONDS);
     }
 
-    // method to fetch api (when fetch api is clicked)
+    // method to fetch api, parse json, and update ui (when fetch api is clicked)
     private void updateData() {
         try {
             HttpClient httpClient = HttpClient.newHttpClient();
@@ -68,8 +69,24 @@ public class ApiController implements Initializable{
             String finishedStandingsDataNHL = responseNHLStandings.statusCode() == 200 ? responseNHLStandings.body() : "Error: " + responseNHLStandings.statusCode();
             String combinedData = "NBA Standings:\n" + finishedStandingsDataNBA + "\n\nNHL Standings:\n" + finishedStandingsDataNHL;
 
+            // parse json
+            Gson gson = new Gson();
+            StandingsData nbaData = gson.fromJson(finishedStandingsDataNBA, StandingsData.class);
+            StandingsData nhlData = gson.fromJson(finishedStandingsDataNHL, StandingsData.class);
+
+            // build strings based on json
+            String nbaDisplay = (nbaData != null && nbaData.getFullViewLink() != null) ?
+                    "NBA Standings Link: " + nbaData.getFullViewLink().getText() +
+                            "\nURL: " + nbaData.getFullViewLink().getHref() :
+                    finishedStandingsDataNBA;
+            String nhlDisplay = (nhlData != null && nhlData.getFullViewLink() != null) ?
+                    "NHL Standings Link: " + nhlData.getFullViewLink().getText() +
+                            "\nURL: " + nhlData.getFullViewLink().getHref() :
+                    finishedStandingsDataNHL;
+            String finalData = "NBA Standings:\n" + nbaDisplay + "\n\nNHL Standings:\n" + nhlDisplay;
+
             // update ui
-            Platform.runLater(() -> textArea.setText(combinedData));
+            Platform.runLater(() -> textArea.setText(finalData));
             // load into webview
             WebEngine webEngine = nbaWebView.getEngine();
             webEngine.load("https://www.espn.com/nba/standings");
