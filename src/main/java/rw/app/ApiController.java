@@ -33,14 +33,24 @@ public class ApiController implements Initializable{
     @FXML
     private WebView nhlWebView;
 
-    // synchronous updating object
-    private ScheduledExecutorService scheduledExecutorService;
+    // service for periodic updating
+    private ApiFetchService apiFetchService;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // start scheduler to call and update method every 5 seconds
-        scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-        scheduledExecutorService.scheduleAtFixedRate(this::updateData, 0, 5, TimeUnit.SECONDS);
+        // initalize webviwer and load urls with custom agent
+        WebEngine nbaEngine = nbaWebView.getEngine();
+        nbaEngine.load("https://www.espn.com/nba/standings");
+
+        WebEngine nhlEngine = nhlWebView.getEngine();
+        nhlEngine.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) " +
+                "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36");
+        nhlEngine.load("https://www.espn.com/nhl/standings");
+
+        // initialize/start scheduledservice to perform API updates every 5 seconds
+        apiFetchService = new ApiFetchService();
+        apiFetchService.setDelay(Duration.ZERO);
+        apiFetchService.setPeriod(Duration.seconds(5));
     }
 
     // method to fetch api, parse json, and update ui (when fetch api is clicked)
