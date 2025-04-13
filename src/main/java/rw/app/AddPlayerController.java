@@ -10,6 +10,9 @@ import rw.data.BasketballPlayer;
 import rw.data.HockeyPlayer;
 import rw.data.Player;
 import rw.shell.Main;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import java.util.Optional;
 
 public class AddPlayerController implements SceneController {
     private static Player player;
@@ -228,7 +231,7 @@ public class AddPlayerController implements SceneController {
                         player = new BasketballPlayer(playerN, teamN, p, ppg, rbg, apg);
                         MainController.addNewPlayer(player);
                         statusLabelL.setTextFill(Color.GREEN);
-                        statusLabelL.setText(String.format("%s added successfully!", playerName.getText()));
+                        statusLabelL.setText(String.format("%s added successfully! Click Save to Continue", playerName.getText()));
 
                     } else {
                         statusLabelL.setTextFill(Color.RED);
@@ -244,7 +247,7 @@ public class AddPlayerController implements SceneController {
                     player = new HockeyPlayer(playerN, teamN, p, ppg, apg);
                     MainController.addNewPlayer(player);
                     statusLabelL.setTextFill(Color.GREEN);
-                    statusLabelL.setText(String.format("%s added successfully!", playerName.getText()));
+                    statusLabelL.setText(String.format("%s added successfully! Click Save to Continue", playerName.getText()));
 
                 } else {
                     statusLabelL.setTextFill(Color.RED);
@@ -281,5 +284,38 @@ public class AddPlayerController implements SceneController {
     @Override
     public void onSceneDisplayed() {
         about(null);
+    }
+    @FXML
+    void savePlayer(ActionEvent event) {
+        // First check if there's a player to save
+        if (player == null) {
+            statusLabelL.setTextFill(Color.RED);
+            statusLabelL.setText("No player data to save. Please add a player first.");
+            return;
+        }
+
+        Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmDialog.setTitle("Save Player");
+        confirmDialog.setHeaderText("Player saved successfully");
+        confirmDialog.setContentText("What would you like to do next?");
+
+        ButtonType addAnotherButton = new ButtonType("Add Another Player");
+        ButtonType returnToMainButton = new ButtonType("Return to Main Page");
+
+        confirmDialog.getButtonTypes().setAll(addAnotherButton, returnToMainButton);
+
+        Optional<ButtonType> result = confirmDialog.showAndWait();
+        if (result.get() == addAnotherButton) {
+            // Clear the form for a new player
+            playerName.clear();
+            teamName.clear();
+            position.clear();
+            statsField.getChildren().clear();
+            player = null;
+            statusLabelL.setText("Enter information for a new player");
+        } else {
+            // Return to main page
+            sceneManager.switchToScene("Main");
+        }
     }
 }
