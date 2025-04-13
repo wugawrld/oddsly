@@ -161,7 +161,7 @@ public class MainController implements SceneController {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Save Successful");
                 alert.setHeaderText(null);
-                alert.setContentText("Betting data saved successfully!");
+                alert.setContentText("Data saved successfully!");
                 alert.showAndWait();
 
             } catch (IOException ex) {
@@ -196,7 +196,7 @@ public class MainController implements SceneController {
                 // Show confirmation
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Load Successful");
-                alert.setContentText("Data loaded successfully!");
+                alert.setHeaderText("Data loaded successfully!");
 
                 String contentText = String.format(
                         "Loaded: %d bets, %d players, and %d teams.\n\n" +

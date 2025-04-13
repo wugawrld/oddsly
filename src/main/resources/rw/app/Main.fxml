@@ -9,105 +9,96 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.web.WebView?>
 
 <VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rw.app.MainController">
-  <children>
-    <MenuBar VBox.vgrow="NEVER">
-      <menus>
-        <Menu mnemonicParsing="false" text="File">
-          <items>
-            <Menu mnemonicParsing="false" text="Add">
-                     <items>
-                  <MenuItem mnemonicParsing="false" onAction="#addBet" text="Bet" />
-                        <MenuItem mnemonicParsing="false" onAction="#addPlayer" text="Player" />
-                        <MenuItem mnemonicParsing="false" onAction="#addTeam" text="Team" />
-                     </items></Menu>
-            <MenuItem mnemonicParsing="false" text="Save" />
-                  <MenuItem mnemonicParsing="false" text="Load" />
-            <MenuItem mnemonicParsing="false" onAction="#quit" text="Quit" />
-          </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Help">
-          <items>
-            <MenuItem mnemonicParsing="false" text="About Sports Bet Tracker" />
-          </items>
-        </Menu>
-      </menus>
-    </MenuBar>
-    <SplitPane dividerPositions="0.2505567928730512" focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
-      <items>
-        <AnchorPane>
-          <children>
-            <Label alignment="CENTER" layoutX="14.0" layoutY="14.0" minWidth="60.0" prefWidth="-1.0" style="&#10;" text="Tracker" textAlignment="CENTER" wrapText="false">
-              <font>
-                <Font size="18.0" fx:id="x1" />
-              </font>
-              <textFill>
-                <Color red="0.624" green="0.624" blue="0.624" fx:id="x2" />
-              </textFill>
-            </Label>
-                  <RadioButton fx:id="viewBetButton" layoutX="22.0" layoutY="67.0" mnemonicParsing="false" text="View Bets" />
-                  <RadioButton fx:id="viewTeamsButton" layoutX="22.0" layoutY="113.0" mnemonicParsing="false" text="View Teams" />
-                  <RadioButton fx:id="viewPlayersButton" layoutX="20.0" layoutY="159.0" mnemonicParsing="false" text="View Players" />
-                  <RadioButton fx:id="deleteDataToggle" layoutX="22.0" layoutY="458.0" mnemonicParsing="false" text="Delete Data" />
-                  <RadioButton fx:id="editDataToggle" layoutX="23.0" layoutY="500.0" mnemonicParsing="false" text="Edit Data" />
-          </children>
-        </AnchorPane>
-        <ScrollPane prefHeight="-1.0" prefWidth="-1.0">
-          <content>
-            <AnchorPane id="Content" minHeight="-1.0" minWidth="-1.0" prefHeight="546.0" prefWidth="670.0">
-              <children>
-                        <GridPane layoutX="14.0" layoutY="57.0">
-                          <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="102.4000244140625" minWidth="10.0" prefWidth="96.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="106.39996337890625" minWidth="10.0" prefWidth="104.0" />
-                          </columnConstraints>
-                          <rowConstraints>
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
-                        </GridPane>
-                <WebView fx:id="standingsWebView" layoutX="10" layoutY="10" prefHeight="600" prefWidth="800" />
-                        <Label alignment="CENTER" layoutX="14.0" layoutY="14.0" minWidth="60.0" prefWidth="-1.0" style="&#10;" text="Data Viewer" textAlignment="CENTER" wrapText="false">
-                           <font>
-                              <Font size="18.0" fx:id="x11" />
-                           </font>
-                           <textFill>
-                              <Color red="0.624" green="0.624" blue="0.624" fx:id="x21" />
-                           </textFill>
+    <children>
+        <MenuBar VBox.vgrow="NEVER">
+            <menus>
+                <Menu mnemonicParsing="false" text="File">
+                    <items>
+                        <Menu mnemonicParsing="false" text="Add">
+                            <items>
+                                <MenuItem mnemonicParsing="false" onAction="#addBet" text="Bet" />
+                                <MenuItem mnemonicParsing="false" onAction="#addPlayer" text="Player" />
+                                <MenuItem mnemonicParsing="false" onAction="#addTeam" text="Team" />
+                            </items>
+                        </Menu>
+                        <MenuItem mnemonicParsing="false" onAction="#saveData" text="Save" />
+                        <MenuItem mnemonicParsing="false" onAction="#loadData" text="Load" />
+                        <MenuItem mnemonicParsing="false" onAction="#quit" text="Quit" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="About Sports Bet Tracker" />
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+        <SplitPane dividerPositions="0.2505567928730512" focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+            <items>
+                <AnchorPane>
+                    <children>
+                        <Label alignment="CENTER" layoutX="14.0" layoutY="14.0" minWidth="60.0" prefWidth="-1.0" style="&#10;" text="Tracker" textAlignment="CENTER" wrapText="false">
+                            <font>
+                                <Font size="18.0" fx:id="x1" />
+                            </font>
+                            <textFill>
+                                <Color red="0.624" green="0.624" blue="0.624" fx:id="x2" />
+                            </textFill>
                         </Label>
-              </children>
-            </AnchorPane>
-          </content>
-        </ScrollPane>
-      </items>
-    </SplitPane>
-    <HBox id="HBox" alignment="CENTER_LEFT" spacing="5.0" VBox.vgrow="NEVER">
-      <children>
-        <Label maxHeight="1.7976931348623157E308" maxWidth="-1.0" text="Left status" HBox.hgrow="ALWAYS">
-          <font>
-            <Font size="11.0" fx:id="x3" />
-          </font>
-          <textFill>
-            <Color red="0.625" green="0.625" blue="0.625" fx:id="x4" />
-          </textFill>
-        </Label>
-        <Pane prefHeight="-1.0" prefWidth="-1.0" HBox.hgrow="ALWAYS" />
-        <Label font="$x3" maxWidth="-1.0" text="Right status" textFill="$x4" HBox.hgrow="NEVER" />
-      </children>
-      <padding>
-        <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
-      </padding>
-    </HBox>
-  </children>
+                        <RadioButton fx:id="viewBetButton" layoutX="22.0" layoutY="67.0" mnemonicParsing="false" text="View Bets" />
+                        <RadioButton fx:id="viewTeamsButton" layoutX="22.0" layoutY="113.0" mnemonicParsing="false" text="View Teams" />
+                        <RadioButton fx:id="viewPlayersButton" layoutX="20.0" layoutY="159.0" mnemonicParsing="false" text="View Players" />
+                        <RadioButton fx:id="deleteDataToggle" layoutX="22.0" layoutY="458.0" mnemonicParsing="false" text="Delete Data" />
+                        <RadioButton fx:id="editDataToggle" layoutX="23.0" layoutY="500.0" mnemonicParsing="false" text="Edit Data" />
+                    </children>
+                </AnchorPane>
+                <ScrollPane prefHeight="-1.0" prefWidth="-1.0">
+                    <content>
+                        <AnchorPane id="Content" minHeight="-1.0" minWidth="-1.0" prefHeight="546.0" prefWidth="670.0">
+                            <children>
+                                <VBox spacing="10" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                                    <children>
+                                        <Label alignment="CENTER" minWidth="60.0" prefWidth="-1.0" style="&#10;" text="Data Viewer" textAlignment="CENTER" wrapText="false">
+                                            <font>
+                                                <Font size="18.0" fx:id="x11" />
+                                            </font>
+                                            <textFill>
+                                                <Color red="0.624" green="0.624" blue="0.624" fx:id="x21" />
+                                            </textFill>
+                                        </Label>
+                                        <WebView fx:id="standingsWebView" prefHeight="490.0" prefWidth="650.0" VBox.vgrow="ALWAYS" />
+                                    </children>
+                                </VBox>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </ScrollPane>
+            </items>
+        </SplitPane>
+        <HBox id="HBox" alignment="CENTER_LEFT" spacing="5.0" VBox.vgrow="NEVER">
+            <children>
+                <Label maxHeight="1.7976931348623157E308" maxWidth="-1.0" text="Left status" HBox.hgrow="ALWAYS">
+                    <font>
+                        <Font size="11.0" fx:id="x3" />
+                    </font>
+                    <textFill>
+                        <Color red="0.625" green="0.625" blue="0.625" fx:id="x4" />
+                    </textFill>
+                </Label>
+                <Pane prefHeight="-1.0" prefWidth="-1.0" HBox.hgrow="ALWAYS" />
+                <Label font="$x3" maxWidth="-1.0" text="Right status" textFill="$x4" HBox.hgrow="NEVER" />
+            </children>
+            <padding>
+                <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+            </padding>
+        </HBox>
+    </children>
 </VBox>
