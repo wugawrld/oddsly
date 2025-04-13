@@ -47,6 +47,9 @@ public class AddTeamController implements SceneController {
     private TextField wins;
 
     @FXML
+    private Button saveButton;
+
+    @FXML
     private Font x1;
 
     @FXML
@@ -87,14 +90,17 @@ public class AddTeamController implements SceneController {
 
     @FXML
     void addTeam(ActionEvent event) {
-        statusLabelL.setTextFill(Color.BLACK);
-        statusLabelL.setText("");
+        try {
+            System.out.println("addTeam method called");
 
-        if (fieldsEmpty()) {
-            statusLabelL.setTextFill(Color.RED);
-            statusLabelL.setText("You must complete all fields before adding a new team");
-            return;
-        }
+            statusLabelL.setTextFill(Color.BLACK);
+            statusLabelL.setText("");
+
+            if (fieldsEmpty()) {
+                statusLabelL.setTextFill(Color.RED);
+                statusLabelL.setText("You must complete all fields before adding a new team");
+                return;
+            }
 
         try {
             int win = Integer.parseInt(wins.getText());
@@ -114,6 +120,14 @@ public class AddTeamController implements SceneController {
                         statusLabelL.setText(String.format("%s added successfully! Click Save to Continue!", teamName.getText()));
                         statusLabelR.setTextFill(Color.BLACK);
                         statusLabelR.setText("Don't forget to save your data");
+
+                        // Show success notification popup
+                        Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                        successAlert.setTitle("Success");
+                        successAlert.setHeaderText(null);
+                        successAlert.setContentText("Team created successfully!");
+                        successAlert.showAndWait();
+
                     } else {
                         statusLabelL.setTextFill(Color.RED);
                         statusLabelL.setText(String.format("Invalid Team: %s, for league %s conference %s", teamName.getText(), league.getText(), conference.getText()));
@@ -129,6 +143,12 @@ public class AddTeamController implements SceneController {
         } catch (NumberFormatException e) {
             statusLabelL.setTextFill(Color.RED);
             statusLabelL.setText(String.format("Failed to parse integer wins from %s, losses from %s, points scored from %s, or points allowed from %s", wins.getText(), losses.getText(), pointsScored.getText(), pointsAllowed.getText()));
+        }
+        } catch (Exception e) {
+            statusLabelL.setTextFill(Color.RED);
+            statusLabelL.setText("An error occurred while creating the team");
+            System.out.println("Error in addTeam: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -195,14 +215,17 @@ public class AddTeamController implements SceneController {
     public void onSceneDisplayed() {
         about(null);
     }
+
     @FXML
     void saveTeam(ActionEvent event) {
-        // First check if there's a team to save
-        if (team == null) {
-            statusLabelL.setTextFill(Color.RED);
-            statusLabelL.setText("No team data to save. Please add a team first.");
-            return;
-        }
+        try {
+            System.out.println("saveTeam method called");
+            // First check if there's a team to save
+            if (team == null) {
+                statusLabelL.setTextFill(Color.RED);
+                statusLabelL.setText("No team data to save. Please add a team first.");
+                return;
+            }
 
         Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);
         confirmDialog.setTitle("Save Team");
@@ -229,6 +252,12 @@ public class AddTeamController implements SceneController {
         } else {
             // Return to main page
             sceneManager.switchToScene("Main");
+        }
+        } catch (Exception e) {
+            statusLabelL.setTextFill(Color.RED);
+            statusLabelL.setText("An error occurred while saving the team");
+            System.out.println("Error in saveTeam: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 }

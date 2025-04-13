@@ -51,7 +51,10 @@ public class AddPlayerController implements SceneController {
     private Label statusLabelR;
 
     @FXML
-    private Button newPlayerButton;
+    private Button addPlayerButton;
+
+    @FXML
+    private Button saveButton;
 
     @FXML
     private Font x1;
@@ -206,8 +209,10 @@ public class AddPlayerController implements SceneController {
 
     @FXML
     void addNewPlayer(ActionEvent event) {
-        statusLabelL.setTextFill(Color.BLACK);
-        statusLabelL.setText("");
+        try {
+            System.out.println("addNewPlayer method called");
+            statusLabelL.setTextFill(Color.BLACK);
+            statusLabelL.setText("");
 
         if (fieldsEmpty()) {
             statusLabelL.setTextFill(Color.RED);
@@ -230,8 +235,17 @@ public class AddPlayerController implements SceneController {
                     if (checkTeam(teamN, league)) {
                         player = new BasketballPlayer(playerN, teamN, p, ppg, rbg, apg);
                         MainController.addNewPlayer(player);
+
+                        // Show success notification
                         statusLabelL.setTextFill(Color.GREEN);
                         statusLabelL.setText(String.format("%s added successfully! Click Save to Continue", playerName.getText()));
+
+                        // Show success notification
+                        Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                        successAlert.setTitle("Success");
+                        successAlert.setHeaderText(null);
+                        successAlert.setContentText("Player created successfully!");
+                        successAlert.showAndWait();
 
                     } else {
                         statusLabelL.setTextFill(Color.RED);
@@ -249,6 +263,13 @@ public class AddPlayerController implements SceneController {
                     statusLabelL.setTextFill(Color.GREEN);
                     statusLabelL.setText(String.format("%s added successfully! Click Save to Continue", playerName.getText()));
 
+                    // Show success notification popup
+                    Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                    successAlert.setTitle("Success");
+                    successAlert.setHeaderText(null);
+                    successAlert.setContentText("Player created successfully!");
+                    successAlert.showAndWait();
+
                 } else {
                     statusLabelL.setTextFill(Color.RED);
                     statusLabelL.setText(String.format("Invalid Team: %s, for league %s", teamName.getText(), league));
@@ -260,6 +281,12 @@ public class AddPlayerController implements SceneController {
         } catch (NumberFormatException e1) {
             statusLabelL.setTextFill(Color.RED);
             statusLabelL.setText(String.format("Failed to parse double Points Per Game from %s%n or Assists Per Game from %s", pointsField.getText(), assistsField.getText()));
+        }
+        } catch (Exception e) {
+            statusLabelL.setTextFill(Color.RED);
+            statusLabelL.setText("An error occurred while creating the player");
+            System.out.println("Error in addNewPlayer: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -285,14 +312,18 @@ public class AddPlayerController implements SceneController {
     public void onSceneDisplayed() {
         about(null);
     }
+
     @FXML
     void savePlayer(ActionEvent event) {
-        // First check if there's a player to save
-        if (player == null) {
-            statusLabelL.setTextFill(Color.RED);
-            statusLabelL.setText("No player data to save. Please add a player first.");
-            return;
-        }
+        try {
+            System.out.println("savePlayer method called");
+
+            // First check if there's a player to save
+            if (player == null) {
+                statusLabelL.setTextFill(Color.RED);
+                statusLabelL.setText("No player data to save. Please add a player first.");
+                return;
+            }
 
         Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);
         confirmDialog.setTitle("Save Player");
@@ -316,6 +347,12 @@ public class AddPlayerController implements SceneController {
         } else {
             // Return to main page
             sceneManager.switchToScene("Main");
+        }
+        } catch (Exception e) {
+            statusLabelL.setTextFill(Color.RED);
+            statusLabelL.setText("An error occurred while saving the player");
+            System.out.println("Error in savePlayer: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 }

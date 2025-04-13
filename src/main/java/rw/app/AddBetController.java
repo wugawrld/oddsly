@@ -7,11 +7,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import rw.data.Bet;
 import rw.enums.BetType;
+import rw.enums.BetOutcome;
 import rw.shell.Main;
 import java.time.LocalDate;
 import java.util.Optional;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 
 public class AddBetController implements SceneController {
     private static Bet bet;
@@ -30,7 +29,7 @@ public class AddBetController implements SceneController {
     private RadioButton moneyLineButton;
 
     @FXML
-    private Button newBet;
+    private Button saveButton;
 
     @FXML
     private TextField odds;
@@ -105,33 +104,42 @@ public class AddBetController implements SceneController {
 
     private Boolean checkLeague(String input) {
         // Checks if input is a part of leagueList.
-        for (String league : Main.leagueList) {
-            if (league.equalsIgnoreCase(input)) {
-                return true;
+        try {
+            for (String league : Main.leagueList) {
+                if (league.equalsIgnoreCase(input)) {
+                    return true;
+                }
             }
+        } catch (Exception e) {
+            System.out.println("Error in checkLeague: " + e.getMessage());
+            // if there's an error, we'll return false for safety
         }
         return false;
     }
 
     private Boolean checkTeam(String input) {
-        String leagueCheck = league.getText();
-        // Checks if league to check is NBA.
-        if (leagueCheck.equalsIgnoreCase("NBA")) {
-            // Checks if any team in NBA matches input.
-            for (String team : Main.nbaTeams) {
-                if (team.equalsIgnoreCase(input)) {
-                    return true;
+        try {
+            String leagueCheck = league.getText();
+            // Checks if league to check is NBA.
+            if (leagueCheck.equalsIgnoreCase("NBA")) {
+                // Checks if any team in NBA matches input.
+                for (String team : Main.nbaTeams) {
+                    if (team.equalsIgnoreCase(input)) {
+                        return true;
+                    }
                 }
             }
-        }
-        // Checks if league to check is NHL.
-        else if (leagueCheck.equalsIgnoreCase("NHL")) {
-            // Checks if any team in NHL matches input.
-            for (String team : Main.nhlTeams) {
-                if (team.equalsIgnoreCase(input)) {
-                    return true;
+            // Checks if league to check is NHL.
+            else if (leagueCheck.equalsIgnoreCase("NHL")) {
+                // Checks if any team in NHL matches input.
+                for (String team : Main.nhlTeams) {
+                    if (team.equalsIgnoreCase(input)) {
+                        return true;
+                    }
                 }
             }
+        } catch (Exception e) {
+            System.out.println("Error in checkTeam: " + e.getMessage());
         }
         return false;
     }
@@ -144,8 +152,10 @@ public class AddBetController implements SceneController {
 
     @FXML
     void createNewBet(ActionEvent event) {
-        statusLabelL.setTextFill(Color.BLACK);
-        statusLabelL.setText("");
+        try {
+            System.out.println("createNewBet method called");
+            statusLabelL.setTextFill(Color.BLACK);
+            statusLabelL.setText("");
 
         if (fieldsEmpty()) {
             statusLabelL.setTextFill(Color.RED);
@@ -153,7 +163,6 @@ public class AddBetController implements SceneController {
             return;
         }
 
-        try {
             double betAmount = Double.parseDouble(amountWagered.getText());
             double multiplier = Double.parseDouble(odds.getText());
             String date = gameDate.getValue().toString();
@@ -170,14 +179,25 @@ public class AddBetController implements SceneController {
             String leagueBet = league.getText();
             String homeTeam = team1.getText();
             String awayTeam = team2.getText();
+
             if (checkLeague(leagueBet)) {
                 if (checkTeam(homeTeam)) {
                     if (checkTeam(awayTeam)) {
                         bet = new Bet(betID, date, homeTeam, awayTeam, betType, betAmount, multiplier, null, leagueBet);
                         MainController.addNewBet(bet);
                         betCounter++;
+
+                        // show success notification
                         statusLabelL.setTextFill(Color.GREEN);
-                        statusLabelL.setText("Bet added successfully! Click Save to Continue.");
+                        statusLabelL.setText("Bet created successfully! Click Save to Continue.");
+
+                        //show a notification dialog
+                        Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                        successAlert.setTitle("Success");
+                        successAlert.setHeaderText(null);
+                        successAlert.setContentText("Created bet successfully!");
+                        successAlert.showAndWait();
+
                     } else {
                         statusLabelL.setTextFill(Color.RED);
                         statusLabelL.setText(String.format("Invalid Away Team: %s, for league %s", team2.getText(), league.getText()));
@@ -193,9 +213,14 @@ public class AddBetController implements SceneController {
         } catch (NumberFormatException e) {
             statusLabelL.setTextFill(Color.RED);
             statusLabelL.setText(String.format("Failed to parse double wager from %s or multiplier from %s", amountWagered.getText(), odds.getText()));
+            System.out.println("NumberFormatException in createNewBet: " + e.getMessage());
+        } catch (Exception e) {
+            statusLabelL.setTextFill(Color.RED);
+            statusLabelL.setText("An error occurred while creating the bet");
+            System.out.println("Exception in createNewBet: " + e.getMessage());
+            e.printStackTrace();
         }
     }
-
 
     private SceneManager sceneManager;
 
@@ -206,6 +231,8 @@ public class AddBetController implements SceneController {
 
     @Override
     public void initialize() {
+        System.out.println("AddBetController initialize() called");
+
         statusLabelL.setTextFill(Color.BLACK);
         statusLabelL.setText("");
 
@@ -234,17 +261,21 @@ public class AddBetController implements SceneController {
 
     @Override
     public void onSceneDisplayed() {
+        System.out.println("AddBetController onSceneDisplayed() called");
         about(null);
     }
 
     @FXML
     void saveBet(ActionEvent event) {
-        // First check if there's a bet to save
-        if (bet == null) {
-            statusLabelL.setTextFill(Color.RED);
-            statusLabelL.setText("No bet data to save. Please create a bet first.");
-            return;
-        }
+        try {
+            System.out.println("saveBet method called");
+
+            // First check if there's a bet to save
+            if (bet == null) {
+                statusLabelL.setTextFill(Color.RED);
+                statusLabelL.setText("No bet data to save. Please create a bet first.");
+                return;
+            }
 
         Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);
         confirmDialog.setTitle("Save Bet");
@@ -271,6 +302,12 @@ public class AddBetController implements SceneController {
         } else {
             // Return to main page
             sceneManager.switchToScene("Main");
+        }
+        } catch (Exception e) {
+            statusLabelL.setTextFill(Color.RED);
+            statusLabelL.setText("An error occurred while saving the bet");
+            System.out.println("Exception in saveBet: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 }
