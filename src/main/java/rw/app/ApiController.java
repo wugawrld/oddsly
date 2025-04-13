@@ -42,8 +42,6 @@ public class ApiController implements Initializable{
         nbaEngine.load("https://www.espn.com/nba/standings");
 
         WebEngine nhlEngine = nhlWebView.getEngine();
-        nhlEngine.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) " +
-                "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36");
         nhlEngine.load("https://www.espn.com/nhl/standings");
 
         // initialize/start scheduledservice to perform API updates every 5 seconds
