@@ -93,47 +93,35 @@ public class ApiController implements Initializable{
                             .GET()
                             .build();
 
-            // send requests synchronously
-            HttpResponse<String> responseNBAStandings = httpClient.send(standingsNBA, BodyHandlers.ofString());
-            HttpResponse<String> responseNHLStandings = httpClient.send(standingsNHL, BodyHandlers.ofString());
+                    // run HTTP requests synchronously
+                    HttpResponse<String> responseNBA = httpClient.send(standingsNBA, BodyHandlers.ofString());
+                    HttpResponse<String> responseNHL = httpClient.send(standingsNHL, BodyHandlers.ofString());
 
-            // check for status code; send data combined
-            String finishedStandingsDataNBA = responseNBAStandings.statusCode() == 200 ? responseNBAStandings.body() : "Error: " + responseNBAStandings.statusCode();
-            String finishedStandingsDataNHL = responseNHLStandings.statusCode() == 200 ? responseNHLStandings.body() : "Error: " + responseNHLStandings.statusCode();
-            String combinedData = "NBA Standings:\n" + finishedStandingsDataNBA + "\n\nNHL Standings:\n" + finishedStandingsDataNHL;
+                    // get responses: status is 200, use body; otherwise, store error message
+                    String finishedStandingsDataNBA = responseNBA.statusCode() == 200 ?
+                            responseNBA.body() : "Error: " + responseNBA.statusCode();
+                    String finishedStandingsDataNHL = responseNHL.statusCode() == 200 ?
+                            responseNHL.body() : "Error: " + responseNHL.statusCode();
 
-            // parse json
-            Gson gson = new Gson();
-            StandingsData nbaData = gson.fromJson(finishedStandingsDataNBA, StandingsData.class);
-            StandingsData nhlData = gson.fromJson(finishedStandingsDataNHL, StandingsData.class);
+                    // parse JSON
+                    Gson gson = new Gson();
+                    StandingsData nbaData = gson.fromJson(finishedStandingsDataNBA, StandingsData.class);
+                    StandingsData nhlData = gson.fromJson(finishedStandingsDataNHL, StandingsData.class);
 
-            // build strings based on json
-            String nbaDisplay = (nbaData != null && nbaData.getFullViewLink() != null) ?
-                    "NBA Standings Link: " + nbaData.getFullViewLink().getText() +
-                            "\nURL: " + nbaData.getFullViewLink().getHref() :
-                    finishedStandingsDataNBA;
-            String nhlDisplay = (nhlData != null && nhlData.getFullViewLink() != null) ?
-                    "NHL Standings Link: " + nhlData.getFullViewLink().getText() +
-                            "\nURL: " + nhlData.getFullViewLink().getHref() :
-                    finishedStandingsDataNHL;
-            String finalData = "NBA Standings:\n" + nbaDisplay + "\n\nNHL Standings:\n" + nhlDisplay;
-
-            // update ui
-            Platform.runLater(() -> textArea.setText(finalData));
-            // load into webview
-            WebEngine webEngine = nbaWebView.getEngine();
-            webEngine.load("https://www.espn.com/nba/standings");
-            WebEngine nhlEngine = nhlWebView.getEngine();
-            nhlEngine.load("https://www.espn.com/nhl/standings");
-
-        } catch (URISyntaxException uriSyntaxException) {
-            Platform.runLater(() -> textArea.setText("Invalid URI: " + uriSyntaxException.getMessage()));
-
-        } catch (Exception exception) {
-            Platform.runLater(() -> textArea.setText("Failed to fetch data: " + exception.getMessage()));
+                    // build display strings
+                    String nbaDisplay = (nbaData != null && nbaData.getFullViewLink() != null) ?
+                            "NBA Standings Link: " + nbaData.getFullViewLink().getText() +
+                                    "\nURL: " + nbaData.getFullViewLink().getHref() :
+                            finishedStandingsDataNBA;
+                    String nhlDisplay = (nhlData != null && nhlData.getFullViewLink() != null) ?
+                            "NHL Standings Link: " + nhlData.getFullViewLink().getText() +
+                                    "\nURL: " + nhlData.getFullViewLink().getHref() :
+                            finishedStandingsDataNHL;
+                    return "NBA Standings:\n" + nbaDisplay + "\n\nNHL Standings:\n" + nhlDisplay;
+                }
+            };
         }
-}
-
+    }
 // safety method to clean up scheduler when app shuts down
 public void shutDown() {
     if (scheduledExecutorService != null) {
