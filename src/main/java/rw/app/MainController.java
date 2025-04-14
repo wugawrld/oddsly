@@ -601,7 +601,33 @@ public class MainController implements SceneController {
 
     @FXML
     void profitLossByType(ActionEvent event) {
+        Map<BetType, Double> profitByType = getProfitLossByBetType();
 
+        try {
+            Stage summaryStage = new Stage();
+
+            summaryStage.setTitle("Profit/Loss by Bet Type");
+
+            StringBuilder stringBuilder = new StringBuilder();
+
+            stringBuilder.append("\nProfit/Loss by Bet Type:");
+            for (BetType type : BetType.values()) {
+                double profit = profitByType.getOrDefault(type, 0.0);
+                stringBuilder.append(type.getDisplayName()).append(": $").append(String.format("%.2f", profit));
+            }
+
+            TextArea textArea = new TextArea(stringBuilder.toString());
+            textArea.setEditable(false);
+            textArea.setPrefWidth(400);
+            textArea.setPrefHeight(300);
+
+            Scene scene = new Scene(textArea, 500, 400);
+            summaryStage.setScene(scene);
+            summaryStage.show();
+        } catch (Exception e) {
+            statusLabelL.setTextFill(Color.RED);
+            statusLabelL.setText("Error showing data analysis");
+        }
     }
 
     // Get profit/loss by bet type.
