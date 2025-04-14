@@ -513,16 +513,16 @@ public class MainController implements SceneController {
         BetType mostProfitable = getMostProfitableBetType();
         if (mostProfitable != null) {
             clearDataView();
-            displayMessage("\nMost profitable bet type: " + mostProfitable.getDisplayName());
+            displayMessage("Most profitable bet type: " + mostProfitable.getDisplayName());
         } else {
             clearDataView();
-            displayMessage("\nNo profitable bet types found.");
+            displayMessage("No profitable bet types found.");
         }
     }
 
     @FXML
     void profitLossSummary(ActionEvent event) {
-
+        // If no bets are available display "No bets to analyze".
         if (bets.isEmpty()) {
             clearDataView();
             displayMessage("No bets to analyze");
@@ -530,6 +530,7 @@ public class MainController implements SceneController {
         }
 
         try {
+            // From original profit loss summary calculations in Demo 2.
             int totalBets = bets.size();
             int winningBets = 0;
             int losingBets = 0;
@@ -548,6 +549,7 @@ public class MainController implements SceneController {
                 }
             }
 
+            // Create new stage / pop up to display data.
             Stage summaryStage = new Stage();
             summaryStage.setTitle("Profit / Loss Summary");
 
@@ -602,7 +604,6 @@ public class MainController implements SceneController {
     @FXML
     void profitLossByType(ActionEvent event) {
         Map<BetType, Double> profitByType = getProfitLossByBetType();
-
         try {
             Stage summaryStage = new Stage();
 
@@ -614,6 +615,7 @@ public class MainController implements SceneController {
             for (BetType type : BetType.values()) {
                 double profit = profitByType.getOrDefault(type, 0.0);
                 stringBuilder.append(type.getDisplayName()).append(": $").append(String.format("%.2f", profit));
+                stringBuilder.append("\n");
             }
 
             TextArea textArea = new TextArea(stringBuilder.toString());
