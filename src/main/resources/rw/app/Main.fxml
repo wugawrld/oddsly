@@ -8,6 +8,7 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SplitMenuButton?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -19,7 +20,6 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.scene.control.Button?>
 <VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rw.app.MainController">
     <children>
         <MenuBar VBox.vgrow="NEVER">
@@ -61,9 +61,15 @@
                         <RadioButton fx:id="viewTeamsButton" layoutX="22.0" layoutY="113.0" mnemonicParsing="false" onAction="#viewTeams" text="View Teams" />
                         <RadioButton fx:id="viewPlayersButton" layoutX="20.0" layoutY="159.0" mnemonicParsing="false" onAction="#viewPlayers" text="View Players" />
                   <Button fx:id="editDataButton" layoutX="18.0" layoutY="469.0" mnemonicParsing="false" onAction="#editData" text="Edit" />
-                  <Button fx:id="deleteDataButton" layoutX="18.0" layoutY="510.0" mnemonicParsing="false" onAction="#deleteData" text="Delete" />
-                        <Button layoutX="20.0" layoutY="540.0" mnemonicParsing="false"
-                                onAction="#openAPIWindow" text="Open API Window" />
+                  <Button fx:id="deleteDataButton" layoutX="19.0" layoutY="504.0" mnemonicParsing="false" onAction="#deleteData" text="Delete" />
+                        <Button layoutX="20.0" layoutY="540.0" mnemonicParsing="false" onAction="#openAPIWindow" text="Open API Window" />
+                  <SplitMenuButton layoutX="12.0" layoutY="283.0" mnemonicParsing="false" text="Calculations and Analysis">
+                    <items>
+                      <MenuItem mnemonicParsing="false" onAction="#profitLossSummary" text="Profit / Loss Summary" />
+                      <MenuItem mnemonicParsing="false" onAction="#mostProfitable" text="Most Profitable Bet" />
+                        <MenuItem mnemonicParsing="false" onAction="#profitLossByType" text="Profit / Loss by Bet Type" />
+                    </items>
+                  </SplitMenuButton>
                     </children>
                 </AnchorPane>
                 <ScrollPane prefHeight="-1.0" prefWidth="-1.0">

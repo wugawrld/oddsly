@@ -16,6 +16,7 @@ import rw.data.Bet;
 import rw.data.Player;
 import rw.data.SavedData;
 import rw.data.Team;
+import rw.enums.BetOutcome;
 
 import java.util.Optional;
 
@@ -491,6 +492,63 @@ public class MainController implements SceneController {
         Label label = new Label(message);
         label.setMinWidth(400);
         gridPane.add(label,0,0);
+    }
+
+    @FXML
+    void mostProfitable(ActionEvent event) {
+
+    }
+
+    @FXML
+    void profitLossSummary(ActionEvent event) {
+        clearDataView();
+
+        if (bets.isEmpty()) {
+            displayMessage("No bets to analyze");
+            return;
+        }
+
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("\n===== Profit/Loss Summary =====");
+
+        int totalBets = bets.size();
+        int winningBets = 0;
+        int losingBets = 0;
+        int pendingBets = 0;
+
+        for (Bet bet : bets) {
+            if (bet.getOutcome() == BetOutcome.WIN) {
+                winningBets++;
+            } else if (bet.getOutcome() == BetOutcome.LOSS) {
+                losingBets++;
+            } else {
+                pendingBets++;
+            }
+        }
+
+        double total = 0;
+        for (Bet bet : bets) {
+            if (bet.getOutcome() == BetOutcome.WIN) {
+                total += bet.getPayout() - bet.getAmountWagered();
+            } else if (bet.getOutcome() == BetOutcome.LOSS) {
+                total -= bet.getAmountWagered();
+            }
+        }
+
+        stringBuilder.append("Total bets: " + totalBets);
+        stringBuilder.append("Winning bets: " + winningBets);
+        stringBuilder.append("Losing bets: " + losingBets);
+        stringBuilder.append("Pending bets: " + pendingBets);
+        stringBuilder.append("Total profit/loss: $" + String.format("%.2f", total));
+
+        TextArea textArea = new TextArea(stringBuilder.toString());
+
+        gridPane.add(textArea,0,0);
+    }
+
+    @FXML
+    void profitLossByType(ActionEvent event) {
+
     }
 
     @FXML
