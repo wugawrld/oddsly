@@ -84,15 +84,15 @@
                                           <Color red="0.624" green="0.624" blue="0.624" fx:id="x21" />
                                       </textFill>
                                   </Label>
-                        <GridPane fx:id="gridPane" layoutX="14.0" layoutY="27.0">
+                        <GridPane fx:id="gridPane" layoutX="10.0" layoutY="27.0">
                           <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="ALWAYS" maxWidth="400.0" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="ALWAYS" maxWidth="400.0" minWidth="10.0" prefWidth="100.0" />
                           </columnConstraints>
                           <rowConstraints>
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="37.599996948242186" minHeight="10.0" prefHeight="32.799993896484374" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="28.80000915527343" minHeight="10.0" prefHeight="28.000006103515616" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="400.0" minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+                            <RowConstraints maxHeight="400.0" minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+                            <RowConstraints maxHeight="400.0" minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
                           </rowConstraints>
                         </GridPane>
                             </children>

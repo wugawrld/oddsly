@@ -1,11 +1,14 @@
 package rw.app;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -17,12 +20,11 @@ import rw.data.Player;
 import rw.data.SavedData;
 import rw.data.Team;
 import rw.enums.BetOutcome;
+import rw.enums.BetType;
 
-import java.util.Optional;
+import java.util.*;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainController implements SceneController {
 
@@ -57,6 +59,12 @@ public class MainController implements SceneController {
     private RadioButton viewTeamsButton;
 
     @FXML
+    private Label statusLabelL;
+
+    @FXML
+    private Label statusLabelR;
+
+    @FXML
     private Button deleteDataButton;
 
     @FXML
@@ -84,6 +92,12 @@ public class MainController implements SceneController {
 
     @Override
     public void initialize() {
+        statusLabelL.setTextFill(Color.BLACK);
+        statusLabelL.setText("");
+
+        statusLabelR.setTextFill(Color.BLACK);
+        statusLabelR.setText("Welcome to the Sports Bet Tracker");
+
         ToggleGroup viewGroup = new ToggleGroup();
         viewBetButton.setToggleGroup(viewGroup);
         viewTeamsButton.setToggleGroup(viewGroup);
@@ -496,59 +510,137 @@ public class MainController implements SceneController {
 
     @FXML
     void mostProfitable(ActionEvent event) {
-
+        BetType mostProfitable = getMostProfitableBetType();
+        if (mostProfitable != null) {
+            clearDataView();
+            displayMessage("\nMost profitable bet type: " + mostProfitable.getDisplayName());
+        } else {
+            clearDataView();
+            displayMessage("\nNo profitable bet types found.");
+        }
     }
 
     @FXML
     void profitLossSummary(ActionEvent event) {
-        clearDataView();
 
         if (bets.isEmpty()) {
+            clearDataView();
             displayMessage("No bets to analyze");
             return;
         }
 
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("\n===== Profit/Loss Summary =====");
+        try {
+            int totalBets = bets.size();
+            int winningBets = 0;
+            int losingBets = 0;
+            int pendingBets = 0;
+            double totalProfit = 0;
 
-        int totalBets = bets.size();
-        int winningBets = 0;
-        int losingBets = 0;
-        int pendingBets = 0;
-
-        for (Bet bet : bets) {
-            if (bet.getOutcome() == BetOutcome.WIN) {
-                winningBets++;
-            } else if (bet.getOutcome() == BetOutcome.LOSS) {
-                losingBets++;
-            } else {
-                pendingBets++;
+            for (Bet bet : bets) {
+                if (bet.getOutcome() == BetOutcome.WIN) {
+                    winningBets++;
+                    totalProfit += bet.getPayout() - bet.getAmountWagered();
+                } else if (bet.getOutcome() == BetOutcome.LOSS) {
+                    losingBets++;
+                    totalProfit -= bet.getAmountWagered();
+                } else {
+                    pendingBets++;
+                }
             }
+
+            Stage summaryStage = new Stage();
+            summaryStage.setTitle("Profit / Loss Summary");
+
+            TabPane tabPane = new TabPane();
+
+            Tab textTab = new Tab("Summary");
+            textTab.setClosable(false);
+
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("===== PROFIT/LOSS SUMMARY =====\n\n");
+            stringBuilder.append("Total bets: ").append(totalBets).append("\n");
+            stringBuilder.append("Winning bets: ").append(winningBets).append("\n");
+            stringBuilder.append("Losing bets: ").append(losingBets).append("\n");
+            stringBuilder.append("Pending bets: ").append(pendingBets).append("\n\n");
+            stringBuilder.append("Total profit/loss: $").append(String.format("%.2f", totalProfit)).append("\n");
+
+            double winRate = totalBets > 0 ? (double) winningBets / totalBets * 100 : 0;
+            stringBuilder.append("Win rate: ").append(String.format("%.1f%%", winRate));
+
+            TextArea textArea = new TextArea(stringBuilder.toString());
+            textArea.setEditable(false);
+            textArea.setPrefWidth(400);
+            textArea.setPrefHeight(300);
+            textTab.setContent(textArea);
+
+            Tab chartTab = new Tab("Visual Chart");
+            chartTab.setClosable(false);
+
+            PieChart pieChart = new PieChart();
+            pieChart.setTitle("Bet Outcomes");
+
+            ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
+                    new PieChart.Data("Wins", winningBets),
+                    new PieChart.Data("Losses", losingBets),
+                    new PieChart.Data("Pending", pendingBets)
+            );
+            pieChart.setData(pieChartData);
+            chartTab.setContent(pieChart);
+
+            tabPane.getTabs().addAll(textTab, chartTab);
+
+            Scene scene = new Scene(tabPane, 500, 400);
+            summaryStage.setScene(scene);
+            summaryStage.show();
+
+        } catch (Exception e) {
+            statusLabelL.setTextFill(Color.RED);
+            statusLabelL.setText("Error showing data analysis");
         }
-
-        double total = 0;
-        for (Bet bet : bets) {
-            if (bet.getOutcome() == BetOutcome.WIN) {
-                total += bet.getPayout() - bet.getAmountWagered();
-            } else if (bet.getOutcome() == BetOutcome.LOSS) {
-                total -= bet.getAmountWagered();
-            }
-        }
-
-        stringBuilder.append("Total bets: " + totalBets);
-        stringBuilder.append("Winning bets: " + winningBets);
-        stringBuilder.append("Losing bets: " + losingBets);
-        stringBuilder.append("Pending bets: " + pendingBets);
-        stringBuilder.append("Total profit/loss: $" + String.format("%.2f", total));
-
-        TextArea textArea = new TextArea(stringBuilder.toString());
-
-        gridPane.add(textArea,0,0);
     }
 
     @FXML
     void profitLossByType(ActionEvent event) {
 
+    }
+
+    // Get profit/loss by bet type.
+    public Map<BetType, Double> getProfitLossByBetType() {
+        Map<BetType, Double> profitByType = new HashMap<>();
+        Map<BetType, Integer> countByType = new HashMap<>();
+
+        for (Bet bet : bets) {
+            if (bet.getOutcome() != BetOutcome.PENDING) {
+                BetType type = bet.getBetType();
+                double currentProfit = profitByType.getOrDefault(type, 0.0);
+                int currentCount = countByType.getOrDefault(type, 0);
+
+                if (bet.getOutcome() == BetOutcome.WIN) {
+                    currentProfit += bet.getPayout() - bet.getAmountWagered();
+                } else {
+                    currentProfit -= bet.getAmountWagered();
+                }
+
+                profitByType.put(type, currentProfit);
+                countByType.put(type, currentCount + 1);
+            }
+        }
+        return profitByType;
+    }
+
+    // Find the most profitable bet type.
+    public BetType getMostProfitableBetType() {
+        Map<BetType, Double> profitByType = getProfitLossByBetType();
+        BetType mostProfitable = null;
+        double highestProfit = Double.NEGATIVE_INFINITY;
+
+        for (Map.Entry<BetType, Double> entry : profitByType.entrySet()) {
+            if (entry.getValue() > highestProfit) {
+                highestProfit = entry.getValue();
+                mostProfitable = entry.getKey();
+            }
+        }
+        return mostProfitable;
     }
 
     @FXML
