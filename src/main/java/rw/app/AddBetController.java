@@ -147,7 +147,7 @@ public class AddBetController implements SceneController {
     private Boolean fieldsEmpty() {
         return amountWagered.getText().isEmpty() || odds.getText().isEmpty()
                 || team1.getText().isEmpty() || team2.getText().isEmpty()
-                || league.getText().isEmpty();
+                || league.getText().isEmpty() || gameDate.getValue() == null;
     }
 
     @FXML
@@ -263,7 +263,35 @@ public class AddBetController implements SceneController {
     @Override
     public void onSceneDisplayed() {
         System.out.println("AddBetController onSceneDisplayed() called");
+
+            // Clear all form fields
+            clearBetForm();
+
+            // Reset labels
+            statusLabelL.setTextFill(Color.BLACK);
+            statusLabelL.setText("");
+
+            statusLabelR.setTextFill(Color.BLACK);
+            statusLabelR.setText("Enter info to create new bet.");
+
         about(null);
+    }
+
+    private void clearBetForm() {
+        team1.clear();
+        team2.clear();
+        amountWagered.clear();
+        odds.clear();
+        league.clear();
+        gameDate.setValue(LocalDate.now());
+
+        // Set default bet type
+        moneyLineButton.setSelected(true);
+        overUnderButton.setSelected(false);
+        pointSpreadButton.setSelected(false);
+
+        // Reset the bet object
+        bet = null;
     }
 
     @FXML
@@ -290,18 +318,11 @@ public class AddBetController implements SceneController {
 
             Optional<ButtonType> result = confirmDialog.showAndWait();
             if (result.get() == addAnotherButton) {
-                // Clear the form for a new bet
-                team1.clear();
-                team2.clear();
-                amountWagered.clear();
-                odds.clear();
-                league.clear();
-                gameDate.setValue(LocalDate.now());
-                moneyLineButton.setSelected(true);
-                bet = null;
+                // clear the form for a new bet
+                clearBetForm();
                 statusLabelL.setText("Enter information for a new bet");
             } else {
-                // Return to main page
+                // return to main page
                 sceneManager.switchToScene("Main");
             }
         } catch (Exception e) {
