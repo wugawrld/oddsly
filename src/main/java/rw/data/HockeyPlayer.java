@@ -1,6 +1,6 @@
 package rw.data;
 /**
- * CPSC 233 Project Main class ...
+ * CPSC 233 Project HockeyPlayer class ...
  * @author Jarod Rideout, Risha Vaghani, Sardar Waheed
  * @email jarod.rideout@ucalgary.ca, risha.vaghani@ucalgary.ca, sardar.waheed@ucalgary.ca
  * @tutorial Tutorial 1 Tuesdays 11:00 - 13:00

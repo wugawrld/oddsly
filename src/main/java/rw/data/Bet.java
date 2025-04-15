@@ -15,7 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 /**
- * CPSC 233 Project Main class ...
+ * CPSC 233 Project Bet class ...
  * @author Jarod Rideout, Risha Vaghani, Sardar Waheed
  * @email jarod.rideout@ucalgary.ca, risha.vaghani@ucalgary.ca, sardar.waheed@ucalgary.ca
  * @tutorial Tutorial 1 Tuesdays 11:00 - 13:00
