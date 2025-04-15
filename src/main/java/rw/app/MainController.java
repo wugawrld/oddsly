@@ -26,13 +26,18 @@ import java.io.*;
 
 public class MainController implements SceneController {
 
+    // private lists for bets, players, and teams. They can be added to view AddBet, AddTeam, and AddPlayer scenes
+    // through the addNewX public methods.
     private static List<Bet> bets = new ArrayList<>();
     private static List<Player> players = new ArrayList<>();
     private static List<Team> teams = new ArrayList<>();
+
+    // variables used to keep track of which Bet, Player, or Team is selected for editing or deleting purposes.
     private Bet selectedBet;
     private Player selectedPlayer;
     private Team selectedTeam;
 
+    // public methods for add new bets, players, or teams.
     public static void addNewBet(Bet bet) {
         bets.add(bet);
         System.out.println("Bet added to list: " + bet.toString() + ", Total bets: " + bets.size());
@@ -48,6 +53,7 @@ public class MainController implements SceneController {
         System.out.println("Team added to list: " + team.toString() + ", Total teams: " + teams.size());
     }
 
+    // an instance of SceneManager allowing for the switching between different scenes.
     private SceneManager sceneManager;
 
     @FXML
@@ -92,13 +98,16 @@ public class MainController implements SceneController {
     }
 
     @Override
+    // initialization of the Main scene
     public void initialize() {
+        // set status labels to empty / welcome message
         statusLabelL.setTextFill(Color.BLACK);
         statusLabelL.setText("");
 
         statusLabelR.setTextFill(Color.BLACK);
         statusLabelR.setText("Welcome to the Sports Bet Tracker");
 
+        // put the radio buttons for viewing data into their own toggle group to avoid multi selecting
         ToggleGroup viewGroup = new ToggleGroup();
         viewBetButton.setToggleGroup(viewGroup);
         viewTeamsButton.setToggleGroup(viewGroup);
@@ -134,21 +143,25 @@ public class MainController implements SceneController {
     }
 
     @FXML
+    // switches scene to AddBet scene if clicked in menu.
     void addBet(ActionEvent event) {
         sceneManager.switchToScene("AddBet");
     }
 
     @FXML
+    // switches scene to AddPlayer if clicked in menu.
     void addPlayer(ActionEvent event) {
         sceneManager.switchToScene("AddPlayer");
     }
 
     @FXML
+    // switches scene to AddTeam if clicked in menu.
     void addTeam(ActionEvent event) {
         sceneManager.switchToScene("AddTeam");
     }
 
     @FXML
+    // method that saves data
     void saveData(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save Bet Tracking Data");
@@ -181,6 +194,7 @@ public class MainController implements SceneController {
     }
 
     @FXML
+    // method that loads data
     void loadData(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Load Bet Tracking Data");
@@ -250,11 +264,13 @@ public class MainController implements SceneController {
     }
 
     @FXML
+    // exits program if clicked in menu.
     void quit(ActionEvent event) {
         Platform.exit();
     }
 
     @FXML
+    // calls specified method for each data type to edit them if they are selected.
     void editData(ActionEvent event) {
         if (selectedBet != null) {
             editBet();
@@ -263,12 +279,15 @@ public class MainController implements SceneController {
         } else if (selectedPlayer != null) {
             editPlayer();
         } else {
+            // else tells user to select something to edit
             statusLabelL.setTextFill(Color.RED);
             statusLabelL.setText("Please select an item to edit");
         }
     }
 
+    // method for editing bets. Does this through a popup dialog scene.
     void editBet() {
+        // if no bet is selected it prompts user to select something.
         if (selectedBet == null) {
             statusLabelL.setTextFill(Color.RED);
             statusLabelL.setText("Please select a bet to edit");
@@ -277,18 +296,22 @@ public class MainController implements SceneController {
 
         try {
 
+            // create new dialog window with title and head indicating which bet is being edited.
             Dialog<ButtonType> dialog = new Dialog<>();
             dialog.setTitle("Edit Bet");
             dialog.setHeaderText("Edit bet: " + selectedBet.getId());
 
+            // create a cancel and save button
             ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
             dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
 
+            // create a new grid pane setting dimensions
             GridPane editBetGrid = new GridPane();
             editBetGrid.setHgap(10);
             editBetGrid.setVgap(10);
             editBetGrid.setPadding(new Insets(20, 150, 10, 10));
 
+            // create new textboxes for user input and a ComboBox (selector box) with options for Bet Outcomes.
             TextField team1Input = new TextField(selectedBet.getTeam1());
             TextField team2Input = new TextField(selectedBet.getTeam2());
             ComboBox<BetOutcome> outcomeCombo = new ComboBox<>();
@@ -297,6 +320,7 @@ public class MainController implements SceneController {
             TextField wagerInput = new TextField(String.valueOf(selectedBet.getAmountWagered()));
             TextField oddsInput = new TextField(String.valueOf(selectedBet.getOdds()));
 
+            // add each field to the grid pane.
             editBetGrid.add(new Label("Home Team:"), 0, 0);
             editBetGrid.add(team1Input, 1, 0);
             editBetGrid.add(new Label("Away Team:"), 0, 1);
@@ -308,8 +332,10 @@ public class MainController implements SceneController {
             editBetGrid.add(new Label("Odds:"), 0, 4);
             editBetGrid.add(oddsInput, 1, 4);
 
+            // add the grid pane to the dialog window
             dialog.getDialogPane().setContent(editBetGrid);
 
+            // if user selects the save button, set information edited to the information of that bet.
             Optional<ButtonType> result = dialog.showAndWait();
             if (result.isPresent() && result.get() == saveButtonType) {
                 selectedBet.setTeam1(team1Input.getText());
@@ -317,11 +343,13 @@ public class MainController implements SceneController {
                 selectedBet.setOutcome(outcomeCombo.getValue());
 
                 try {
+                    // special case to check for number inputs
                     double wager = Double.parseDouble(wagerInput.getText());
                     double odds = Double.parseDouble(oddsInput.getText());
                     selectedBet.setAmountWagered(wager);
                     selectedBet.setOdds(odds);
                 } catch (NumberFormatException e) {
+                    // give pop up error alert if input is incorrect
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Input Error");
                     alert.setHeaderText("Invalid Number Format");
@@ -330,6 +358,7 @@ public class MainController implements SceneController {
                     return;
                 }
 
+                // give an updated view of bets and give success status to user.
                 viewBets();
 
                 statusLabelL.setTextFill(Color.GREEN);
@@ -342,6 +371,7 @@ public class MainController implements SceneController {
     }
 
     void editTeam() {
+        // if no team is selected it prompts user to select something.
         if (selectedTeam == null) {
             statusLabelL.setTextFill(Color.RED);
             statusLabelL.setText("Please select a team to edit");
@@ -349,24 +379,28 @@ public class MainController implements SceneController {
         }
 
         try {
-
+            // create new dialog window with title and head indicating which team is being edited.
             Dialog<ButtonType> dialog = new Dialog<>();
             dialog.setTitle("Edit Team");
             dialog.setHeaderText("Edit team: " + selectedTeam.getTeamName());
 
+            // create a cancel and save button
             ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
             dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
 
+            // create a new grid pane setting dimensions
             GridPane editTeamGrid = new GridPane();
             editTeamGrid.setHgap(10);
             editTeamGrid.setVgap(10);
             editTeamGrid.setPadding(new Insets(20, 150, 10, 10));
 
+            // create new textboxes for user input
             TextField winsInput = new TextField(String.valueOf(selectedTeam.getWins()));
             TextField lossesInput = new TextField(String.valueOf(selectedTeam.getLosses()));
             TextField psInput = new TextField(String.valueOf(selectedTeam.getPointsScored()));
             TextField paInput = new TextField(String.valueOf(selectedTeam.getPointsAllowed()));
 
+            // add each field to the grid pane.
             editTeamGrid.add(new Label("Wins:"), 0, 0);
             editTeamGrid.add(winsInput, 1, 0);
             editTeamGrid.add(new Label("Losses:"), 0, 1);
@@ -376,8 +410,10 @@ public class MainController implements SceneController {
             editTeamGrid.add(new Label("Points Allowed:"), 0, 3);
             editTeamGrid.add(paInput, 1, 3);
 
+            // add the grid pane to the dialog window
             dialog.getDialogPane().setContent(editTeamGrid);
 
+            // if user selects the save button, set information edited to the information of that team.
             Optional<ButtonType> result = dialog.showAndWait();
             if (result.isPresent() && result.get() == saveButtonType) {
                 try {
@@ -386,6 +422,7 @@ public class MainController implements SceneController {
                     selectedTeam.setPointsScored(Integer.parseInt(psInput.getText()));
                     selectedTeam.setPointsAllowed(Integer.parseInt(paInput.getText()));
                 } catch (NumberFormatException e) {
+                    // give pop up error alert if input is incorrect
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Input Error");
                     alert.setHeaderText("Invalid Number Format");
@@ -394,6 +431,7 @@ public class MainController implements SceneController {
                     return;
                 }
 
+                // give an updated view of teams and give success status to user.
                 viewTeams();
 
                 statusLabelL.setTextFill(Color.GREEN);
