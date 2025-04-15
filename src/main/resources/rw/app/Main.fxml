@@ -62,7 +62,7 @@
                         <RadioButton fx:id="viewPlayersButton" layoutX="20.0" layoutY="159.0" mnemonicParsing="false" onAction="#viewPlayers" text="View Players" />
                   <Button fx:id="editDataButton" layoutX="18.0" layoutY="469.0" mnemonicParsing="false" onAction="#editData" text="Edit" />
                   <Button fx:id="deleteDataButton" layoutX="19.0" layoutY="504.0" mnemonicParsing="false" onAction="#deleteData" text="Delete" />
-                        <Button layoutX="20.0" layoutY="540.0" mnemonicParsing="false" onAction="#openAPIWindow" text="Open API Window" />
+                        <Button layoutX="20.0" layoutY="540.0" mnemonicParsing="false" onAction="#openAPIWindow" text="NBA/NHL Standings" />
                   <SplitMenuButton layoutX="12.0" layoutY="283.0" mnemonicParsing="false" text="Calculations and Analysis">
                     <items>
                       <MenuItem mnemonicParsing="false" onAction="#profitLossSummary" text="Profit / Loss Summary" />

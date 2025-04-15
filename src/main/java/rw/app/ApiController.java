@@ -36,7 +36,7 @@ import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.util.ResourceBundle;
 
-public class ApiController implements Initializable{
+public class ApiController implements Initializable {
 
     @FXML
     private TextArea textArea;
@@ -120,35 +120,3 @@ public class ApiController implements Initializable{
         thread.start();
         }
     }
-    // model class for the "fullViewLink"
-    public static class FullViewLink {
-        private String text;
-        private String href;
-
-        public String getText() {
-            return text;
-        }
-        public void setText(String text) {
-            this.text = text;
-        }
-
-        public String getHref() {
-            return href;
-        }
-        public void setHref(String href) {
-            this.href = href;
-        }
-    }
-
-    // model class for JSON structure for standings data
-    public static class StandingsData {
-        private FullViewLink fullViewLink;
-
-        public FullViewLink getFullViewLink() {
-            return fullViewLink;
-        }
-        public void setFullViewLink(FullViewLink fullViewLink) {
-            this.fullViewLink = fullViewLink;
-        }
-    }
-}
