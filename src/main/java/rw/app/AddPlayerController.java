@@ -267,17 +267,21 @@ public class AddPlayerController implements SceneController {
                 league = "NHL";
                 if (checkTeam(teamN, league)) {
                     player = new HockeyPlayer(playerN, teamN, p, ppg, apg);
-                    MainController.addNewPlayer(player);
-                    statusLabelL.setTextFill(Color.GREEN);
-                    statusLabelL.setText(String.format("%s added successfully! Click Save to Continue", playerName.getText()));
+                    if (!MainController.checkPlayers(playerN)) {
+                        MainController.addNewPlayer(player);
+                        statusLabelL.setTextFill(Color.GREEN);
+                        statusLabelL.setText(String.format("%s added successfully! Click Save to Continue", playerName.getText()));
 
-                    // Show success notification popup
-                    Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-                    successAlert.setTitle("Success");
-                    successAlert.setHeaderText(null);
-                    successAlert.setContentText("Player created successfully!");
-                    successAlert.showAndWait();
-
+                        // Show success notification popup
+                        Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                        successAlert.setTitle("Success");
+                        successAlert.setHeaderText(null);
+                        successAlert.setContentText("Player created successfully!");
+                        successAlert.showAndWait();
+                    } else {
+                        statusLabelL.setTextFill(Color.RED);
+                        statusLabelL.setText(String.format("%s is already being tracked", playerN));
+                    }
                 } else {
                     statusLabelL.setTextFill(Color.RED);
                     statusLabelL.setText(String.format("Invalid Team: %s, for league %s", teamName.getText(), league));

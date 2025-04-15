@@ -60,6 +60,33 @@ public class MainController implements SceneController {
         System.out.println("Team added to list: " + team.toString() + ", Total teams: " + teams.size());
     }
 
+    public static Boolean checkBets(Bet betCheck) {
+        for (Bet bet : bets) {
+            if (bet.equals(betCheck)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static Boolean checkTeams(String teamName) {
+        for (Team team : teams) {
+            if (team.getTeamName().equals(teamName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static Boolean checkPlayers(String playerName) {
+        for (Player player : players) {
+            if (player.getPlayerName().equals(playerName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     // an instance of SceneManager allowing for the switching between different scenes.
     private SceneManager sceneManager;
 

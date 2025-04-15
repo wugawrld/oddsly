@@ -123,19 +123,23 @@ public class AddTeamController implements SceneController {
                 if (Objects.equals(c, "Eastern") || Objects.equals(c, "Western")) {
                     if (checkTeam(tName)) {
                         team = new Team(tName, c, win, loss, ps, pa);
-                        MainController.addNewTeam(team);
-                        statusLabelL.setTextFill(Color.GREEN);
-                        statusLabelL.setText(String.format("%s added successfully! Click Save to Continue!", teamName.getText()));
-                        statusLabelR.setTextFill(Color.BLACK);
-                        statusLabelR.setText("Don't forget to save your data");
+                        if (!MainController.checkTeams(tName)) {
+                            MainController.addNewTeam(team);
+                            statusLabelL.setTextFill(Color.GREEN);
+                            statusLabelL.setText(String.format("%s added successfully! Click Save to Continue!", teamName.getText()));
+                            statusLabelR.setTextFill(Color.BLACK);
+                            statusLabelR.setText("Don't forget to save your data");
 
-                        // Show success notification popup
-                        Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-                        successAlert.setTitle("Success");
-                        successAlert.setHeaderText(null);
-                        successAlert.setContentText("Team created successfully!");
-                        successAlert.showAndWait();
-
+                            // Show success notification popup
+                            Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                            successAlert.setTitle("Success");
+                            successAlert.setHeaderText(null);
+                            successAlert.setContentText("Team created successfully!");
+                            successAlert.showAndWait();
+                        } else {
+                            statusLabelL.setTextFill(Color.RED);
+                            statusLabelL.setText(String.format("%s is already being tracked", tName));
+                        }
                     } else {
                         statusLabelL.setTextFill(Color.RED);
                         statusLabelL.setText(String.format("Invalid Team: %s, for league %s conference %s", teamName.getText(), league.getText(), conference.getText()));

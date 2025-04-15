@@ -194,20 +194,24 @@ public class AddBetController implements SceneController {
                 if (checkTeam(homeTeam)) {
                     if (checkTeam(awayTeam)) {
                         bet = new Bet(betID, date, homeTeam, awayTeam, betType, betAmount, multiplier, betOutcome, leagueBet);
-                        MainController.addNewBet(bet);
-                        betCounter++;
+                        if (!MainController.checkBets(bet)) {
+                            MainController.addNewBet(bet);
+                            betCounter++;
 
-                        // show success notification
-                        statusLabelL.setTextFill(Color.GREEN);
-                        statusLabelL.setText("Bet created successfully! Click Save to Continue.");
+                            // show success notification
+                            statusLabelL.setTextFill(Color.GREEN);
+                            statusLabelL.setText("Bet created successfully! Click Save to Continue.");
 
-                        //show a notification dialog
-                        Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-                        successAlert.setTitle("Success");
-                        successAlert.setHeaderText(null);
-                        successAlert.setContentText("Created bet successfully!");
-                        successAlert.showAndWait();
-
+                            //show a notification dialog
+                            Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                            successAlert.setTitle("Success");
+                            successAlert.setHeaderText(null);
+                            successAlert.setContentText("Created bet successfully!");
+                            successAlert.showAndWait();
+                        } else {
+                            statusLabelL.setTextFill(Color.RED);
+                            statusLabelL.setText("Bet already exists, create new bet");
+                        }
                     } else {
                         statusLabelL.setTextFill(Color.RED);
                         statusLabelL.setText(String.format("Invalid Away Team: %s, for league %s", team2.getText(), league.getText()));
