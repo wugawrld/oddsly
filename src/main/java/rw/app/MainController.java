@@ -649,8 +649,7 @@ public class MainController implements SceneController {
             button.setOnAction(event -> {
                 selectedBet = currentBet;
                 statusLabelL.setText("Selected bet: " + selectedBet.getId());
-                statusLabelL.setTextFill(Color.BLACK);
-                button.setToggleGroup(toggleGroup);});
+                statusLabelL.setTextFill(Color.BLACK);});
 
             // sets each of the TextFields to un-editable to avoid user changing them through viewer.
             id.setEditable(false);
