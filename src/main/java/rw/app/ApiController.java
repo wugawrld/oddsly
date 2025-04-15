@@ -2,7 +2,6 @@ package rw.app;
 
 import com.google.gson.Gson;
 import javafx.application.Platform;
-import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -10,7 +9,15 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
-import javafx.util.Duration;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.net.http.HttpResponse.BodyHandlers;
+import java.util.ResourceBundle;
 
 /**
  * CPSC 233 Project API Controller ...
@@ -71,8 +78,8 @@ public class ApiController implements Initializable{
                         .build();
 
                     // run HTTP requests synchronously
-                HttpResponse<String> responseNBA = httpClient.send(standingsNBA, BodyHandlers.ofString());
-                HttpResponse<String> responseNHL = httpClient.send(standingsNHL, BodyHandlers.ofString());
+                    HttpResponse<String> responseNBA = httpClient.send(standingsNBA, BodyHandlers.ofString());
+                    HttpResponse<String> responseNHL = httpClient.send(standingsNHL, BodyHandlers.ofString());
 
                     // get responses: status is 200, use body; otherwise, store error message
                     String finishedStandingsDataNBA = responseNBA.statusCode() == 200 ?
@@ -97,15 +104,22 @@ public class ApiController implements Initializable{
                     return "NBA Standings:\n" + nbaDisplay + "\n\nNHL Standings:\n" + nhlDisplay;
                 }
             };
-        }
-    }
-    // safety method to clean up the service on app shut down
-    public void shutDown() {
-        if (apiFetchService != null) {
-            apiFetchService.cancel();
-        }
-    }
+        // update ui after task completion: handlers run on FX thread
+        fetchTask.setOnSucceeded(event -> {
+            String finalData = fetchTask.getValue();
+            textArea.setText(finalData);
+        });
+        fetchTask.setOnFailed(event -> {
+            Throwable exception = fetchTask.getException();
+            textArea.setText("Failed to fetch data: " + (exception != null ? exception.getMessage(): "Error"));
+        });
 
+        // run task on background
+        Thread thread = new Thread(fetchTask);
+        thread.setDaemon(true);
+        thread.start();
+        }
+    }
     // model class for the "fullViewLink"
     public static class FullViewLink {
         private String text;
