@@ -370,6 +370,7 @@ public class MainController implements SceneController {
         }
     }
 
+    // method for editing teams. Does this through a popup dialog scene.
     void editTeam() {
         // if no team is selected it prompts user to select something.
         if (selectedTeam == null) {
@@ -443,7 +444,9 @@ public class MainController implements SceneController {
         }
     }
 
+    // method for editing players. Does this through a popup dialog scene.
     void editPlayer() {
+        // if no player is selected it prompts user to select something.
         if (selectedPlayer == null) {
             statusLabelL.setTextFill(Color.RED);
             statusLabelL.setText("Please select a player to edit");
@@ -451,26 +454,29 @@ public class MainController implements SceneController {
         }
 
         try {
-
+            // create new dialog window with title and head indicating which player is being edited.
             Dialog<ButtonType> dialog = new Dialog<>();
             dialog.setTitle("Edit Player");
             dialog.setHeaderText("Edit player: " + selectedPlayer.getPlayerName());
 
+            // create a cancel and save button
             ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
             dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
 
+            // create a new grid pane setting dimensions
             GridPane editBetGrid = new GridPane();
             editBetGrid.setHgap(10);
             editBetGrid.setVgap(10);
             editBetGrid.setPadding(new Insets(20, 150, 10, 10));
 
+            // create new textboxes for user input
             TextField teamNameInput = new TextField(selectedPlayer.getTeamName());
             TextField positionInput = new TextField(selectedPlayer.getPosition());
-
             TextField rpgInput = new TextField(String.valueOf(selectedPlayer.getStat("reboundsPerGame")));
             TextField apgInput = new TextField(String.valueOf(selectedPlayer.getStat("assistsPerGame")));
             TextField ppgInput = new TextField(String.valueOf(selectedPlayer.getStat("pointsPerGame")));
 
+            // add each field to the grid pane.
             editBetGrid.add(new Label("Team:"), 0, 0);
             editBetGrid.add(teamNameInput, 1, 0);
             editBetGrid.add(new Label("Position:"), 0, 1);
@@ -482,9 +488,10 @@ public class MainController implements SceneController {
             editBetGrid.add(new Label("Points Per Game:"), 0, 4);
             editBetGrid.add(ppgInput, 1, 4);
 
-
+            // add the grid pane to the dialog window
             dialog.getDialogPane().setContent(editBetGrid);
 
+            // if user selects the save button, set information edited to the information of that player.
             Optional<ButtonType> result = dialog.showAndWait();
             if (result.isPresent() && result.get() == saveButtonType) {
                 try {
@@ -501,7 +508,7 @@ public class MainController implements SceneController {
                         selectedPlayer.setStat("pointsPerGame", ppg);
                     }
                 } catch (NumberFormatException e) {
-
+                    // give pop up error alert if input is incorrect
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Input Error");
                     alert.setHeaderText("Invalid Number Format");
@@ -510,6 +517,7 @@ public class MainController implements SceneController {
                     return;
                 }
 
+                // give an updated view of players and give success status to user.
                 viewPlayers();
 
                 statusLabelL.setTextFill(Color.GREEN);
@@ -522,6 +530,7 @@ public class MainController implements SceneController {
     }
 
     @FXML
+    // calls specified method for each data type to delete them if they are selected.
     void deleteData(ActionEvent event) {
         if (selectedBet != null) {
             deleteBet();
@@ -530,27 +539,37 @@ public class MainController implements SceneController {
         } else if (selectedPlayer != null) {
             deletePlayer();
         } else {
+            // else tells user to select something to delete
             statusLabelL.setTextFill(Color.RED);
             statusLabelL.setText("Please select an item to delete");
         }
     }
 
+    // method for deleting bets.
     void deleteBet() {
+        // removes selected bet from bets.
         bets.remove(selectedBet);
+        // updates view of bets and give success message to user.
         viewBets();
         statusLabelL.setTextFill(Color.GREEN);
         statusLabelL.setText("Bet deleted successfully!");
     }
 
+    // method for deleting teams.
     void deleteTeam() {
+        // removes selected team from teams.
         teams.remove(selectedTeam);
+        // updates view of teams and give success message to user.
         viewTeams();
         statusLabelL.setTextFill(Color.GREEN);
         statusLabelL.setText("Team deleted successfully!");
     }
 
+    // method for deleting players.
     void deletePlayer() {
+        // removes selected player from players.
         players.remove(selectedPlayer);
+        // updates view of players and give success message to user.
         viewPlayers();
         statusLabelL.setTextFill(Color.GREEN);
         statusLabelL.setText("Player deleted successfully!");
@@ -564,10 +583,12 @@ public class MainController implements SceneController {
         System.out.println("viewBets method called, total bets: " + bets.size());
 
         if (bets.isEmpty()) {
+            // if no bets, displays message to user.
             displayMessage("No bets to display");
             return;
         }
 
+        // creates TextField headers for each component of bets.
         TextField idHeader = new TextField("ID");
         TextField dateHeader = new TextField("Date");
         TextField homeHeader = new TextField("Home Team");
@@ -577,6 +598,7 @@ public class MainController implements SceneController {
         TextField oddsHeader = new TextField("Odds");
         TextField outComeHeader = new TextField("Outcome");
 
+        // sets the style of the header to header field
         idHeader.getStyleClass().add("header-field");
         dateHeader.getStyleClass().add("header-field");
         homeHeader.getStyleClass().add("header-field");
@@ -586,6 +608,7 @@ public class MainController implements SceneController {
         oddsHeader.getStyleClass().add("header-field");
         outComeHeader.getStyleClass().add("header-field");
 
+        // sets each of the TextFields to un-editable to avoid user changing them through viewer.
         idHeader.setEditable(false);
         dateHeader.setEditable(false);
         homeHeader.setEditable(false);
@@ -595,6 +618,7 @@ public class MainController implements SceneController {
         oddsHeader.setEditable(false);
         outComeHeader.setEditable(false);
 
+        // add each header to the gridPane
         gridPane.add(idHeader,1,0);
         gridPane.add(dateHeader,2,0);
         gridPane.add(homeHeader,3,0);
@@ -604,6 +628,7 @@ public class MainController implements SceneController {
         gridPane.add(oddsHeader,7,0);
         gridPane.add(outComeHeader,8,0);
 
+        // for each bet add the corresponding data value under each header for each bet.
         int rowIndex = 1;
         for (Bet bet : bets) {
             TextField id = new TextField(bet.getId());
@@ -614,16 +639,19 @@ public class MainController implements SceneController {
             TextField wager = new TextField(String.valueOf(bet.getAmountWagered()));
             TextField odds = new TextField(String.valueOf(bet.getOdds()));
             TextField outcome = new TextField(String.valueOf(bet.getOutcome()));
+            // create a selector button for each bet.
             ToggleGroup toggleGroup = new ToggleGroup();
             RadioButton button = new RadioButton();
             final Bet currentBet = bet;
 
+            // if button for a bet is selected it sets the selectedBet value to that bet.
             button.setOnAction(event -> {
                 selectedBet = currentBet;
                 statusLabelL.setText("Selected bet: " + selectedBet.getId());
                 statusLabelL.setTextFill(Color.BLACK);
-            button.setToggleGroup(toggleGroup);});
+                button.setToggleGroup(toggleGroup);});
 
+            // sets each of the TextFields to un-editable to avoid user changing them through viewer.
             id.setEditable(false);
             date.setEditable(false);
             home.setEditable(false);
@@ -633,6 +661,7 @@ public class MainController implements SceneController {
             odds.setEditable(false);
             outcome.setEditable(false);
 
+            // add each field to grid pane
             gridPane.add(button,0,rowIndex);
             gridPane.add(id, 1, rowIndex);
             gridPane.add(date, 2, rowIndex);
@@ -643,6 +672,7 @@ public class MainController implements SceneController {
             gridPane.add(odds, 7, rowIndex);
             gridPane.add(outcome, 8, rowIndex);
 
+            // move to the next row.
             rowIndex++;
         }
     }
@@ -655,10 +685,12 @@ public class MainController implements SceneController {
         System.out.println("viewPlayers method called, total players: " + players.size());
 
         if (players.isEmpty()) {
+            // if no players, displays message to user.
             displayMessage("No players to display");
             return;
         }
 
+        // creates TextField headers for each component of players.
         TextField playerNameHeader = new TextField("Name");
         TextField teamNameHeader = new TextField("Team");
         TextField positionHeader = new TextField("Position");
@@ -667,6 +699,7 @@ public class MainController implements SceneController {
         TextField rpgHeader = new TextField("RPG");
         TextField apgHeader = new TextField("APG");
 
+        // sets the style of the header to header field
         playerNameHeader.getStyleClass().add("header-field");
         teamNameHeader.getStyleClass().add("header-field");
         positionHeader.getStyleClass().add("header-field");
@@ -675,6 +708,7 @@ public class MainController implements SceneController {
         rpgHeader.getStyleClass().add("header-field");
         apgHeader.getStyleClass().add("header-field");
 
+        // sets each of the TextFields to un-editable to avoid user changing them through viewer.
         playerNameHeader.setEditable(false);
         teamNameHeader.setEditable(false);
         positionHeader.setEditable(false);
@@ -683,6 +717,7 @@ public class MainController implements SceneController {
         rpgHeader.setEditable(false);
         apgHeader.setEditable(false);
 
+        // add each header to the gridPane
         gridPane.add(playerNameHeader,1,0);
         gridPane.add(teamNameHeader,2,0);
         gridPane.add(positionHeader,3,0);
@@ -691,6 +726,7 @@ public class MainController implements SceneController {
         gridPane.add(rpgHeader,6,0);
         gridPane.add(apgHeader,7,0);
 
+        // for each player add the corresponding data value under each header for each player.
         int rowIndex = 1;
         for (Player player : players) {
             TextField playerName = new TextField(player.getPlayerName());
@@ -700,19 +736,21 @@ public class MainController implements SceneController {
             TextField ppg = new TextField(String.valueOf(player.getStat("pointsPerGame")));
             TextField rpg = new TextField(String.valueOf(player.getStat("reboundsPerGame")));
             TextField apg = new TextField(String.valueOf(player.getStat("assistsPerGame")));
+            // create a selector button for each player.
             ToggleGroup toggleGroup = new ToggleGroup();
             RadioButton button = new RadioButton();
             button.setToggleGroup(toggleGroup);
 
+            // if button for a player is selected it sets the selectedBet value to that player.
             final Player currentPlayer = player;
             button.setOnAction(event -> {
                 selectedPlayer = currentPlayer;
                 selectedBet = null;  // Clear other selections
                 selectedTeam = null;
                 statusLabelL.setText("Selected player: " + selectedPlayer.getPlayerName());
-                statusLabelL.setTextFill(Color.BLACK);
-            });
+                statusLabelL.setTextFill(Color.BLACK);});
 
+            // sets each of the TextFields to un-editable to avoid user changing them through viewer.
             playerName.setEditable(false);
             teamName.setEditable(false);
             position.setEditable(false);
@@ -721,6 +759,7 @@ public class MainController implements SceneController {
             rpg.setEditable(false);
             apg.setEditable(false);
 
+            // add each field to grid pane
             gridPane.add(button,0,rowIndex);
             gridPane.add(playerName, 1, rowIndex);
             gridPane.add(teamName, 2, rowIndex);
@@ -730,6 +769,7 @@ public class MainController implements SceneController {
             gridPane.add(rpg, 6, rowIndex);
             gridPane.add(apg, 7, rowIndex);
 
+            // move to the next row.
             rowIndex++;
         }
     }
@@ -742,10 +782,12 @@ public class MainController implements SceneController {
         System.out.println("viewTeams method called, total teams: " + teams.size());
 
         if (teams.isEmpty()) {
+            // if no teams, displays message to user.
             displayMessage("No teams to display");
             return;
         }
 
+        // creates TextField headers for each component of teams.
         TextField teamNameHeader = new TextField("Team");
         TextField conferenceHeader = new TextField("Conference");
         TextField winsHeader = new TextField("Wins");
@@ -753,6 +795,7 @@ public class MainController implements SceneController {
         TextField pointsScoredHeader = new TextField("Points Scored");
         TextField pointsAllowedHeader = new TextField("Points Allowed");
 
+        // sets the style of the header to header field
         teamNameHeader.getStyleClass().add("header-field");
         conferenceHeader.getStyleClass().add("header-field");
         winsHeader.getStyleClass().add("header-field");
@@ -760,6 +803,7 @@ public class MainController implements SceneController {
         pointsScoredHeader.getStyleClass().add("header-field");
         pointsAllowedHeader.getStyleClass().add("header-field");
 
+        // sets each of the TextFields to un-editable to avoid user changing them through viewer.
         teamNameHeader.setEditable(false);
         conferenceHeader.setEditable(false);
         winsHeader.setEditable(false);
@@ -767,6 +811,7 @@ public class MainController implements SceneController {
         pointsScoredHeader.setEditable(false);
         pointsAllowedHeader.setEditable(false);
 
+        // add each header to the gridPane
         gridPane.add(teamNameHeader,1,0);
         gridPane.add(conferenceHeader,2,0);
         gridPane.add(winsHeader,3,0);
@@ -774,6 +819,7 @@ public class MainController implements SceneController {
         gridPane.add(pointsScoredHeader,5,0);
         gridPane.add(pointsAllowedHeader,6,0);
 
+        // for each team add the corresponding data value under each header for each team.
         int rowIndex = 1;
         for (Team team : teams) {
             TextField teamName = new TextField(team.getTeamName());
@@ -782,20 +828,21 @@ public class MainController implements SceneController {
             TextField losses = new TextField(String.valueOf(team.getLosses()));
             TextField pS = new TextField(String.valueOf(team.getPointsScored()));
             TextField pA = new TextField(String.valueOf(team.getPointsAllowed()));
+            // create a selector button for each team.
             ToggleGroup toggleGroup = new ToggleGroup();
             RadioButton button = new RadioButton();
             button.setToggleGroup(toggleGroup);
 
+            // if button for a team is selected it sets the selectedBet value to that team.
             final Team currentTeam = team;
             button.setOnAction(event -> {
                 selectedTeam = currentTeam;
                 selectedBet = null;  // Clear other selections
                 selectedPlayer = null;
                 statusLabelL.setText("Selected team: " + selectedTeam.getTeamName());
-                statusLabelL.setTextFill(Color.BLACK);
-            });
+                statusLabelL.setTextFill(Color.BLACK);});
 
-
+            // sets each of the TextFields to un-editable to avoid user changing them through viewer.
             teamName.setEditable(false);
             conference.setEditable(false);
             wins.setEditable(false);
@@ -803,6 +850,7 @@ public class MainController implements SceneController {
             pS.setEditable(false);
             pA.setEditable(false);
 
+            // add each field to grid pane
             gridPane.add(button, 0, rowIndex);
             gridPane.add(teamName, 1, rowIndex);
             gridPane.add(conference, 2, rowIndex);
@@ -811,6 +859,7 @@ public class MainController implements SceneController {
             gridPane.add(pS, 5, rowIndex);
             gridPane.add(pA, 6, rowIndex);
 
+            // move to the next row.
             rowIndex++;
         }
     }
