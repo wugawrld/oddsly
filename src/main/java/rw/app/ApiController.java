@@ -40,61 +40,39 @@ public class ApiController implements Initializable{
     @FXML
     private WebView nhlWebView;
 
-    // service for periodic updating
-    private ApiFetchService apiFetchService;
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // initalize webviwer and load urls with custom agent
+        // initalize webviwer and load urls
         WebEngine nbaEngine = nbaWebView.getEngine();
         nbaEngine.load("https://www.espn.com/nba/standings");
 
         WebEngine nhlEngine = nhlWebView.getEngine();
         nhlEngine.load("https://www.espn.com/nhl/standings");
-
-        // initialize/start scheduledservice to perform API updates every 5 seconds
-        apiFetchService = new ApiFetchService();
-        apiFetchService.setDelay(Duration.ZERO);
-        apiFetchService.setPeriod(Duration.seconds(5));
-
-        // when service succeeds, update ui (this handler runs on the FX thread)
-        apiFetchService.setOnSucceeded(event -> {
-            String finalData = apiFetchService.getValue();
-            textArea.setText(finalData);
-        });
-        // when service fails, update ui with error message
-        apiFetchService.setOnFailed(event -> {
-            Throwable apiFetchServiceException = apiFetchService.getException();
-            textArea.setText("Failed to fetch data: " + (apiFetchServiceException != null ? apiFetchServiceException.getMessage() : "unknown error"));
-        });
-        apiFetchService.start();
     }
 
-    // method to fetch api, parse json, and update ui periodically (when fetch api is clicked)
-    private static class ApiFetchService extends ScheduledService<String> {
-        @Override
-        protected Task<String> createTask() {
-            return new Task<>() {
-                @Override
-                protected String call() throws Exception {
-                    HttpClient httpClient = HttpClient.newHttpClient();
+    // method to fetch api, parse json
+    public void fetchAPI() {
+        Task<String> fetchTask = new Task<>() {
+            @Override
+            protected String call() throws Exception {
+                HttpClient httpClient = HttpClient.newHttpClient();
 
-                    // define endpoints for NBA and NHL standings
-                    String endpointStandingsNBA = "https://site.web.api.espn.com/apis/site/v2/sports/basketball/nba/standings?season=2025";
-                    String endpointStandingsNHL = "https://site.web.api.espn.com/apis/site/v2/sports/hockey/nhl/standings?season=2025";
+                // endpoints for NBA and NHL standings
+                String endpointStandingsNBA = "https://site.web.api.espn.com/apis/site/v2/sports/basketball/nba/standings?season=2025";
+                String endpointStandingsNHL = "https://site.web.api.espn.com/apis/site/v2/sports/hockey/nhl/standings?season=2025";
 
-                    HttpRequest standingsNBA = HttpRequest.newBuilder()
-                            .uri(new URI(endpointStandingsNBA))
-                            .GET()
-                            .build();
-                    HttpRequest standingsNHL = HttpRequest.newBuilder()
-                            .uri(new URI(endpointStandingsNHL))
-                            .GET()
-                            .build();
+                HttpRequest standingsNBA = HttpRequest.newBuilder()
+                        .uri(new URI(endpointStandingsNBA))
+                        .GET()
+                        .build();
+                HttpRequest standingsNHL = HttpRequest.newBuilder()
+                        .uri(new URI(endpointStandingsNHL))
+                        .GET()
+                        .build();
 
                     // run HTTP requests synchronously
-                    HttpResponse<String> responseNBA = httpClient.send(standingsNBA, BodyHandlers.ofString());
-                    HttpResponse<String> responseNHL = httpClient.send(standingsNHL, BodyHandlers.ofString());
+                HttpResponse<String> responseNBA = httpClient.send(standingsNBA, BodyHandlers.ofString());
+                HttpResponse<String> responseNHL = httpClient.send(standingsNHL, BodyHandlers.ofString());
 
                     // get responses: status is 200, use body; otherwise, store error message
                     String finishedStandingsDataNBA = responseNBA.statusCode() == 200 ?
