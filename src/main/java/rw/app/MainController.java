@@ -1,4 +1,11 @@
 package rw.app;
+/**
+ * CPSC 233 Project MainController ...
+ * @author Jarod Rideout, Risha Vaghani, Sardar Waheed
+ * @email jarod.rideout@ucalgary.ca, risha.vaghani@ucalgary.ca, sardar.waheed@ucalgary.ca
+ * @tutorial Tutorial 1 Tuesdays 11:00 - 13:00
+ * @version 3.0
+ */
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;

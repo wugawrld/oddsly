@@ -4,6 +4,12 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
+ * CPSC 233 Project Main class ...
+ * @author Jarod Rideout, Risha Vaghani, Sardar Waheed
+ * @email jarod.rideout@ucalgary.ca, risha.vaghani@ucalgary.ca, sardar.waheed@ucalgary.ca
+ * @tutorial Tutorial 1 Tuesdays 11:00 - 13:00
+ * @version 3.0
+ *
  * Container class for serializing all application data.
  * This class holds lists of bets, players, and teams for saving and loading.
  */

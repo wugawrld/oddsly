@@ -1,4 +1,11 @@
 package rw.data;
+/**
+ * CPSC 233 Project Main class ...
+ * @author Jarod Rideout, Risha Vaghani, Sardar Waheed
+ * @email jarod.rideout@ucalgary.ca, risha.vaghani@ucalgary.ca, sardar.waheed@ucalgary.ca
+ * @tutorial Tutorial 1 Tuesdays 11:00 - 13:00
+ * @version 3.0
+ */
 
 public class HockeyPlayer extends Player {
     private static final String POINTS_PER_GAME = "pointsPerGame";

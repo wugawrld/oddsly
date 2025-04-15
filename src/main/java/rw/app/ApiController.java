@@ -12,6 +12,14 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.util.Duration;
 
+/**
+ * CPSC 233 Project Main class ...
+ * @author Jarod Rideout, Risha Vaghani, Sardar Waheed
+ * @email jarod.rideout@ucalgary.ca, risha.vaghani@ucalgary.ca, sardar.waheed@ucalgary.ca
+ * @tutorial Tutorial 1 Tuesdays 11:00 - 13:00
+ * @version 3.0
+ */
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;

@@ -1,4 +1,11 @@
 package rw.data;
+/**
+ * CPSC 233 Project Main class ...
+ * @author Jarod Rideout, Risha Vaghani, Sardar Waheed
+ * @email jarod.rideout@ucalgary.ca, risha.vaghani@ucalgary.ca, sardar.waheed@ucalgary.ca
+ * @tutorial Tutorial 1 Tuesdays 11:00 - 13:00
+ * @version 3.0
+ */
 
 // This class represents a basketball player, extending the abstract Player class.
  public class BasketballPlayer extends Player {

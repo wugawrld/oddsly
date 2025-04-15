@@ -1,4 +1,5 @@
-package rw.data; /**
+package rw.data;
+/**
  * CPSC 233 Project DataManager class ...
  * @author Jarod Rideout, Risha Vaghani, Sardar Waheed
  * @email jarod.rideout@ucalgary.ca, risha.vaghani@ucalgary.ca, sardar.waheed@ucalgary.ca

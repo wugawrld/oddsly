@@ -4,7 +4,7 @@ package rw.data;
  * @author Jarod Rideout, Risha Vaghani, Sardar Waheed
  * @email jarod.rideout@ucalgary.ca, risha.vaghani@ucalgary.cra, sardar.waheed@ucalgary.ca
  * @tutorial Tutorial 1 Tuesdays 11:00 - 13:00
- * @version 2.0
+ * @version 3.0
  * This class is meant to take in initial data from the user for their bet.
  */
 

@@ -9,6 +9,12 @@ import java.util.Date;
 import java.util.Scanner;
 
 /**
+ * CPSC 233 Project Main class ...
+ * @author Jarod Rideout, Risha Vaghani, Sardar Waheed
+ * @email jarod.rideout@ucalgary.ca, risha.vaghani@ucalgary.ca, sardar.waheed@ucalgary.ca
+ * @tutorial Tutorial 1 Tuesdays 11:00 - 13:00
+ * @version 3.0
+
  * This class provides validation methods for user input.
  */
 
