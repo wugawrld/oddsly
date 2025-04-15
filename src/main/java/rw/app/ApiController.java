@@ -13,7 +13,7 @@ import javafx.scene.web.WebView;
 import javafx.util.Duration;
 
 /**
- * CPSC 233 Project Main class ...
+ * CPSC 233 Project API Controller ...
  * @author Jarod Rideout, Risha Vaghani, Sardar Waheed
  * @email jarod.rideout@ucalgary.ca, risha.vaghani@ucalgary.ca, sardar.waheed@ucalgary.ca
  * @tutorial Tutorial 1 Tuesdays 11:00 - 13:00
