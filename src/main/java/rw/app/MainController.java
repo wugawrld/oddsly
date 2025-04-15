@@ -347,7 +347,7 @@ public class MainController implements SceneController {
             if (result.isPresent() && result.get() == saveButtonType) {
                 selectedBet.setTeam1(team1Input.getText());
                 selectedBet.setTeam2(team2Input.getText());
-                selectedBet.setOutcome(outcomeCombo.getValue());
+                selectedBet.updateOutcome(outcomeCombo.getValue());
 
                 try {
                     // special case to check for number inputs
@@ -917,12 +917,13 @@ public class MainController implements SceneController {
             double totalProfit = 0;
 
             for (Bet bet : bets) {
+                System.out.println(bet.getPayout());
                 if (bet.getOutcome() == BetOutcome.WIN) {
                     winningBets++;
-                    totalProfit += bet.getPayout() - bet.getAmountWagered();
+                    totalProfit += bet.getProfitLoss();
                 } else if (bet.getOutcome() == BetOutcome.LOSS) {
                     losingBets++;
-                    totalProfit -= bet.getAmountWagered();
+                    totalProfit += bet.getProfitLoss();
                 } else {
                     pendingBets++;
                 }
