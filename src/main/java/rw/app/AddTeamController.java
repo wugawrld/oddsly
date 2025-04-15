@@ -213,10 +213,33 @@ public class AddTeamController implements SceneController {
 
     @Override
     public void onSceneDisplayed() {
+        // Clear all form fields
+        clearTeamForm();
+
+        // Reset labels
+        statusLabelL.setTextFill(Color.BLACK);
+        statusLabelL.setText("");
+
+        statusLabelR.setTextFill(Color.BLACK);
+        statusLabelR.setText("Enter info to add new team");
+
         about(null);
     }
 
-    @FXML
+    private void clearTeamForm() {
+        teamName.clear();
+        conference.clear();
+        league.clear();
+        wins.clear();
+        losses.clear();
+        pointsScored.clear();
+        pointsAllowed.clear();
+
+        // Reset the team object
+        team = null;
+    }
+
+        @FXML
     void saveTeam(ActionEvent event) {
         try {
             System.out.println("saveTeam method called");
@@ -240,14 +263,7 @@ public class AddTeamController implements SceneController {
         Optional<ButtonType> result = confirmDialog.showAndWait();
         if (result.get() == addAnotherButton) {
             // Clear the form for a new team
-            teamName.clear();
-            conference.clear();
-            league.clear();
-            wins.clear();
-            losses.clear();
-            pointsScored.clear();
-            pointsAllowed.clear();
-            team = null;
+            clearTeamForm();
             statusLabelL.setText("Enter information for a new team");
         } else {
             // Return to main page
