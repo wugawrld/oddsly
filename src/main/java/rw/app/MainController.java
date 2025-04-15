@@ -576,6 +576,7 @@ public class MainController implements SceneController {
     }
 
     @FXML
+    // method for viewing bets.
     void viewBets() {
         // Clear any existing content
         clearDataView();
@@ -678,6 +679,7 @@ public class MainController implements SceneController {
     }
 
     @FXML
+    // method for viewing players.
     void viewPlayers() {
         // Clear any existing content
         clearDataView();
@@ -775,6 +777,7 @@ public class MainController implements SceneController {
     }
 
     @FXML
+    // method for viewing teams.
     void viewTeams() {
         // Clear any existing content
         clearDataView();
@@ -864,10 +867,12 @@ public class MainController implements SceneController {
         }
     }
 
+    // method for clearing data in Data Viewer pane.
     private void clearDataView() {
         gridPane.getChildren().clear();
     }
 
+    // method for displaying message in Data Viewer pane.
     private void displayMessage(String message) {
         Label label = new Label(message);
         label.setMinWidth(400);
@@ -875,6 +880,7 @@ public class MainController implements SceneController {
     }
 
     @FXML
+    // method that displays the most profitable Bet Type
     void mostProfitable(ActionEvent event) {
         BetType mostProfitable = getMostProfitableBetType();
         if (mostProfitable != null) {
@@ -887,6 +893,7 @@ public class MainController implements SceneController {
     }
 
     @FXML
+    // method that displays profit / loss summary in pop up window
     void profitLossSummary(ActionEvent event) {
         // If no bets are available display "No bets to analyze".
         if (bets.isEmpty()) {
@@ -919,11 +926,14 @@ public class MainController implements SceneController {
             Stage summaryStage = new Stage();
             summaryStage.setTitle("Profit / Loss Summary");
 
+            // create new tab pane that allows different tabs of information.
             TabPane tabPane = new TabPane();
 
+            // create a new summary tab.
             Tab textTab = new Tab("Summary");
             textTab.setClosable(false);
 
+            // display key bet information. Same as in demo 2.
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("===== PROFIT/LOSS SUMMARY =====\n\n");
             stringBuilder.append("Total bets: ").append(totalBets).append("\n");
@@ -935,18 +945,22 @@ public class MainController implements SceneController {
             double winRate = totalBets > 0 ? (double) winningBets / totalBets * 100 : 0;
             stringBuilder.append("Win rate: ").append(String.format("%.1f%%", winRate));
 
+            // add information to TextArea and display it in the textTab
             TextArea textArea = new TextArea(stringBuilder.toString());
             textArea.setEditable(false);
             textArea.setPrefWidth(400);
             textArea.setPrefHeight(300);
             textTab.setContent(textArea);
 
+            // create a chart tab to visualize the data
             Tab chartTab = new Tab("Visual Chart");
             chartTab.setClosable(false);
 
+            // create a pie chart to display bet outcomes.
             PieChart pieChart = new PieChart();
             pieChart.setTitle("Bet Outcomes");
 
+            // add number of bets for each outcome to chart.
             ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
                     new PieChart.Data("Wins", winningBets),
                     new PieChart.Data("Losses", losingBets),
@@ -955,8 +969,10 @@ public class MainController implements SceneController {
             pieChart.setData(pieChartData);
             chartTab.setContent(pieChart);
 
+            // add both tabs to tabPane
             tabPane.getTabs().addAll(textTab, chartTab);
 
+            // create and launch scene pop up
             Scene scene = new Scene(tabPane, 500, 400);
             summaryStage.setScene(scene);
             summaryStage.show();
@@ -968,12 +984,13 @@ public class MainController implements SceneController {
     }
 
     @FXML
+    // method that displays profit / loss by bet type in pop up window
     void profitLossByType(ActionEvent event) {
         Map<BetType, Double> profitByType = getProfitLossByBetType();
         try {
-            Stage summaryStage = new Stage();
+            Stage byTypeStage = new Stage();
 
-            summaryStage.setTitle("Profit/Loss by Bet Type");
+            byTypeStage.setTitle("Profit/Loss by Bet Type");
 
             StringBuilder stringBuilder = new StringBuilder();
 
@@ -990,8 +1007,8 @@ public class MainController implements SceneController {
             textArea.setPrefHeight(300);
 
             Scene scene = new Scene(textArea, 500, 400);
-            summaryStage.setScene(scene);
-            summaryStage.show();
+            byTypeStage.setScene(scene);
+            byTypeStage.show();
         } catch (Exception e) {
             statusLabelL.setTextFill(Color.RED);
             statusLabelL.setText("Error showing data analysis");
