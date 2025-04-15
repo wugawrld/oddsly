@@ -174,7 +174,7 @@ public class AddPlayerController implements SceneController {
     private Boolean fieldsEmpty() {
         return playerName.getText().isEmpty() || teamName.getText().isEmpty()
                 || position.getText().isEmpty() || pointsField.getText().isEmpty()
-                || assistsField.getText().isEmpty();
+                || (assistsField != null && assistsField.getText().isEmpty());
     }
 
     @FXML
@@ -280,8 +280,11 @@ public class AddPlayerController implements SceneController {
             }
         } catch (NumberFormatException e1) {
             statusLabelL.setTextFill(Color.RED);
-            statusLabelL.setText(String.format("Failed to parse double Points Per Game from %s%n or Assists Per Game from %s", pointsField.getText(), assistsField.getText()));
+            statusLabelL.setText(String.format("Failed to parse double Points Per Game from %s%n or Assists Per Game from %s",
+                    (pointsField != null ? pointsField.getText() : "null"),
+                    (assistsField != null ? assistsField.getText() : "null")));
         }
+
         } catch (Exception e) {
             statusLabelL.setTextFill(Color.RED);
             statusLabelL.setText("An error occurred while creating the player");
@@ -310,8 +313,37 @@ public class AddPlayerController implements SceneController {
 
     @Override
     public void onSceneDisplayed() {
+        // Clear all form fields
+        clearPlayerForm();
+
+        // Reset labels
+        statusLabelL.setTextFill(Color.BLACK);
+        statusLabelL.setText("");
+
+        statusLabelR.setTextFill(Color.BLACK);
+        statusLabelR.setText("Enter info to add new player.");
+
         about(null);
     }
+    private void clearPlayerForm() {
+        playerName.clear();
+        teamName.clear();
+        position.clear();
+        statsField.getChildren().clear();
+
+        // Reset fields to null to avoid NullPointerException when checking if empty
+        pointsField = null;
+        reboundsField = null;
+        assistsField = null;
+
+        // Deselect radio buttons
+        basketballButton.setSelected(false);
+        hockeyButton.setSelected(false);
+
+        // Reset the player object
+        player = null;
+    }
+
 
     @FXML
     void savePlayer(ActionEvent event) {
@@ -338,11 +370,7 @@ public class AddPlayerController implements SceneController {
         Optional<ButtonType> result = confirmDialog.showAndWait();
         if (result.get() == addAnotherButton) {
             // Clear the form for a new player
-            playerName.clear();
-            teamName.clear();
-            position.clear();
-            statsField.getChildren().clear();
-            player = null;
+            clearPlayerForm();
             statusLabelL.setText("Enter information for a new player");
         } else {
             // Return to main page
