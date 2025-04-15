@@ -40,7 +40,7 @@
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="About Sports Bet Tracker" />
+                        <MenuItem mnemonicParsing="false" onAction="#aboutSportsBetTracker" text="About Sports Bet Tracker" />
                     </items>
                 </Menu>
             </menus>
