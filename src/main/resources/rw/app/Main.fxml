@@ -29,8 +29,8 @@
                         <Menu mnemonicParsing="false" text="Add">
                             <items>
                                 <MenuItem mnemonicParsing="false" onAction="#addBet" text="Bet" />
-                                <MenuItem mnemonicParsing="false" onAction="#addPlayer" text="Player" />
                                 <MenuItem mnemonicParsing="false" onAction="#addTeam" text="Team" />
+                                <MenuItem mnemonicParsing="false" onAction="#addPlayer" text="Player" />
                             </items>
                         </Menu>
                         <MenuItem mnemonicParsing="false" onAction="#saveData" text="Save" />
