@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
@@ -31,6 +32,7 @@ public class MainController implements SceneController {
     private static List<Bet> bets = new ArrayList<>();
     private static List<Player> players = new ArrayList<>();
     private static List<Team> teams = new ArrayList<>();
+    private Bet selectedBet;
 
     public static void addNewBet(Bet bet) {
         bets.add(bet);
@@ -255,7 +257,76 @@ public class MainController implements SceneController {
 
     @FXML
     void editData(ActionEvent event) {
-        Platform.exit();
+        if (selectedBet == null) {
+            statusLabelL.setTextFill(Color.RED);
+            statusLabelL.setText("Please select a bet to edit");
+            return;
+        }
+
+        try {
+
+            Dialog<ButtonType> dialog = new Dialog<>();
+            dialog.setTitle("Edit Bet");
+            dialog.setHeaderText("Edit bet: " + selectedBet.getId());
+
+            ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
+            dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
+
+            GridPane editBetGrid = new GridPane();
+            editBetGrid.setHgap(10);
+            editBetGrid.setVgap(10);
+            editBetGrid.setPadding(new Insets(20, 150, 10, 10));
+
+            TextField team1Input = new TextField(selectedBet.getTeam1());
+            TextField team2Input = new TextField(selectedBet.getTeam2());
+            ComboBox<BetOutcome> outcomeCombo = new ComboBox<>();
+            outcomeCombo.getItems().addAll(BetOutcome.values());
+            outcomeCombo.setValue(selectedBet.getOutcome());
+            TextField wagerInput = new TextField(String.valueOf(selectedBet.getAmountWagered()));
+            TextField oddsInput = new TextField(String.valueOf(selectedBet.getOdds()));
+
+            editBetGrid.add(new Label("Home Team:"), 0, 0);
+            editBetGrid.add(team1Input, 1, 0);
+            editBetGrid.add(new Label("Away Team:"), 0, 1);
+            editBetGrid.add(team2Input, 1, 1);
+            editBetGrid.add(new Label("Outcome:"), 0, 2);
+            editBetGrid.add(outcomeCombo, 1, 2);
+            editBetGrid.add(new Label("Wager:"), 0, 3);
+            editBetGrid.add(wagerInput, 1, 3);
+            editBetGrid.add(new Label("Odds:"), 0, 4);
+            editBetGrid.add(oddsInput, 1, 4);
+
+            dialog.getDialogPane().setContent(editBetGrid);
+
+            Optional<ButtonType> result = dialog.showAndWait();
+            if (result.isPresent() && result.get() == saveButtonType) {
+                selectedBet.setTeam1(team1Input.getText());
+                selectedBet.setTeam2(team2Input.getText());
+                selectedBet.setOutcome(outcomeCombo.getValue());
+
+                try {
+                    double wager = Double.parseDouble(wagerInput.getText());
+                    double odds = Double.parseDouble(oddsInput.getText());
+                    selectedBet.setAmountWagered(wager);
+                    selectedBet.setOdds(odds);
+                } catch (NumberFormatException e) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Input Error");
+                    alert.setHeaderText("Invalid Number Format");
+                    alert.setContentText("Please enter valid numbers for wager and odds.");
+                    alert.showAndWait();
+                    return;
+                }
+
+                viewBets();
+
+                statusLabelL.setTextFill(Color.GREEN);
+                statusLabelL.setText("Your bet has been updated successfully!");
+            }
+        } catch (Exception e) {
+            statusLabelL.setTextFill(Color.RED);
+            statusLabelL.setText("Error with edit bet");
+        }
     }
 
     @FXML
@@ -323,7 +394,13 @@ public class MainController implements SceneController {
             TextField outcome = new TextField(String.valueOf(bet.getOutcome()));
             ToggleGroup toggleGroup = new ToggleGroup();
             RadioButton button = new RadioButton();
-            button.setToggleGroup(toggleGroup);
+            final Bet currentBet = bet;
+
+            button.setOnAction(event -> {
+                selectedBet = currentBet;
+                statusLabelL.setText("Selected bet: " + selectedBet.getId());
+                statusLabelL.setTextFill(Color.BLACK);
+            button.setToggleGroup(toggleGroup);});
 
             id.setEditable(false);
             date.setEditable(false);
