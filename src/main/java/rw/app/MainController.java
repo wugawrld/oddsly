@@ -485,7 +485,37 @@ public class MainController implements SceneController {
 
     @FXML
     void deleteData(ActionEvent event) {
-        Platform.exit();
+        if (selectedBet != null) {
+            deleteBet();
+        } else if (selectedTeam != null) {
+            deleteTeam();
+        } else if (selectedPlayer != null) {
+            deletePlayer();
+        } else {
+            statusLabelL.setTextFill(Color.RED);
+            statusLabelL.setText("Please select an item to delete");
+        }
+    }
+
+    void deleteBet() {
+        bets.remove(selectedBet);
+        viewBets();
+        statusLabelL.setTextFill(Color.GREEN);
+        statusLabelL.setText("Bet deleted successfully!");
+    }
+
+    void deleteTeam() {
+        teams.remove(selectedTeam);
+        viewTeams();
+        statusLabelL.setTextFill(Color.GREEN);
+        statusLabelL.setText("Team deleted successfully!");
+    }
+
+    void deletePlayer() {
+        players.remove(selectedPlayer);
+        viewPlayers();
+        statusLabelL.setTextFill(Color.GREEN);
+        statusLabelL.setText("Player deleted successfully!");
     }
 
     @FXML
