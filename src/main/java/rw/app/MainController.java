@@ -1069,4 +1069,69 @@ public class MainController implements SceneController {
             ex.printStackTrace();
         }
     }
+
+    @FXML
+    void aboutSportsBetTracker(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("About Sports Bet Tracker");
+        alert.setHeaderText("Sports Bet Tracker v1.0");
+
+        // Create a TextArea for the content (allows scrolling for longer text)
+        TextArea textArea = new TextArea();
+        textArea.setEditable(false);
+        textArea.setWrapText(true);
+        textArea.setText(
+                "Overview\n" +
+                        "Sports Bet Tracker is a comprehensive application designed to help you track and analyze your sports bets, teams, and player statistics. " +
+                        "Whether you're a casual bettor or a serious sports enthusiast, this tool provides an organized way to monitor your betting performance and sports data.\n\n" +
+
+                        "Features\n\n" +
+
+                        "Bet Tracking\n" +
+                        "• Record different bet types: Moneyline, Point Spread, and Over/Under\n" +
+                        "• Track bets for NHL and NBA games\n" +
+                        "• Monitor win/loss records and calculate profit/loss\n" +
+                        "• Analyze betting performance by bet type\n\n" +
+
+                        "Team Management\n" +
+                        "• Store team information for NHL and NBA\n" +
+                        "• Track team statistics including wins, losses, points scored, and points allowed\n" +
+                        "• Organize teams by conference (Eastern/Western)\n\n" +
+
+                        "Player Statistics\n" +
+                        "• Track both basketball and hockey player statistics\n" +
+                        "• Monitor key performance metrics like points, rebounds, and assists per game\n" +
+                        "• Organize players by team and position\n\n" +
+
+                        "Analysis Tools\n" +
+                        "• Calculate overall profit/loss summaries\n" +
+                        "• Determine your most profitable bet types\n" +
+                        "• Access real-time standings through the API window\n" +
+                        "• Generate visualizations of your betting performance\n\n" +
+
+                        "Tips for Effective Use\n" +
+                        "• Always validate team names against official league listings\n" +
+                        "• Enter odds in decimal format (use the conversion guide for American odds)\n" +
+                        "• Update bet outcomes promptly after games conclude\n" +
+                        "• Use the visualization tools to identify betting patterns\n\n" +
+
+                        "Developed for CPSC 233 Project\n" +
+                        "Developed by Jarod Rideout, Risha Vaghani and Sardar Waheed\n\n" +
+                        "For support,feedback or feature requests, please contact:\n" +
+                        " •jarod.rideout@ucalgary.ca\n" +
+                        " •risha.vaghani@ucalgary.ca\n" +
+                        " •sardar.waheed@ucalgary.ca"
+
+        );
+
+        // Set preferred size
+        textArea.setPrefHeight(400);
+        textArea.setPrefWidth(600);
+
+        // Add the TextArea to the dialog
+        alert.getDialogPane().setContent(textArea);
+
+        // Show the dialog
+        alert.showAndWait();
+    }
 }
