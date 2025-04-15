@@ -16,10 +16,7 @@ import javafx.scene.text.Font;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import rw.data.Bet;
-import rw.data.Player;
-import rw.data.SavedData;
-import rw.data.Team;
+import rw.data.*;
 import rw.enums.BetOutcome;
 import rw.enums.BetType;
 
@@ -33,6 +30,8 @@ public class MainController implements SceneController {
     private static List<Player> players = new ArrayList<>();
     private static List<Team> teams = new ArrayList<>();
     private Bet selectedBet;
+    private Player selectedPlayer;
+    private Team selectedTeam;
 
     public static void addNewBet(Bet bet) {
         bets.add(bet);
@@ -257,6 +256,19 @@ public class MainController implements SceneController {
 
     @FXML
     void editData(ActionEvent event) {
+        if (selectedBet != null) {
+            editBet();
+        } else if (selectedTeam != null) {
+            editTeam();
+        } else if (selectedPlayer != null) {
+            editPlayer();
+        } else {
+            statusLabelL.setTextFill(Color.RED);
+            statusLabelL.setText("Please select an item to edit");
+        }
+    }
+
+    void editBet() {
         if (selectedBet == null) {
             statusLabelL.setTextFill(Color.RED);
             statusLabelL.setText("Please select a bet to edit");
@@ -326,6 +338,148 @@ public class MainController implements SceneController {
         } catch (Exception e) {
             statusLabelL.setTextFill(Color.RED);
             statusLabelL.setText("Error with edit bet");
+        }
+    }
+
+    void editTeam() {
+        if (selectedTeam == null) {
+            statusLabelL.setTextFill(Color.RED);
+            statusLabelL.setText("Please select a team to edit");
+            return;
+        }
+
+        try {
+
+            Dialog<ButtonType> dialog = new Dialog<>();
+            dialog.setTitle("Edit Team");
+            dialog.setHeaderText("Edit team: " + selectedTeam.getTeamName());
+
+            ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
+            dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
+
+            GridPane editTeamGrid = new GridPane();
+            editTeamGrid.setHgap(10);
+            editTeamGrid.setVgap(10);
+            editTeamGrid.setPadding(new Insets(20, 150, 10, 10));
+
+            TextField winsInput = new TextField(String.valueOf(selectedTeam.getWins()));
+            TextField lossesInput = new TextField(String.valueOf(selectedTeam.getLosses()));
+            TextField psInput = new TextField(String.valueOf(selectedTeam.getPointsScored()));
+            TextField paInput = new TextField(String.valueOf(selectedTeam.getPointsAllowed()));
+
+            editTeamGrid.add(new Label("Wins:"), 0, 0);
+            editTeamGrid.add(winsInput, 1, 0);
+            editTeamGrid.add(new Label("Losses:"), 0, 1);
+            editTeamGrid.add(lossesInput, 1, 1);
+            editTeamGrid.add(new Label("Points Scored:"), 0, 2);
+            editTeamGrid.add(psInput, 1, 2);
+            editTeamGrid.add(new Label("Points Allowed:"), 0, 3);
+            editTeamGrid.add(paInput, 1, 3);
+
+            dialog.getDialogPane().setContent(editTeamGrid);
+
+            Optional<ButtonType> result = dialog.showAndWait();
+            if (result.isPresent() && result.get() == saveButtonType) {
+                try {
+                    selectedTeam.setWins(Integer.parseInt(winsInput.getText()));
+                    selectedTeam.setLosses(Integer.parseInt(lossesInput.getText()));
+                    selectedTeam.setPointsScored(Integer.parseInt(psInput.getText()));
+                    selectedTeam.setPointsAllowed(Integer.parseInt(paInput.getText()));
+                } catch (NumberFormatException e) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Input Error");
+                    alert.setHeaderText("Invalid Number Format");
+                    alert.setContentText("Please enter valid numbers for wins, losses, points scored, and points allowed.");
+                    alert.showAndWait();
+                    return;
+                }
+
+                viewTeams();
+
+                statusLabelL.setTextFill(Color.GREEN);
+                statusLabelL.setText("Your team has been updated successfully!");
+            }
+        } catch (Exception e) {
+            statusLabelL.setTextFill(Color.RED);
+            statusLabelL.setText("Error with edit team");
+        }
+    }
+
+    void editPlayer() {
+        if (selectedPlayer == null) {
+            statusLabelL.setTextFill(Color.RED);
+            statusLabelL.setText("Please select a player to edit");
+            return;
+        }
+
+        try {
+
+            Dialog<ButtonType> dialog = new Dialog<>();
+            dialog.setTitle("Edit Player");
+            dialog.setHeaderText("Edit player: " + selectedPlayer.getPlayerName());
+
+            ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
+            dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
+
+            GridPane editBetGrid = new GridPane();
+            editBetGrid.setHgap(10);
+            editBetGrid.setVgap(10);
+            editBetGrid.setPadding(new Insets(20, 150, 10, 10));
+
+            TextField teamNameInput = new TextField(selectedPlayer.getTeamName());
+            TextField positionInput = new TextField(selectedPlayer.getPosition());
+
+            TextField rpgInput = new TextField(String.valueOf(selectedPlayer.getStat("reboundsPerGame")));
+            TextField apgInput = new TextField(String.valueOf(selectedPlayer.getStat("assistsPerGame")));
+            TextField ppgInput = new TextField(String.valueOf(selectedPlayer.getStat("pointsPerGame")));
+
+            editBetGrid.add(new Label("Team:"), 0, 0);
+            editBetGrid.add(teamNameInput, 1, 0);
+            editBetGrid.add(new Label("Position:"), 0, 1);
+            editBetGrid.add(positionInput, 1, 1);
+            editBetGrid.add(new Label("Rebounds Per Game:"), 0, 2);
+            editBetGrid.add(rpgInput, 1, 2);
+            editBetGrid.add(new Label("Assists Per Game:"), 0, 3);
+            editBetGrid.add(apgInput, 1, 3);
+            editBetGrid.add(new Label("Points Per Game:"), 0, 4);
+            editBetGrid.add(ppgInput, 1, 4);
+
+
+            dialog.getDialogPane().setContent(editBetGrid);
+
+            Optional<ButtonType> result = dialog.showAndWait();
+            if (result.isPresent() && result.get() == saveButtonType) {
+                try {
+                    Double rpg = Double.parseDouble(rpgInput.getText());
+                    Double apg = Double.parseDouble(apgInput.getText());
+                    Double ppg = Double.parseDouble(ppgInput.getText());
+
+                    if (selectedPlayer.getPlayerType().equals("BasketballPlayer")) {
+                        selectedPlayer.setStat("reboundsPerGame", rpg);
+                        selectedPlayer.setStat("assistsPerGame", apg);
+                        selectedPlayer.setStat("pointsPerGame", ppg);
+                    } else {
+                        selectedPlayer.setStat("assistsPerGame", apg);
+                        selectedPlayer.setStat("pointsPerGame", ppg);
+                    }
+                } catch (NumberFormatException e) {
+
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Input Error");
+                    alert.setHeaderText("Invalid Number Format");
+                    alert.setContentText("Please enter valid numbers for wager and odds.");
+                    alert.showAndWait();
+                    return;
+                }
+
+                viewPlayers();
+
+                statusLabelL.setTextFill(Color.GREEN);
+                statusLabelL.setText("Your player has been updated successfully!");
+            }
+        } catch (Exception e) {
+            statusLabelL.setTextFill(Color.RED);
+            statusLabelL.setText("Error with edit player");
         }
     }
 
@@ -482,6 +636,15 @@ public class MainController implements SceneController {
             RadioButton button = new RadioButton();
             button.setToggleGroup(toggleGroup);
 
+            final Player currentPlayer = player;
+            button.setOnAction(event -> {
+                selectedPlayer = currentPlayer;
+                selectedBet = null;  // Clear other selections
+                selectedTeam = null;
+                statusLabelL.setText("Selected player: " + selectedPlayer.getPlayerName());
+                statusLabelL.setTextFill(Color.BLACK);
+            });
+
             playerName.setEditable(false);
             teamName.setEditable(false);
             position.setEditable(false);
@@ -554,6 +717,15 @@ public class MainController implements SceneController {
             ToggleGroup toggleGroup = new ToggleGroup();
             RadioButton button = new RadioButton();
             button.setToggleGroup(toggleGroup);
+
+            final Team currentTeam = team;
+            button.setOnAction(event -> {
+                selectedTeam = currentTeam;
+                selectedBet = null;  // Clear other selections
+                selectedPlayer = null;
+                statusLabelL.setText("Selected team: " + selectedTeam.getTeamName());
+                statusLabelL.setTextFill(Color.BLACK);
+            });
 
 
             teamName.setEditable(false);
