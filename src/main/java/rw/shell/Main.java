@@ -21,7 +21,7 @@ import rw.enums.*;
 import rw.data.*;
 import java.io.IOException;
 
-// Main class prompts user to input data regarding their sports bets, teams and players.
+// Main class prompts user to input data regarding their sports bets, teams and players through the shell.
 public class Main {
 
     // Final variable list of valid leagues for our betting tracker.

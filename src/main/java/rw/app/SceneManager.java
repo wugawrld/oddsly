@@ -7,6 +7,8 @@ package rw.app;
  * @version 3.0
  */
 
+// SceneManager class is used to keep track of the 4 unique scenes related to the Sports Bet Tracker. These are
+// Main, AddBet, AddPlayer, and AddTeam.
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -21,16 +23,16 @@ public class SceneManager {
     private Map<String, Scene> scenes = new HashMap<>();
     private Map<String, Object> controllers = new HashMap<>();
 
-
+    // sets main stage to allow for switching between scenes
     public void setMainStage(Stage stage) {
         this.stage = stage;
     }
 
-    // addScene has two inputs: String name of scene and String fxml pathway (Example: "Main", "/rw/app/Main.fxml")
+    // addScene has two inputs: String "name" of scene and String "fxmlPath" (Example: "Main", "/rw/app/Main.fxml")
     public void addScene(String name, String fxmlPath) throws IOException {
         // Similar to a normal scene setup, create a loader with a fxmlPath
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxmlPath));
-        // Create a scene using the fxmlPath
+        // Create a scene using the loader
         Scene scene = new Scene(fxmlLoader.load());
         // Add new scene to scenes HashMap
         scenes.put(name, scene);

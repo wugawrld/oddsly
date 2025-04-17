@@ -22,7 +22,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import java.util.Optional;
 
+// AddPlayerController class that implements interface SceneController. Used to control AddPlayerController scene functionality.
 public class AddPlayerController implements SceneController {
+    // initialize Player being created
     private static Player player;
 
     @FXML
@@ -79,6 +81,7 @@ public class AddPlayerController implements SceneController {
     private SceneManager sceneManager;
 
     @FXML
+    // Close AddPlayer scene and switch to Main scene if close is chosen from menu.
     void close(ActionEvent event) {
         sceneManager.switchToScene("Main");
     }

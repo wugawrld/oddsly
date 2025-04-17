@@ -26,14 +26,13 @@ import javafx.stage.Stage;
 import rw.data.*;
 import rw.enums.BetOutcome;
 import rw.enums.BetType;
-
 import java.util.*;
-
 import java.io.*;
 
+// MainController class that implements interface SceneController. Used to control Main scene functionality.
 public class MainController implements SceneController {
 
-    // private lists for bets, players, and teams. They can be added to view AddBet, AddTeam, and AddPlayer scenes
+    // private lists for bets, players, and teams. They can be added to using AddBet, AddTeam, and AddPlayer scenes
     // through the addNewX public methods.
     private static List<Bet> bets = new ArrayList<>();
     private static List<Player> players = new ArrayList<>();
@@ -154,6 +153,7 @@ public class MainController implements SceneController {
     }
 
     @Override
+    // onSceneDisplayed gives priority to what is shown when Main scene is launched
     public void onSceneDisplayed() {
         System.out.println("Main scene displayed. Checking for data to display...");
         System.out.println("Bets: " + bets.size() + ", Teams: " + teams.size() + ", Players: " + players.size());
@@ -289,6 +289,7 @@ public class MainController implements SceneController {
         }
     }
 
+    // showErrorAlert provides an error pop up to user with details message
     private void showErrorAlert(String title, String header, Exception ex) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
@@ -298,7 +299,7 @@ public class MainController implements SceneController {
     }
 
     @FXML
-    // exits program if clicked in menu.
+    // exits program if quit is clicked in menu.
     void quit(ActionEvent event) {
         Platform.exit();
     }
@@ -306,6 +307,7 @@ public class MainController implements SceneController {
     @FXML
     // calls specified method for each data type to edit them if they are selected.
     void editData(ActionEvent event) {
+        // checks if there is a selected Bet, Team, or Player
         if (selectedBet != null) {
             editBet();
         } else if (selectedTeam != null) {
@@ -330,7 +332,7 @@ public class MainController implements SceneController {
 
         try {
 
-            // create new dialog window with title and head indicating which bet is being edited.
+            // create new dialog window with title and header indicating which bet is being edited.
             Dialog<ButtonType> dialog = new Dialog<>();
             dialog.setTitle("Edit Bet");
             dialog.setHeaderText("Edit bet: " + selectedBet.getId());
@@ -381,7 +383,7 @@ public class MainController implements SceneController {
                     double wager = Double.parseDouble(wagerInput.getText());
                     double odds = Double.parseDouble(oddsInput.getText());
                     selectedBet.setAmountWagered(wager);
-                    selectedBet.setOdds(odds);
+                    selectedBet.updateOdds(odds);
                 } catch (NumberFormatException e) {
                     // give pop up error alert if input is incorrect
                     Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -399,6 +401,7 @@ public class MainController implements SceneController {
                 statusLabelL.setText("Your bet has been updated successfully!");
             }
         } catch (Exception e) {
+            // if error is caught display error message to user.
             statusLabelL.setTextFill(Color.RED);
             statusLabelL.setText("Error with edit bet");
         }
@@ -414,7 +417,7 @@ public class MainController implements SceneController {
         }
 
         try {
-            // create new dialog window with title and head indicating which team is being edited.
+            // create new dialog window with title and header indicating which team is being edited.
             Dialog<ButtonType> dialog = new Dialog<>();
             dialog.setTitle("Edit Team");
             dialog.setHeaderText("Edit team: " + selectedTeam.getTeamName());
@@ -473,6 +476,7 @@ public class MainController implements SceneController {
                 statusLabelL.setText("Your team has been updated successfully!");
             }
         } catch (Exception e) {
+            // if error is caught display error message to user.
             statusLabelL.setTextFill(Color.RED);
             statusLabelL.setText("Error with edit team");
         }
@@ -488,7 +492,7 @@ public class MainController implements SceneController {
         }
 
         try {
-            // create new dialog window with title and head indicating which player is being edited.
+            // create new dialog window with title and header indicating which player is being edited.
             Dialog<ButtonType> dialog = new Dialog<>();
             dialog.setTitle("Edit Player");
             dialog.setHeaderText("Edit player: " + selectedPlayer.getPlayerName());
@@ -558,6 +562,7 @@ public class MainController implements SceneController {
                 statusLabelL.setText("Your player has been updated successfully!");
             }
         } catch (Exception e) {
+            // if error is caught display error message to user.
             statusLabelL.setTextFill(Color.RED);
             statusLabelL.setText("Error with edit player");
         }
@@ -566,6 +571,7 @@ public class MainController implements SceneController {
     @FXML
     // calls specified method for each data type to delete them if they are selected.
     void deleteData(ActionEvent event) {
+        // checks if there is a selected Bet, Team, or Player
         if (selectedBet != null) {
             deleteBet();
         } else if (selectedTeam != null) {
@@ -915,6 +921,8 @@ public class MainController implements SceneController {
     @FXML
     // method that displays the most profitable Bet Type
     void mostProfitable(ActionEvent event) {
+        // get most profitable Bet Type if there is one. Display results or if no profitable Bet Type is found,
+        // display that to user.
         BetType mostProfitable = getMostProfitableBetType();
         if (mostProfitable != null) {
             clearDataView();
@@ -1012,6 +1020,7 @@ public class MainController implements SceneController {
             summaryStage.show();
 
         } catch (Exception e) {
+            // if there is an error caught display error message to user.
             statusLabelL.setTextFill(Color.RED);
             statusLabelL.setText("Error showing data analysis");
         }
@@ -1020,21 +1029,25 @@ public class MainController implements SceneController {
     @FXML
     // method that displays profit / loss by bet type in pop up window
     void profitLossByType(ActionEvent event) {
+        // create a Map for profitByType
         Map<BetType, Double> profitByType = getProfitLossByBetType();
         try {
+            // Create new stage / pop up to display data.
             Stage byTypeStage = new Stage();
 
             byTypeStage.setTitle("Profit/Loss by Bet Type");
 
+            // Put together lines of information for each Bet Type to display.
             StringBuilder stringBuilder = new StringBuilder();
 
-            stringBuilder.append("\nProfit/Loss by Bet Type:");
+            stringBuilder.append("Profit/Loss by Bet Type:\n\n");
             for (BetType type : BetType.values()) {
                 double profit = profitByType.getOrDefault(type, 0.0);
                 stringBuilder.append(type.getDisplayName()).append(": $").append(String.format("%.2f", profit));
                 stringBuilder.append("\n");
             }
 
+            // set stringBuilder to text and add it to a created scene.
             TextArea textArea = new TextArea(stringBuilder.toString());
             textArea.setEditable(false);
             textArea.setPrefWidth(400);
@@ -1044,16 +1057,18 @@ public class MainController implements SceneController {
             byTypeStage.setScene(scene);
             byTypeStage.show();
         } catch (Exception e) {
+            // if error is caught display error message to user.
             statusLabelL.setTextFill(Color.RED);
             statusLabelL.setText("Error showing data analysis");
         }
     }
 
-    // Get profit/loss by bet type.
+    // method that gets profit/loss by bet type.
     public Map<BetType, Double> getProfitLossByBetType() {
         Map<BetType, Double> profitByType = new HashMap<>();
         Map<BetType, Integer> countByType = new HashMap<>();
 
+        // Same method as for demo 2. Use bet outcome enum to determine appropriate calculation for bet profit / loss.
         for (Bet bet : bets) {
             if (bet.getOutcome() != BetOutcome.PENDING) {
                 BetType type = bet.getBetType();
@@ -1073,7 +1088,7 @@ public class MainController implements SceneController {
         return profitByType;
     }
 
-    // Find the most profitable bet type.
+    // method that finds the most profitable bet type.
     public BetType getMostProfitableBetType() {
         Map<BetType, Double> profitByType = getProfitLossByBetType();
         BetType mostProfitable = null;
@@ -1106,6 +1121,7 @@ public class MainController implements SceneController {
     }
 
     @FXML
+    // Creates a popup alert explaining key components of the Sports Bet Tracker
     void aboutSportsBetTracker(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("About Sports Bet Tracker");
