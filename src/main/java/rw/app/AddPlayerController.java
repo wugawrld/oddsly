@@ -87,12 +87,16 @@ public class AddPlayerController implements SceneController {
     }
 
     @FXML
+    // Opens options for inputs that are specific to BasketBall Players if the basketballPlayerButton is selected.
     void addBasketballStats(ActionEvent event) {
+        // display message that basketball player is chosen to user.
         statusLabelL.setTextFill(Color.GREEN);
         statusLabelL.setText("Basketball player chosen");
 
+        // clear out any data there
         statsField.getChildren().clear();
 
+        // create labels for data entry and set parameters
         Label pointsLabel = new Label("Points Per Game");
         Label reboundsLabel = new Label("Rebounds Per Game");
         Label assistsLabel = new Label("Assists Per Game");
@@ -104,10 +108,12 @@ public class AddPlayerController implements SceneController {
         assistsLabel.setMinHeight(30);
         assistsLabel.setMinWidth(120);
 
+        // add labels
         statsField.add(pointsLabel, 0, 0);
         statsField.add(reboundsLabel, 1, 0);
         statsField.add(assistsLabel, 2, 0);
 
+        // create input text fields for each stat and set parameters.
         pointsField = new TextField();
         reboundsField = new TextField();
         assistsField = new TextField();
@@ -119,6 +125,7 @@ public class AddPlayerController implements SceneController {
         assistsField.setPrefHeight(30);
         assistsField.setPrefWidth(120);
 
+        // add text fields
         statsField.add(pointsField, 0,1);
         statsField.add(reboundsField, 1,1);
         statsField.add(assistsField, 2,1);
@@ -128,12 +135,16 @@ public class AddPlayerController implements SceneController {
     }
 
     @FXML
+    // Opens options for inputs that are specific to Hockey Players if the hockeyPlayerButton is selected.
     void addHockeyStats(ActionEvent event) {
+        // display message that hockey player is chosen to user.
         statusLabelL.setTextFill(Color.GREEN);
         statusLabelL.setText("Hockey player chosen");
 
+        // clear out any data there
         statsField.getChildren().clear();
 
+        // create labels for data entry and set parameters
         Label pointsLabel = new Label("Points Per Game");
         Label assistsLabel = new Label("Assists Per Game");
 
@@ -142,9 +153,11 @@ public class AddPlayerController implements SceneController {
         assistsLabel.setMinHeight(30);
         assistsLabel.setMinWidth(120);
 
+        // add labels
         statsField.add(pointsLabel, 0, 0);
         statsField.add(assistsLabel, 1, 0);
 
+        // create input text fields for each stat and set parameters.
         pointsField = new TextField();
         assistsField = new TextField();
 
@@ -153,6 +166,7 @@ public class AddPlayerController implements SceneController {
         assistsField.setPrefHeight(30);
         assistsField.setPrefWidth(120);
 
+        // add text fields
         statsField.add(pointsField, 0,1);
         statsField.add(assistsField, 1,1);
 
@@ -160,6 +174,7 @@ public class AddPlayerController implements SceneController {
         statsField.setVgap(15);
     }
 
+    // Check if the input for teams is valid (team in NHL / NBA)
     private Boolean checkTeam(String input, String league) {
         // Checks if league to check is NBA.
         if (league.equalsIgnoreCase("NBA")) {
@@ -182,11 +197,13 @@ public class AddPlayerController implements SceneController {
         return false;
     }
 
+    // Checks if any field is empty
     private Boolean fieldsEmpty() {
         return playerName.getText().isEmpty() || teamName.getText().isEmpty()
-                || position.getText().isEmpty() || pointsField.getText().isEmpty()
-                || (assistsField != null && assistsField.getText().isEmpty());
-    }
+                || position.getText().isEmpty() ||
+                (pointsField != null && pointsField.getText().isEmpty())
+                || (assistsField != null && assistsField.getText().isEmpty()) ||
+                (!basketballButton.isSelected() && !hockeyButton.isSelected());}
 
     @FXML
     void about(ActionEvent event) {
