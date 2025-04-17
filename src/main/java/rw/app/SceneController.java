@@ -9,7 +9,10 @@ package rw.app;
 
 // Interface for all scenes to implement.
 public interface SceneController {
+    // add setSceneManager to allow for switching scenes
     void setSceneManager(SceneManager manager);
+    // add initialization of scene elements
     void initialize();
+    // onSceneDisplayed gives priority to what is shown when a scene is launched
     void onSceneDisplayed();
 }

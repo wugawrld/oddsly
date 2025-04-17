@@ -100,11 +100,6 @@ public class AddBetController implements SceneController {
                 "\nFor Positive Odds: (|Odds| / 100) + 1" +
                 "\nFor Negative Odds: (100 / |Odds|) + 1");
 
-        // Create a new dialog pane with set dimensions.
-        DialogPane dialogPane = alert.getDialogPane();
-        dialogPane.setMinHeight(500);
-        dialogPane.setMinWidth(350);
-
         // Add contents to alert.
         alert.setContentText(stringBuffer.toString());
 
@@ -173,6 +168,7 @@ public class AddBetController implements SceneController {
     }
 
     @FXML
+    // Creates a new bet based on user input.
     void createNewBet(ActionEvent event) {
         try {
             // set status label to empty.
@@ -342,7 +338,7 @@ public class AddBetController implements SceneController {
     }
 
     @FXML
-    // saves
+    // saves bet
     void saveBet(ActionEvent event) {
         try {
             System.out.println("saveBet method called");

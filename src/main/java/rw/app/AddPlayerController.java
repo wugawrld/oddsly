@@ -22,8 +22,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import java.util.Optional;
 
-// AddPlayerController class that implements interface SceneController. Used to control AddPlayerController scene functionality.
+// AddPlayerController class that implements interface SceneController. Used to control AddPlayer scene functionality.
 public class AddPlayerController implements SceneController {
+
     // initialize Player being created
     private static Player player;
 
@@ -206,11 +207,16 @@ public class AddPlayerController implements SceneController {
                 (!basketballButton.isSelected() && !hockeyButton.isSelected());}
 
     @FXML
+    // Creates a popup alert explaining how to add a player and gives an example.
     void about(ActionEvent event) {
+        // Create new alert with appropriate title and header.
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("About");
         alert.setHeaderText("Add Player");
+
+        // Create a new string buffer to allow "gluing" of multi line strings together
         StringBuffer stringBuffer = new StringBuffer();
+        // Give instructions for add player and an example.
         stringBuffer.append("Instructions for Add Player: \n");
         stringBuffer.append("Enter Player's name, team, and position. Then select the appropriate button for the player" +
                 "and fill out the corresponding statistics.\n");
@@ -223,12 +229,10 @@ public class AddPlayerController implements SceneController {
         stringBuffer.append("Rebounds Per Game: 7.5\n");
         stringBuffer.append("Assists Per Game: 7.4");
 
-        DialogPane dialogPane = alert.getDialogPane();
-        dialogPane.setMinHeight(400);
-        dialogPane.setMinWidth(300);
-
+        // Add contents to alert.
         alert.setContentText(stringBuffer.toString());
 
+        // Add an OK button to take down pop up.
         ButtonType button = ButtonType.OK;
         alert.getButtonTypes().setAll(button);
 
@@ -236,88 +240,109 @@ public class AddPlayerController implements SceneController {
     }
 
     @FXML
+    // Creates a new player based on user input.
     void addNewPlayer(ActionEvent event) {
         try {
+            // set status label to empty.
             System.out.println("addNewPlayer method called");
             statusLabelL.setTextFill(Color.BLACK);
             statusLabelL.setText("");
 
-        if (fieldsEmpty()) {
-            statusLabelL.setTextFill(Color.RED);
-            statusLabelL.setText("You must complete all fields before adding a new player");
-            return;
-        }
+            // if any field is empty display to user that they must complete all fields.
+            if (fieldsEmpty()) {
+                statusLabelL.setTextFill(Color.RED);
+                statusLabelL.setText("You must complete all fields before adding a new player");
+                return;
+            }
 
-        try {
-            String playerN = playerName.getText();
-            String teamN = teamName.getText();
-            String p = position.getText();
-            double ppg = Double.parseDouble(pointsField.getText());
-            double apg = Double.parseDouble(assistsField.getText());
-            String league;
+            try {
+                // set all variable from their corresponding input
+                String playerN = playerName.getText();
+                String teamN = teamName.getText();
+                String p = position.getText();
+                // try parsing double from ppg and apg.
+                double ppg = Double.parseDouble(pointsField.getText());
+                double apg = Double.parseDouble(assistsField.getText());
+                String league;
 
-            if (basketballButton.isSelected()) {
-                try {
-                    league = "NBA";
-                    double rbg = Double.parseDouble(reboundsField.getText());
+                // if basketball player is selected set league to NBA and have user also input RPG.
+                if (basketballButton.isSelected()) {
+                    try {
+                        league = "NBA";
+                        double rbg = Double.parseDouble(reboundsField.getText());
+                        // Check if team name is valid for chosen player league. If checks fail display appropriate
+                        // error message.
+                        if (checkTeam(teamN, league)) {
+                            // if all checks pass create new Player from user inputs
+                            player = new BasketballPlayer(playerN, teamN, p, ppg, rbg, apg);
+                            // if player does not already exist add new Player to players
+                            if (!MainController.checkPlayers(playerN)) {
+                                MainController.addNewPlayer(player);
+
+                                // Show success notification
+                                statusLabelL.setTextFill(Color.GREEN);
+                                statusLabelL.setText(String.format("%s added successfully! Click Save to Continue", playerName.getText()));
+
+                                // Show success notification
+                                Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                                successAlert.setTitle("Success");
+                                successAlert.setHeaderText(null);
+                                successAlert.setContentText("Player created successfully!");
+                                successAlert.showAndWait();
+                            } else {
+                                statusLabelL.setTextFill(Color.RED);
+                                statusLabelL.setText(String.format("%s is already being tracked", playerN));
+                            }
+                        } else {
+                            statusLabelL.setTextFill(Color.RED);
+                            statusLabelL.setText(String.format("Invalid Team: %s, for league %s", teamName.getText(), league));
+                        }
+                    } catch (NumberFormatException e3) {
+                        statusLabelL.setTextFill(Color.RED);
+                        statusLabelL.setText(String.format("Failed to parse double Rebounds Per Game from %s", reboundsField.getText()));
+                    }
+
+                    // if hockey player is selected set league to NHL.
+                } else if (hockeyButton.isSelected()) {
+                    league = "NHL";
+                    // Check in team name is valid for chosen player league. If checks fail display appropriate
+                    // error message.
                     if (checkTeam(teamN, league)) {
-                        player = new BasketballPlayer(playerN, teamN, p, ppg, rbg, apg);
-                        MainController.addNewPlayer(player);
+                        // if all checks pass create new Player from user inputs
+                        player = new HockeyPlayer(playerN, teamN, p, ppg, apg);
+                        // if player does not already exist add new Player to players
+                        if (!MainController.checkPlayers(playerN)) {
+                            MainController.addNewPlayer(player);
+                            statusLabelL.setTextFill(Color.GREEN);
+                            statusLabelL.setText(String.format("%s added successfully! Click Save to Continue", playerName.getText()));
 
-                        // Show success notification
-                        statusLabelL.setTextFill(Color.GREEN);
-                        statusLabelL.setText(String.format("%s added successfully! Click Save to Continue", playerName.getText()));
-
-                        // Show success notification
-                        Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-                        successAlert.setTitle("Success");
-                        successAlert.setHeaderText(null);
-                        successAlert.setContentText("Player created successfully!");
-                        successAlert.showAndWait();
-
+                            // Show success notification popup
+                            Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                            successAlert.setTitle("Success");
+                            successAlert.setHeaderText(null);
+                            successAlert.setContentText("Player created successfully!");
+                            successAlert.showAndWait();
+                        } else {
+                            statusLabelL.setTextFill(Color.RED);
+                            statusLabelL.setText(String.format("%s is already being tracked", playerN));
+                        }
                     } else {
                         statusLabelL.setTextFill(Color.RED);
                         statusLabelL.setText(String.format("Invalid Team: %s, for league %s", teamName.getText(), league));
                     }
-                } catch (NumberFormatException e3) {
-                    statusLabelL.setTextFill(Color.RED);
-                    statusLabelL.setText(String.format("Failed to parse double Rebounds Per Game from %s", reboundsField.getText()));
-                }
-            } else if (hockeyButton.isSelected()) {
-                league = "NHL";
-                if (checkTeam(teamN, league)) {
-                    player = new HockeyPlayer(playerN, teamN, p, ppg, apg);
-                    if (!MainController.checkPlayers(playerN)) {
-                        MainController.addNewPlayer(player);
-                        statusLabelL.setTextFill(Color.GREEN);
-                        statusLabelL.setText(String.format("%s added successfully! Click Save to Continue", playerName.getText()));
-
-                        // Show success notification popup
-                        Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-                        successAlert.setTitle("Success");
-                        successAlert.setHeaderText(null);
-                        successAlert.setContentText("Player created successfully!");
-                        successAlert.showAndWait();
-                    } else {
-                        statusLabelL.setTextFill(Color.RED);
-                        statusLabelL.setText(String.format("%s is already being tracked", playerN));
-                    }
                 } else {
                     statusLabelL.setTextFill(Color.RED);
-                    statusLabelL.setText(String.format("Invalid Team: %s, for league %s", teamName.getText(), league));
+                    statusLabelL.setText("You must select Basketball or Hockey Player");
                 }
-            } else {
+            } catch (NumberFormatException e1) {
+                // if incorrect data type is used display to user error message.
                 statusLabelL.setTextFill(Color.RED);
-                statusLabelL.setText("You must select Basketball or Hockey Player");
+                statusLabelL.setText(String.format("Failed to parse double Points Per Game from %s%n or Assists Per Game from %s",
+                        (pointsField != null ? pointsField.getText() : "null"),
+                        (assistsField != null ? assistsField.getText() : "null")));
             }
-        } catch (NumberFormatException e1) {
-            statusLabelL.setTextFill(Color.RED);
-            statusLabelL.setText(String.format("Failed to parse double Points Per Game from %s%n or Assists Per Game from %s",
-                    (pointsField != null ? pointsField.getText() : "null"),
-                    (assistsField != null ? assistsField.getText() : "null")));
-        }
-
         } catch (Exception e) {
+            // if other error is caught display generic error message to user.
             statusLabelL.setTextFill(Color.RED);
             statusLabelL.setText("An error occurred while creating the player");
             System.out.println("Error in addNewPlayer: " + e.getMessage());
@@ -331,19 +356,23 @@ public class AddPlayerController implements SceneController {
     }
 
     @Override
+    // initialization of the AddPlayer scene
     public void initialize() {
+        // set status labels to empty / info message
         statusLabelL.setTextFill(Color.BLACK);
         statusLabelL.setText("");
 
         statusLabelR.setTextFill(Color.BLACK);
         statusLabelR.setText("Enter info to add new player.");
 
+        // put the radio buttons for player type into their own toggle group to avoid multi selecting
         ToggleGroup toggleGroup = new ToggleGroup();
         basketballButton.setToggleGroup(toggleGroup);
         hockeyButton.setToggleGroup(toggleGroup);
     }
 
     @Override
+    // onSceneDisplayed gives priority to what is shown when AddPlayer scene is launched
     public void onSceneDisplayed() {
         // Clear all form fields
         clearPlayerForm();
@@ -355,8 +384,11 @@ public class AddPlayerController implements SceneController {
         statusLabelR.setTextFill(Color.BLACK);
         statusLabelR.setText("Enter info to add new player.");
 
+        // Open about popup.
         about(null);
     }
+
+    // clears all fields from AddBet scene.
     private void clearPlayerForm() {
         playerName.clear();
         teamName.clear();
@@ -376,8 +408,8 @@ public class AddPlayerController implements SceneController {
         player = null;
     }
 
-
     @FXML
+    // saves bet
     void savePlayer(ActionEvent event) {
         try {
             System.out.println("savePlayer method called");

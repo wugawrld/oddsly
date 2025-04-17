@@ -20,8 +20,10 @@ import javafx.scene.control.ButtonType;
 import java.util.Objects;
 import java.util.Optional;
 
+// AddTeamController class that implements interface SceneController. Used to control AddTeam scene functionality.
 public class AddTeamController implements SceneController {
 
+    // initialize Team being created
     private static Team team;
 
     @FXML
@@ -72,11 +74,16 @@ public class AddTeamController implements SceneController {
     private SceneManager sceneManager;
 
     @FXML
+    // Creates a popup alert explaining how to add a team and gives an example.
     void about(ActionEvent event) {
+        // Create new alert with appropriate title and header.
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("About");
         alert.setHeaderText("Add Team");
+
+        // Create a new string buffer to allow "gluing" of multi line strings together
         StringBuffer stringBuffer = new StringBuffer();
+        // Give instructions for add team and an example.
         stringBuffer.append("Instructions for Add Team: \n");
         stringBuffer.append("Fill out all fields with accurate information to add a new tracked team.\n");
         stringBuffer.append("\nExample:\n");
@@ -88,8 +95,10 @@ public class AddTeamController implements SceneController {
         stringBuffer.append("Points Scored: 210\n");
         stringBuffer.append("Points Allowed: 231");
 
+        // Add contents to alert.
         alert.setContentText(stringBuffer.toString());
 
+        // Add an OK button to take down pop up.
         ButtonType button = ButtonType.OK;
         alert.getButtonTypes().setAll(button);
 
@@ -97,13 +106,15 @@ public class AddTeamController implements SceneController {
     }
 
     @FXML
+    // Creates a new team based on user input.
     void addTeam(ActionEvent event) {
         try {
+            // set status label to empty.
             System.out.println("addTeam method called");
-
             statusLabelL.setTextFill(Color.BLACK);
             statusLabelL.setText("");
 
+            // if any field is empty display to user that they must complete all fields.
             if (fieldsEmpty()) {
                 statusLabelL.setTextFill(Color.RED);
                 statusLabelL.setText("You must complete all fields before adding a new team");
@@ -111,6 +122,8 @@ public class AddTeamController implements SceneController {
             }
 
         try {
+            // set all variable from their corresponding input
+            // try parsing Integer for win, loss, ps, pa
             int win = Integer.parseInt(wins.getText());
             int loss = Integer.parseInt(losses.getText());
             int ps = Integer.parseInt(pointsScored.getText());
@@ -119,12 +132,18 @@ public class AddTeamController implements SceneController {
             String c = conference.getText();
             String tName = teamName.getText();
 
+            // Check in order if league is correct, conference is valid, team name is valid. Else display appropriate
+            // error message to user.
             if (checkLeague(l)) {
                 if (Objects.equals(c, "Eastern") || Objects.equals(c, "Western")) {
                     if (checkTeam(tName)) {
+                        // if all checks pass create new Team from user inputs
                         team = new Team(tName, c, win, loss, ps, pa);
+                        // if team does not already exist add new Team to teams
                         if (!MainController.checkTeams(tName)) {
                             MainController.addNewTeam(team);
+
+                            // show success notification
                             statusLabelL.setTextFill(Color.GREEN);
                             statusLabelL.setText(String.format("%s added successfully! Click Save to Continue!", teamName.getText()));
                             statusLabelR.setTextFill(Color.BLACK);
@@ -153,10 +172,12 @@ public class AddTeamController implements SceneController {
                 statusLabelL.setText(String.format("Invalid league: %s", league.getText()));
             }
         } catch (NumberFormatException e) {
+            // if incorrect data type is used display to user error message.
             statusLabelL.setTextFill(Color.RED);
             statusLabelL.setText(String.format("Failed to parse integer wins from %s, losses from %s, points scored from %s, or points allowed from %s", wins.getText(), losses.getText(), pointsScored.getText(), pointsAllowed.getText()));
         }
         } catch (Exception e) {
+            // if other error is caught display generic error message to user.
             statusLabelL.setTextFill(Color.RED);
             statusLabelL.setText("An error occurred while creating the team");
             System.out.println("Error in addTeam: " + e.getMessage());
@@ -164,6 +185,7 @@ public class AddTeamController implements SceneController {
         }
     }
 
+    // Checks if any field is empty
     private Boolean fieldsEmpty() {
         return wins.getText().isEmpty() || losses.getText().isEmpty()
                 || pointsScored.getText().isEmpty() || pointsAllowed.getText().isEmpty()
@@ -171,6 +193,7 @@ public class AddTeamController implements SceneController {
                 || league.getText().isEmpty();
     }
 
+    // Check if the input for league is valid (NHL / NBA)
     private Boolean checkLeague(String input) {
         // Checks if input is a part of leagueList.
         for (String league : rw.shell.Main.leagueList) {
@@ -181,6 +204,7 @@ public class AddTeamController implements SceneController {
         return false;
     }
 
+    // Check if the input for teams is valid (team in NHL / NBA)
     private Boolean checkTeam(String input) {
         String leagueCheck = league.getText();
         // Checks if league to check is NBA.
@@ -205,6 +229,7 @@ public class AddTeamController implements SceneController {
     }
 
     @FXML
+    // Close AddTeam scene and switch to Main scene if close is chosen from menu.
     void close(ActionEvent event) {
         sceneManager.switchToScene("Main");
     }
@@ -215,7 +240,9 @@ public class AddTeamController implements SceneController {
     }
 
     @Override
+    // initialization of the AddTeam scene
     public void initialize() {
+        // set status labels to empty / info message
         statusLabelL.setTextFill(Color.BLACK);
         statusLabelL.setText("");
 
@@ -224,6 +251,7 @@ public class AddTeamController implements SceneController {
     }
 
     @Override
+    // onSceneDisplayed gives priority to what is shown when AddTeam scene is launched
     public void onSceneDisplayed() {
         // Clear all form fields
         clearTeamForm();
@@ -235,9 +263,11 @@ public class AddTeamController implements SceneController {
         statusLabelR.setTextFill(Color.BLACK);
         statusLabelR.setText("Enter info to add new team");
 
+        // Open about popup.
         about(null);
     }
 
+    // clears all fields from AddTeam scene.
     private void clearTeamForm() {
         teamName.clear();
         conference.clear();
@@ -251,7 +281,8 @@ public class AddTeamController implements SceneController {
         team = null;
     }
 
-        @FXML
+    @FXML
+    // saves team
     void saveTeam(ActionEvent event) {
         try {
             System.out.println("saveTeam method called");
