@@ -269,7 +269,7 @@ public class MainController implements SceneController {
                 ButtonType closeButton = new ButtonType("Close", ButtonBar.ButtonData.CANCEL_CLOSE);
 
                 alert.getButtonTypes().setAll(viewBetsButton, viewPlayersButton, viewTeamsButton, closeButton);
-
+                //select the button list
                 Optional<ButtonType> result = alert.showAndWait();
 
                 if (result.get() == viewBetsButton) {

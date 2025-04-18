@@ -27,15 +27,6 @@ import java.util.ResourceBundle;
  * @version 3.0
  */
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.net.http.HttpResponse.BodyHandlers;
-import java.util.ResourceBundle;
-
 public class ApiController implements Initializable {
 
     @FXML
