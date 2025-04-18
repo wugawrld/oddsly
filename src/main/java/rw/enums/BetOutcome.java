@@ -1,6 +1,11 @@
 package rw.enums;
 
 /**
+ * CPSC 233 Project UserInput class
+ * @author Jarod Rideout, Risha Vaghani, Sardar Waheed
+ * @email jarod.rideout@ucalgary.ca, risha.vaghani@ucalgary.cra, sardar.waheed@ucalgary.ca
+ * @tutorial Tutorial 1 Tuesdays 11:00 - 13:00
+ * @version 3.0
  * Enum for possible outcomes of a bet.
  */
 

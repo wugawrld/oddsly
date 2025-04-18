@@ -247,13 +247,3 @@ public class Main {
         }
     }
 }
-
-/*
-To Do List Moving Forward:
-- Add unique elements to each betType including who the user thinks will win, how many points
-  will be scored in the game etc.
-
-- Add DisplayData class?
-
-- Use JavaFX to build an interactive interface for a user (no longer should use command line arguments)
- */

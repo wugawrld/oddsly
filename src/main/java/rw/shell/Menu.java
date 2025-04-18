@@ -1,12 +1,6 @@
 package rw.shell;
 
-/**
- * CPSC 233 Project Menu class ...
- * @author Jarod Rideout, Risha Vaghani, Sardar Waheed
- * @email jarod.rideout@ucalgary.ca, risha.vaghani@ucalgary.ca, sardar.waheed@ucalgary.ca
- * @tutorial Tutorial 1 Tuesdays 11:00 - 13:00
- * @version 3.0
- */
+
 
 import java.util.Scanner;
 import java.io.IOException;
@@ -15,6 +9,11 @@ import rw.enums.*;
 import rw.data.*;
 
 /**
+ * CPSC 233 Project Menu class ...
+ * @author Jarod Rideout, Risha Vaghani, Sardar Waheed
+ * @email jarod.rideout@ucalgary.ca, risha.vaghani@ucalgary.ca, sardar.waheed@ucalgary.ca
+ * @tutorial Tutorial 1 Tuesdays 11:00 - 13:00
+ * @version 3.0
  * This class handles the menu system for the sports betting application.
  */
 
