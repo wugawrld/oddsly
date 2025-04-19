@@ -10,6 +10,7 @@ current bets, teams, and players or quit the program under "File".
 + Edit or delete bets, tracked players, and tracked teams.
 + View the information and statistics attributed to your bets, tracked players, and teams.
 + View minor analysis information including most profitable bet type, summary of bet outcomes, and more.
++ Utilize the ESPN API to get up-to-date information on a variety of league information to inform bets.
 
 ## How to run it
 To run the Sports Betting Tracker v1.0 you can launch it through the Main class via 
