@@ -13,33 +13,28 @@ current bets, teams, and players or quit the program under "File".
 + View minor analysis information including most profitable bet type, summary of bet outcomes, and more.
 + Utilize the ESPN API to get up-to-date information on a variety of league information to inform bets.
 
-## How to run it
-To run the Oddsly you can launch it through the Main class via 
-IntelliJ (or another Java compiler application), launch it through the command line of
-your device directly or through a .jar file.
-
-For the direct method input this into your command line after navigating to the appropriate directory:
-
-- java --module-path "C:\Program Files\Java\javafx-sdk-24\lib" --add-modules
-javafx.controls,javafx.fxml rw.app.Main
-
-For the .jar file method input this into your command line after navigating to the appropriate directory:
-- java --module-path "C:\Program Files\Java\javafx-sdk-24\lib" --add-modules
-javafx.controls,javafx.fxml -jar SportsBetTrackerGUI.jar
-
-NOTE: Ensure your javafx-sdk files are up to date with the current versions and that the path you have to your accompanying files
-is correctly called.
 ## How to interact with it
 A quick start guide to interacting with Oddsly is as follows:
 1. Launch Oddsly
+(You will be presented with this menu on the left side, with a data viewer on the right.)
+
+<img width="364" alt="Screenshot 2025-04-28 at 10 54 26 PM" src="https://github.com/user-attachments/assets/1918b0ad-d17d-438b-8507-aecf5afc9695" />
+
 2. Either load previously saved data (Bets, Players, Teams) or select a data type to add under "File" -> "Add".
 3. Read the popup instructions for your specified data type, fill all fields with required information, click the
 create / add button to create your bet / team / player.
-4. Once completed click save and choose if you would like to add another bet / team / player (then repeat 3) or if you are 
+(You can click the "Standings" button to view live league statistics and standings information via the ESPN API.)
+
+<img width="817" alt="Screenshot 2025-04-28 at 10 54 58 PM" src="https://github.com/user-attachments/assets/cdacd77c-249e-4f7a-9515-c1f0c2b18bf5" />
+
+5. Once completed click save and choose if you would like to add another bet / team / player (then repeat 3) or if you are 
 finished. 
-5. Your data will now be viewable after clicking its accompanying button. You may edit or delete your inputs by selecting
+6. Your data will now be viewable after clicking its accompanying button. You may edit or delete your inputs by selecting
 its accompanying button then clicking "Edit" or "Delete". If you have completed a bet you can update its outcome through the
-edit button. 
+edit button.
+
+<img width="965" alt="Screenshot 2025-04-28 at 10 54 06 PM" src="https://github.com/user-attachments/assets/75ff6706-77ce-4b54-8d26-339a6c8b1643" />
+
 6. Once you have bets with outcomes you can select an analysis option under the "Calculations and Analysis" menu. 
 7. After you are finished editing, deleting, and adding your data save your file by selecting the "save" option under file.
 Once you have saved quit the program by selecting "quit" under file.
