@@ -1,8 +1,9 @@
 # Information
-The Sports Betting Tracker v1.0 is a Graphical User Interface designed to give 
+The Oddsly (Sports Betting Tracker v1.0) is a Graphical User Interface designed to give 
 users the ability to add, edit, and track sports bets, players, and teams.
+
 ## What it does
-Functionalities of the Sports Betting Tracker v1.0 include:
+Functionalities of Oddsly include:
 + The abilities to load or save (including with chosen name) a file that stores the 
 current bets, teams, and players or quit the program under "File".
 + Read an about information pop-up under "Help".
@@ -13,7 +14,7 @@ current bets, teams, and players or quit the program under "File".
 + Utilize the ESPN API to get up-to-date information on a variety of league information to inform bets.
 
 ## How to run it
-To run the Sports Betting Tracker v1.0 you can launch it through the Main class via 
+To run the Oddsly you can launch it through the Main class via 
 IntelliJ (or another Java compiler application), launch it through the command line of
 your device directly or through a .jar file.
 
@@ -29,8 +30,8 @@ javafx.controls,javafx.fxml -jar SportsBetTrackerGUI.jar
 NOTE: Ensure your javafx-sdk files are up to date with the current versions and that the path you have to your accompanying files
 is correctly called.
 ## How to interact with it
-A quick start guide to interacting with Sports Betting Tracker v1.0 is as follows:
-1. Launch Sports Betting Tracker v1.0.
+A quick start guide to interacting with Oddsly is as follows:
+1. Launch Oddsly
 2. Either load previously saved data (Bets, Players, Teams) or select a data type to add under "File" -> "Add".
 3. Read the popup instructions for your specified data type, fill all fields with required information, click the
 create / add button to create your bet / team / player.
@@ -44,11 +45,4 @@ edit button.
 Once you have saved quit the program by selecting "quit" under file.
 
 ## Developers
-Developed for the CPSC 233 Final Project:
-
-Developed by Jarod Rideout, Risha Vaghani and Sardar Waheed
-
-For support,feedback or feature requests, please contact:
-- jarod.rideout@ucalgary.ca
-- risha.vaghani@ucalgary.ca
-- sardar.waheed@ucalgary.ca
+Developed for the CPSC 233 Final Project by Jarod Rideout, Risha Vaghani and Sardar Waheed
