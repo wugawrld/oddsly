@@ -1,5 +1,5 @@
 # Oddsly (Sports Betting Tracker v1.0)
-Oddsly (Sports Betting Tracker v1.0) is group project developed for my CPSC 233 class at the University of Calgary.
+Oddsly is group project developed for my CPSC 233 class at the University of Calgary.
 
 Oddsly is a fully functional JavaFX project built in Java and FXML, designed to give users the ability to add, edit, and track sports bets, players, and teams. 
 The project was developed to demonstrate an understanding of the course content including object-oriented programming topics and the Java FX SDK (GUI implementation).
