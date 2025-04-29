@@ -1,6 +1,7 @@
 # Information
-The Oddsly (Sports Betting Tracker v1.0) is a Graphical User Interface designed to give 
-users the ability to add, edit, and track sports bets, players, and teams.
+The Oddsly (Sports Betting Tracker v1.0) is group project developed for my CPSC 233 class at the University of Calgary.
+It is designed to give users the ability to add, edit, and track sports bets, players, and teams.
+
 
 ## What it does
 Functionalities of Oddsly include:
@@ -38,6 +39,3 @@ edit button.
 6. Once you have bets with outcomes you can select an analysis option under the "Calculations and Analysis" menu. 
 7. After you are finished editing, deleting, and adding your data save your file by selecting the "save" option under file.
 Once you have saved quit the program by selecting "quit" under file.
-
-## Developers
-Developed for the CPSC 233 Final Project by Jarod Rideout, Risha Vaghani and Sardar Waheed
